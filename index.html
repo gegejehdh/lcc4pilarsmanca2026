@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tim LCC 4 Pilar MPR RI - SMANCA</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #2b10a2;
+            color: #1e293b;
+        }
+        .btn-gold {
+            background-color: #f1aa13;
+            color: #ffffff;
+            font-weight: 700;
+            text-shadow: 0px 1px 2px rgba(0,0,0,0.2);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+            transition: all 0.2s ease-in-out;
+        }
+        .btn-gold:hover, .btn-gold:active {
+            background-color: #d8960c;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+        }
+        .btn-pilar {
+            background-color: #f1aa13;
+            color: #ffffff;
+            font-weight: 700;
+            transition: all 0.2s ease-in-out;
+        }
+        .btn-pilar.active-blue {
+            background-color: #1e40af !important;
+            border-color: #93c5fd !important;
+            box-shadow: 0 4px 12px rgba(30, 64, 175, 0.4);
+        }
+        .card-shadow {
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .garuda-glow-image {
+            filter: drop-shadow(0 0 16px rgba(255, 215, 0, 0.85)) drop-shadow(0 0 6px rgba(241, 170, 19, 0.9));
+        }
+        .keyboard-open #bottom-nav {
+            display: none !important;
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-28 flex flex-col items-center">
+
+    <!-- APP HEADER -->
+    <header id="main-header" class="w-full max-w-md px-4 pt-4 pb-2 text-center flex flex-col items-center bg-[#2b10a2] transition-all duration-300">
+        <div class="text-white font-extrabold text-xs sm:text-base tracking-wide uppercase drop-shadow mb-0.5">
+            Tim LCC 4 Pilar MPR RI
+        </div>
+        <h1 class="text-white font-black text-2xl sm:text-4xl tracking-wider drop-shadow-lg mb-1">
+            SMANCA
+        </h1>
+        <div class="relative cursor-pointer transform transition hover:scale-105 my-1" onclick="navigateTo('home')">
+            <div class="w-28 h-28 sm:w-40 sm:h-40 relative flex items-center justify-center p-1">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/9/90/National_emblem_of_Indonesia_Garuda_Pancasila.svg"
+                     alt="Lambang Garuda Pancasila Resmi"
+                     class="w-full h-full object-contain garuda-glow-image"
+                     onerror="this.onerror=null; this.src='https://cdn.pixabay.com/photo/2019/11/08/11/56/pancasila-4611181_1280.png';">
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="w-full max-w-md px-4 space-y-5 mt-1">
+
+        <!-- HALAMAN 1: BERANDA -->
+        <div id="page-home" class="page-view space-y-5">
+            <div class="w-full text-center">
+                <div class="inline-block bg-[#f1aa13] text-white font-extrabold text-base sm:text-lg px-6 py-3 rounded-2xl shadow-lg border-2 border-amber-300 w-full">
+                    Apa itu LCC 4 Pilar MPR RI?
+                </div>
+            </div>
+
+            <div class="w-full bg-white rounded-2xl p-5 card-shadow text-center">
+                <p class="text-slate-800 text-xs sm:text-sm leading-relaxed font-semibold text-justify">
+                    LCC 4 Pilar adalah kompetisi cerdas cermat tingkat nasional bagi pelajar SMA/sederajat yang diselenggarakan oleh MPR RI untuk menguji pemahaman mengenai Pancasila, UUD 1945, NKRI, dan Bhinneka Tunggal Ika. Lomba ini bertujuan untuk memperkuat wawasan kebangsaan, menumbuhkan karakter cinta tanah air, serta membentuk generasi muda yang memahami konstitusi negara secara mendalam.
+                </p>
+            </div>
+
+            <div class="w-full flex flex-col space-y-3.5 pt-1">
+                <button onclick="openRegisterModal()" class="btn-gold w-full text-center py-3.5 px-4 rounded-2xl text-lg tracking-wide block">
+                    Daftar Sekarang
+                </button>
+                <button onclick="navigateTo('kesan-pesan')" class="btn-gold w-full text-center py-3.5 px-4 rounded-2xl text-lg tracking-wide block">
+                    Kesan & Pesan
+                </button>
+                <button onclick="navigateTo('vote')" class="btn-gold w-full text-center py-3.5 px-4 rounded-2xl text-lg tracking-wide block">
+                    Vote Pembimbing
+                </button>
+            </div>
+        </div>
+
+        <!-- HALAMAN 2: PILAR SELECTION -->
+        <div id="page-pilar" class="page-view space-y-4 hidden">
+            <div class="flex items-center justify-between text-white mb-1">
+                <button onclick="navigateTo('home')" class="text-xs bg-indigo-950/80 px-3 py-1.5 rounded-xl border border-amber-400/30 font-semibold flex items-center space-x-1">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Kembali</span>
+                </button>
+                <div class="text-xs font-bold text-amber-300">Pilih Sub-Materi 4 Pilar</div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-3">
+                <button onclick="openPilarDetail('Pancasila')" class="btn-gold w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between">
+                    <span>Pancasila</span>
+                    <i class="fa-solid fa-chevron-right text-sm"></i>
+                </button>
+                <button onclick="openPilarDetail('UUD 1945')" class="btn-gold w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between">
+                    <span>UUD 1945</span>
+                    <i class="fa-solid fa-chevron-right text-sm"></i>
+                </button>
+                <button onclick="openPilarDetail('NKRI')" class="btn-gold w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between">
+                    <span>NKRI</span>
+                    <i class="fa-solid fa-chevron-right text-sm"></i>
+                </button>
+                <button onclick="openPilarDetail('Bhinneka Tunggal Ika')" class="btn-gold w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between">
+                    <span>Bhinneka Tunggal Ika</span>
+                    <i class="fa-solid fa-chevron-right text-sm"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- HALAMAN KHUSUS KUIS -->
+        <div id="page-quiz" class="page-view space-y-4 hidden">
+            <div class="flex items-center justify-between text-white">
+                <button onclick="navigateTo('pilar')" class="text-xs bg-indigo-950/80 px-3 py-1.5 rounded-xl border border-amber-400/30 font-semibold flex items-center space-x-1">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Keluar Kuis</span>
+                </button>
+                <div id="quiz-header-title" class="text-xs font-bold text-amber-300">Kuis 4 Pilar</div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-5 card-shadow space-y-4">
+                <div class="flex justify-between items-center border-b pb-2">
+                    <span id="quiz-progress-text" class="text-xs font-bold text-indigo-900">Pertanyaan 1 dari 10</span>
+                    <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full">Mode Ujian</span>
+                </div>
+
+                <div id="quiz-question-box" class="space-y-3">
+                    <div id="quiz-question-text" class="text-xs sm:text-sm font-bold text-slate-800 leading-relaxed">
+                        <!-- Soal Kuis -->
+                    </div>
+                    <div id="quiz-options-list" class="space-y-2">
+                        <!-- Opsi Kuis -->
+                    </div>
+                </div>
+
+                <!-- Bagian Hasil Kuis (Hanya muncul di akhir) -->
+                <div id="quiz-result-box" class="space-y-3 hidden text-center py-4">
+                    <div class="w-16 h-16 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mx-auto text-2xl shadow-inner">
+                        <i class="fa-solid fa-award"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-extrabold text-slate-800">Kuis Telah Selesai!</h3>
+                        <p class="text-xs text-slate-500 mt-1">Berikut adalah total perolehan skor akhir Anda:</p>
+                    </div>
+                    <div class="bg-indigo-900 text-white py-3 px-4 rounded-2xl font-black text-xl tracking-wide shadow">
+                        Skor: <span id="final-score-val">0</span> / 10
+                    </div>
+                    <div id="result-message" class="text-xs font-semibold text-slate-700"></div>
+                    <button onclick="navigateTo('pilar')" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 rounded-xl text-xs shadow transition">
+                        Kembali ke Menu 4 Pilar
+                    </button>
+                </div>
+
+                <div id="quiz-nav-container" class="pt-2">
+                    <button id="next-question-btn" onclick="handleNextQuestion()" class="w-full bg-indigo-900 hover:bg-indigo-950 text-white font-bold py-3 rounded-xl text-xs shadow transition hidden">
+                        Selanjutnya
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- HALAMAN 3: VOTE PEMBIMBING -->
+        <div id="page-vote" class="page-view space-y-4 hidden">
+            <div class="flex items-center justify-between text-white">
+                <button onclick="navigateTo('home')" class="text-xs bg-indigo-950/80 px-3 py-1.5 rounded-xl border border-amber-400/30 font-semibold flex items-center space-x-1">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Beranda</span>
+                </button>
+                <div class="text-xs font-bold text-amber-300">Vote Pembimbing Tim</div>
+            </div>
+
+            <div id="sub-vote-form" class="space-y-4">
+                <div class="space-y-2">
+                    <div class="text-white text-center text-xs uppercase tracking-wider font-semibold opacity-90">
+                        Pilih Kategori Pilar:
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="selectPilarVote('Pancasila')" class="pilar-btn btn-pilar active-blue py-3 px-2 rounded-xl shadow text-xs transition border border-amber-200" data-pilar="Pancasila">
+                            Pancasila
+                        </button>
+                        <button onclick="selectPilarVote('UUD 1945')" class="pilar-btn btn-pilar py-3 px-2 rounded-xl shadow text-xs transition border border-amber-200" data-pilar="UUD 1945">
+                            UUD 1945
+                        </button>
+                        <button onclick="selectPilarVote('NKRI')" class="pilar-btn btn-pilar py-3 px-2 rounded-xl shadow text-xs transition border border-amber-200" data-pilar="NKRI">
+                            NKRI
+                        </button>
+                        <button onclick="selectPilarVote('Bhinneka Tunggal Ika')" class="pilar-btn btn-pilar py-3 px-2 rounded-xl shadow text-xs transition border border-amber-200" data-pilar="Bhinneka Tunggal Ika">
+                            Bhinneka Tunggal Ika
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-[#f1aa13] rounded-2xl p-4 card-shadow border-2 border-amber-200 space-y-3">
+                    <div class="flex items-center justify-between border-b border-amber-600/30 pb-2">
+                        <h2 id="selected-pilar-title" class="text-xl font-extrabold text-white drop-shadow">Pancasila</h2>
+                        <span class="bg-indigo-950 text-amber-300 text-[10px] font-bold px-2.5 py-1 rounded-full">
+                            10 Kandidat
+                        </span>
+                    </div>
+
+                    <div id="candidate-list" class="space-y-2 max-h-[280px] overflow-y-auto pr-1 no-scrollbar"></div>
+
+                    <div class="pt-2 border-t border-amber-600/20">
+                        <label class="block text-xs font-bold text-amber-950 mb-1">Nama Pemilih (Opsional):</label>
+                        <input type="text" id="voter-name" placeholder="Tuliskan nama Anda..." class="w-full px-3 py-2 rounded-xl text-xs bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-900 font-medium">
+                    </div>
+
+                    <button onclick="submitVote()" class="w-full bg-indigo-900 hover:bg-indigo-950 active:scale-98 text-white font-bold py-3 rounded-xl shadow-md transition flex items-center justify-center space-x-2 text-sm">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>Submit Vote</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- HALAMAN 4: KESAN & PESAN -->
+        <div id="page-kesan-pesan" class="page-view space-y-4 hidden">
+            <div class="flex items-center justify-between text-white">
+                <button onclick="navigateTo('home')" class="text-xs bg-indigo-950/80 px-3 py-1.5 rounded-xl border border-amber-400/30 font-semibold flex items-center space-x-1">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Beranda</span>
+                </button>
+                <div class="text-xs font-bold text-amber-300">Kesan & Pesan</div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-4 card-shadow space-y-3">
+                <h3 class="font-bold text-slate-800 text-sm">Kirim Kesan & Pesan</h3>
+                <p class="text-xs text-slate-500">Sampaikan dukungan dan kesan Anda untuk Tim LCC 4 Pilar SMANCA.</p>
+
+                <div class="space-y-2 pt-1">
+                    <input type="text" id="kesan-nama" placeholder="Nama Anda" class="w-full px-3 py-2 rounded-xl text-xs border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400 font-medium">
+                    <textarea id="kesan-teks" rows="3" placeholder="Tuliskan kesan & pesan..." class="w-full px-3 py-2 rounded-xl text-xs border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400 font-medium"></textarea>
+                    <button onclick="kirimKesanPesan()" class="w-full bg-indigo-900 hover:bg-indigo-950 text-white font-bold py-2.5 rounded-xl text-xs transition">
+                        Kirim Kesan & Pesan
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- BOTTOM NAVIGATION BAR -->
+    <nav id="bottom-nav" class="fixed bottom-0 left-0 right-0 z-40 flex justify-center px-3 pb-3 pt-1 pointer-events-none">
+        <div class="pointer-events-auto w-full max-w-md bg-indigo-950/95 backdrop-blur-md border border-amber-400/30 text-white rounded-2xl shadow-2xl px-2 py-2 flex justify-around items-center">
+            <button id="nav-btn-home" onclick="navigateTo('home')" class="nav-btn flex flex-col items-center justify-center text-amber-400 transition w-16 py-1">
+                <i class="fa-solid fa-house text-base"></i>
+                <span class="text-[10px] font-medium mt-1">Beranda</span>
+            </button>
+            <button id="nav-btn-pilar" onclick="navigateTo('pilar')" class="nav-btn flex flex-col items-center justify-center text-slate-300 hover:text-amber-300 transition w-16 py-1">
+                <i class="fa-solid fa-book-open text-base"></i>
+                <span class="text-[10px] font-medium mt-1">4 Pilar</span>
+            </button>
+            <button id="nav-btn-vote" onclick="navigateTo('vote')" class="flex flex-col items-center justify-center -mt-5">
+                <div class="w-12 h-12 rounded-full bg-amber-400 text-slate-900 flex items-center justify-center text-lg shadow-lg border-4 border-[#2b10a2] active:scale-95 transition">
+                    <i class="fa-solid fa-check-to-slot"></i>
+                </div>
+                <span class="text-[10px] font-bold text-amber-300 mt-0.5">Vote</span>
+            </button>
+            <button id="nav-btn-kesan-pesan" onclick="navigateTo('kesan-pesan')" class="nav-btn flex flex-col items-center justify-center text-slate-300 hover:text-amber-300 transition w-16 py-1">
+                <i class="fa-solid fa-comment-dots text-base"></i>
+                <span class="text-[10px] font-medium mt-1">Kesan</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- MODAL MATERI (Panjang) -->
+    <div id="modal-pilar-detail" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-5 max-w-sm w-full max-h-[90vh] overflow-y-auto shadow-2xl space-y-4 no-scrollbar">
+            <div class="flex justify-between items-center border-b pb-2 sticky top-0 bg-white z-10">
+                <h3 id="pilar-modal-title" class="font-extrabold text-slate-800 text-base">Judul Pilar</h3>
+                <button onclick="closePilarModal()" class="text-slate-400 hover:text-slate-600 text-sm"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Konten Materi Panjang -->
+            <div class="space-y-3 text-xs text-slate-700 leading-relaxed text-justify">
+                <div class="bg-indigo-50 border border-indigo-100 p-3 rounded-xl font-semibold text-indigo-950">
+                    <i class="fa-solid fa-book-bookmark mr-1"></i> Ringkasan Materi Komprehensif LCC 4 Pilar
+                </div>
+                <p id="pilar-materi-text" class="font-medium whitespace-pre-line"></p>
+            </div>
+
+            <!-- Tombol Masuk Halaman Kuis Terpisah -->
+            <div class="pt-2 border-t">
+                <button onclick="openQuizPageFromModal()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-xl text-xs shadow-md transition flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    <span>Mulai Kuis 10 Soal</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL REGISTRASI -->
+    <div id="modal-register" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-5 max-w-sm w-full max-h-[90vh] overflow-y-auto shadow-2xl space-y-3 no-scrollbar">
+            <div class="flex justify-between items-center border-b pb-2 sticky top-0 bg-white z-10">
+                <h3 class="font-bold text-slate-800 text-sm">Form Pendaftaran SMANCA</h3>
+                <button onclick="closeRegisterModal()" class="text-slate-400 hover:text-slate-600 text-sm"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">1. Nama Lengkap:</label>
+                    <input type="text" id="reg-name" placeholder="Nama siswa" class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">2. Kelas:</label>
+                    <input type="text" id="reg-class" placeholder="Contoh: XI IPA 1" class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">3. Alamat Rumah:</label>
+                    <input type="text" id="reg-address" placeholder="Tuliskan alamat rumah..." class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">4. Nomor Telepon (Aktif):</label>
+                    <input type="tel" id="reg-phone" placeholder="0812345678..." class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">5. Apa yang kamu ketahui tentang LCC 4 Pilar?</label>
+                    <textarea id="reg-know" rows="2" placeholder="Tuliskan pemahamanmu..." class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400"></textarea>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">6. Alasan ikut seleksi?</label>
+                    <textarea id="reg-reason" rows="2" placeholder="Tuliskan alasanmu..." class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400"></textarea>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">7. Jika terpilih, apa yang akan kamu berikan ke tim?</label>
+                    <textarea id="reg-contribution" rows="2" placeholder="Tuliskan kontribusimu..." class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400"></textarea>
+                </div>
+
+                <button onclick="submitRegistration()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 rounded-xl text-xs shadow transition mt-2 flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span>Kirim Pendaftaran</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL NOTIFIKASI -->
+    <div id="modal-notif" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-5 max-w-xs w-full text-center shadow-2xl space-y-3">
+            <div id="modal-icon-bg" class="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto text-xl">
+                <i id="modal-icon" class="fa-solid fa-circle-check"></i>
+            </div>
+            <div>
+                <h3 id="modal-title" class="text-base font-bold text-slate-800">Berhasil!</h3>
+                <p id="modal-msg" class="text-xs text-slate-600 mt-1">Pesan aksi Anda telah diproses.</p>
+            </div>
+            <button onclick="closeNotifModal()" class="w-full py-2 bg-indigo-900 text-white rounded-xl text-xs font-semibold transition">
+                Tutup
+            </button>
+        </div>
+    </div>
+
+    <!-- FORM TERSEMBUNYI UNTUK DETEKSI NETLIFY FORMS -->
+    <form name="pendaftaran-lcc" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
+        <input type="hidden" name="form-name" value="pendaftaran-lcc" />
+        <input name="nama" />
+        <input name="kelas" />
+        <input name="alamat_rumah" />
+        <input name="telepon" />
+        <textarea name="pengetahuan"></textarea>
+        <textarea name="alasan"></textarea>
+        <textarea name="kontribusi"></textarea>
+        <input name="bot-field" />
+    </form>
+    <form name="vote-pembimbing" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
+        <input type="hidden" name="form-name" value="vote-pembimbing" />
+        <input name="pilar" />
+        <input name="kandidat" />
+        <input name="nama_pemilih" />
+        <input name="bot-field" />
+    </form>
+    <form name="kesan-pesan" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
+        <input type="hidden" name="form-name" value="kesan-pesan" />
+        <input name="nama" />
+        <textarea name="pesan"></textarea>
+        <input name="bot-field" />
+    </form>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        const candidatesList = [
+            "Muh. Arif",
+            "Zaskya Nasywa Fahrani",
+            "Novita. MH",
+            "Sarah Ardelia Nadir",
+            "Muhammad Amri. B",
+            "Marsya",
+            "Putri Aulianisa",
+            "Rahmania",
+            "Shahratul Yusita",
+            "Geril Suardi"
+        ];
+
+        let selectedPilarVote = "Pancasila";
+        let selectedCandidate = null;
+
+        function submitToNetlifyForm(formName, dataObj) {
+            const body = new URLSearchParams({ 'form-name': formName, ...dataObj }).toString();
+            return fetch('/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body
+            });
+        }
+
+        // Data Materi Panjang & 10 Soal Kuis Komprehensif per Pilar
+        const pilarData = {
+            "Pancasila": {
+                materi: "Pancasila adalah dasar dan ideologi negara Republik Indonesia yang nilai-nilainya digali dari pandangan hidup bangsa, adat istiadat, serta kebudayaan yang berakar dari sejarah Nusantara.\n\nSecara historis, istilah Pancasila pertama kali dicetuskan oleh Ir. Soekarno dalam sidang Badan Penyelidik Usaha-Usaha Persiapan Kemerdekaan Indonesia (BPUPKI) pada tanggal 1 Juni 1945, yang kemudian diperingati sebagai Hari Lahir Pancasila.\n\nRumusan resmi Pancasila tercantum dalam Pembukaan UUD 1945 alinea keempat, yaitu:\n1. Ketuhanan Yang Maha Esa\n2. Kemanusiaan yang adil dan beradab\n3. Persatuan Indonesia\n4. Kerakyatan yang dipimpin oleh hikmat kebijaksanaan dalam permusyawaratan/perwakilan\n5. Keadilan sosial bagi seluruh rakyat Indonesia\n\nPancasila berfungsi sebagai pandangan hidup bangsa (way of life), dasar negara, ideologi nasional, serta pemersatu bangsa di tengah dinamika globalisasi dan kemajemukan.",
+                kuis: [
+                    { soal: "Siapakah tokoh yang pertama kali memperkenalkan istilah 'Pancasila' dalam sidang BPUPKI?", opsi: ["Drs. Moh. Hatta", "Ir. Soekarno", "Mr. Mohammad Yamin", "Prof. Dr. Soepomo"], jawaban: 1 },
+                    { soal: "Kapan tanggal peringatan Hari Lahir Pancasila yang merujuk pada pidato Ir. Soekarno?", opsi: ["17 Agustus 1945", "1 Juni 1945", "18 Agustus 1945", "22 Juni 1945"], jawaban: 1 },
+                    { soal: "Di manakah rumusan resmi Pancasila secara hukum negara dicantumkan?", opsi: ["Batang Tubuh UUD 1945", "Dekrit Presiden", "Pembukaan UUD 1945 Alinea ke-4", "Ketetapan MPR"], jawaban: 2 },
+                    { soal: "Sila keempat Pancasila dilambangkan dengan gambar apa pada perisai Garuda?", opsi: ["Bintang", "Rantai Emas", "Pohon Beringin", "Kepala Banteng"], jawaban: 3 },
+                    { soal: "Nilai yang terkandung dalam sila pertama Pancasila berkaitan dengan...", opsi: ["Hak asasi manusia", "Hubungan vertikal manusia dengan Tuhan", "Gotong royong ekonomi", "Keadilan hukum"], jawaban: 1 },
+                    { soal: "Piagam Jakarta (Jakarta Charter) dirumuskan oleh panitia kecil yang dikenal sebagai...", opsi: ["Panitia Sembilan", "Panitia Kecil BPUPKI", "PPKI", "Komite Nasional"], jawaban: 0 },
+                    { soal: "Pancasila sebagai dasar negara berarti Pancasila dijadikan sebagai...", opsi: ["Pedoman hiasan semata", "Sumber dari segala sumber hukum negara", "Aturan adat istiadat daerah", "Undang-undang khusus militer"], jawaban: 1 },
+                    { soal: "Sila persatuan Indonesia dilambangkan dengan lambang...", opsi: ["Pohon Beringin", "Padi dan Kapas", "Bintang Tunggal", "Rantai"], jawaban: 0 },
+                    { soal: "Sikap saling menghormati antar pemeluk agama sejalan dengan pengamalan sila ke...", opsi: ["Sila Pertama", "Sila Kedua", "Sila Ketiga", "Sila Keempat"], jawaban: 0 },
+                    { soal: "Keadilan sosial bagi seluruh rakyat Indonesia merupakan bunyi dari sila ke...", opsi: ["Sila Ke-3", "Sila Ke-4", "Sila Ke-5", "Sila Ke-2"], jawaban: 2 }
+                ]
+            },
+            "UUD 1945": {
+                materi: "Undang-Undang Dasar Negara Republik Indonesia Tahun 1945 atau UUD 1945 adalah hukum dasar tertulis (konstitusi) yang menjadi landasan konstitusional dalam penyelenggaraan negara Republik Indonesia.\n\nUUD 1945 disahkan dan ditetapkan oleh Panitia Persiapan Kemerdekaan Indonesia (PPKI) pada sidang pleno tanggal 18 Agustus 1945. Sistematika UUD 1945 sebelum amandemen terdiri dari Pembukaan, Batang Tubuh (16 bab, 37 pasal, 4 pasal aturan peralihan, 2 ayat aturan tambahan), serta Penjelasan.\n\nDalam perkembangannya di era reformasi (1999–2002), UUD 1945 telah mengalami empat kali amandemen guna memperkuat sistem checks and balances antarlembaga negara, menegakkan hak asasi manusia (HAM), serta mewujudkan demokratisasi yang lebih transparan dan akuntabel.",
+                kuis: [
+                    { soal: "Kapan UUD 1945 secara resmi disahkan oleh PPKI?", opsi: ["17 Agustus 1945", "18 Agustus 1945", "1 Juni 1945", "29 Mei 1945"], jawaban: 1 },
+                    { soal: "Berapa kali UUD 1945 mengalami amandemen pada masa reformasi?", opsi: ["1 kali", "2 kali", "3 kali", "4 kali"], jawaban: 3 },
+                    { soal: "Lembaga negara yang memiliki kewenangan untuk mengubah dan menetapkan UUD adalah...", opsi: ["Presiden", "Mahkamah Konstitusi", "MPR", "DPR"], jawaban: 2 },
+                    { soal: "Pasal 1 ayat (2) UUD 1945 menyatakan bahwa kedaulatan berada di tangan rakyat dan dilaksanakan menurut...", opsi: ["Undang-Undang Dasar", "Keputusan Presiden", "Ketetapan MPR", "Pancasila semata"], jawaban: 0 },
+                    { soal: "Di dalam Pembukaan UUD 1945, tujuan negara Indonesia tercantum pada alinea ke...", opsi: ["Alinea Pertama", "Alinea Kedua", "Alinea Ketiga", "Alinea Keempat"], jawaban: 3 },
+                    { soal: "Sistem pemerintahan negara Indonesia menurut UUD 1945 setelah amandemen menganut sistem...", opsi: ["Parlamenter murni", "Presidensial", "Monarki konstitusional", "Semar parlementer"], jawaban: 1 },
+                    { soal: "Hak asasi manusia diatur secara khusus dalam UUD 1945 pada bab...", opsi: ["Bab XA", "Bab IX", "Bab VII", "Bab XII"], jawaban: 0 },
+                    { soal: "Kekuasaan kehakiman di Indonesia menurut UUD 1945 dilakukan oleh Mahkamah Agung dan...", opsi: ["Kejaksaan Agung", "Mahkamah Konstitusi", "Kepolisian Negara", "Dewan Perwakilan Rakyat"], jawaban: 1 },
+                    { soal: "Pasal berapakah dalam UUD 1945 yang mengatur tentang bentuk negara kesatuan?", opsi: ["Pasal 1 ayat (1)", "Pasal 2 ayat (1)", "Pasal 3 ayat (1)", "Pasal 4 ayat (1)"], jawaban: 0 },
+                    { soal: "Aturan peralihan dalam UUD 1945 hasil amandemen terdiri dari berapa pasal?", opsi: ["1 pasal", "2 pasal", "3 pasal", "4 pasal"], jawaban: 2 }
+                ]
+            },
+            "NKRI": {
+                materi: "Negara Kesatuan Republik Indonesia (NKRI) adalah bentuk negara kesatuan yang merdeka dan berdaulat dengan kekuasaan pemerintahan berada di tangan pemerintah pusat, meskipun menganut prinsip otonomi daerah yang luas.\n\nPasal 1 ayat (1) UUD 1945 dengan tegas menyatakan: 'Negara Indonesia ialah Negara Kesatuan, yang berbentuk Republik'. Konsepsi wawasan nusantara memandang wilayah Indonesia sebagai satu kesatuan politik, ekonomi, sosial budaya, serta pertahanan keamanan.\n\nMenjaga keutuhan NKRI merupakan kewajiban konstitusional sekaligus moral bagi setiap warga negara Indonesia guna menangkis segala bentuk ancaman, tantangan, hambatan, dan gangguan (ATHG) baik dari dalam maupun luar negeri.",
+                kuis: [
+                    { soal: "Bentuk negara Indonesia berdasarkan UUD 1945 Pasal 1 ayat (1) adalah...", opsi: ["Negara Serikat", "Negara Kesatuan", "Negara dominion", "Negara federal"], jawaban: 1 },
+                    { soal: "Cara pandang bangsa Indonesia terhadap diri dan lingkungan geografisnya disebut...", opsi: ["Wawasan Nusantara", "Ketahanan Nasional", "Wawasan Warga", "Geopolitik Bebas Aktif"], jawaban: 0 },
+                    { soal: "Ancaman militer maupun non-militer terhadap kedaulatan negara sering disingkat sebagai...", opsi: ["ATHG", "TNI-POLRI", "NKRI", "UUD"], jawaban: 0 },
+                    { soal: "Prinsip otonomi daerah yang diberlakukan di NKRI bersifat...", opsi: ["Terpusat penuh", "Luas dan bertanggung jawab", "Terbatas dan sementara", "Federal mandiri"], jawaban: 1 },
+                    { soal: "Pulau terluar dan terdepan di Indonesia menjadi batas kedaulatan teritorial yang diatur di bawah...", opsi: ["Hukum Internasional dan UU Nasional", "Peraturan Desa", "Keputusan Menteri Pendidikan", "Anggaran Rumah Tangga"], jawaban: 0 },
+                    { soal: "Persatuan dan kesatuan bangsa Indonesia sangat dijunjung tinggi untuk menghindari...", opsi: ["Kerjasama ekonomi", "Disintegrasi bangsa", "Globalisasi teknologi", "Pertukaran budaya"], jawaban: 1 },
+                    { soal: "Sistem pertahanan dan keamanan negara yang dianut NKRI melibatkan seluruh warga negara yang dikenal sebagai...", opsi: ["Pertahanan Semesta", "Militer Wajib", "Pasukan Khusus", "Pertahanan Pasif"], jawaban: 0 },
+                    { soal: "Undang-undang yang mengatur tentang pemerintahan daerah di Indonesia saat ini adalah landasan dari penguatan...", opsi: ["Sistem Otonomi Daerah", "Sistem Sentralisasi", "Sistem Monarki", "Sistem Kepartaian"], jawaban: 0 },
+                    { soal: "Sumpah Pemuda pada 28 Oktober 1928 merupakan tonggak sejarah penting penegasan...", opsi: ["Satu Nusa, Satu Bangsa, Satu Bahasa", "Kemerdekaan penuh RI", "Pembentukan BPUPKI", "Pemilu pertama"], jawaban: 0 },
+                    { soal: "Siapakah pencipta lagu kebangsaan 'Indonesia Raya' yang mengukuhkan semangat NKRI?", opsi: ["W.R. Supratman", "C. Simanjuntak", "Ismail Marzuki", "Ibu Sud"], jawaban: 0 }
+                ]
+            },
+            "Bhinneka Tunggal Ika": {
+                materi: "Bhinneka Tunggal Ika adalah semboyan resmi negara Republik Indonesia yang menggambarkan semangat persatuan dan kesatuan bangsa di tengah keragaman suku, agama, ras, antargolongan, adat istiadat, dan bahasa.\n\nSemboyan ini bersumber dari kakawin Sutasoma karya Mpu Tantular pada masa Kerajaan Majapahit abad ke-14. Secara harfiah, 'Bhinneka' berarti beraneka ragam, 'Tunggal' berarti satu, dan 'Ika' berarti itu. Jadi, maknanya adalah 'Meskipun berbeda-beda tetap satu jua'.\n\nDalam kehidupan bernegara, semboyan ini menjadi pedoman toleransi multikultural, merawat kerukunan nasional, serta mengokohkan ikatan kebangsaan agar tidak mudah terpecah belah oleh isu suku, agama, ras, dan antargolongan (SARA).",
+                kuis: [
+                    { soal: "Dari kitab apakah semboyan Bhinneka Tunggal Ika berasal?", opsi: ["Kitab Negarakertagama", "Kitab Sutasoma", "Kitab Pararaton", "Kitab Arjunawiwaha"], jawaban: 1 },
+                    { soal: "Siapakah pujangga besar pencipta kakawin yang memuat semboyan Bhinneka Tunggal Ika?", opsi: ["Mpu Prapanca", "Mpu Tantular", "Mpu Gandring", "Mpu Kanwa"], jawaban: 1 },
+                    { soal: "Pada masa kerajaan apakah asal mula sastra yang memuat semboyan Bhinneka Tunggal Ika ditulis?", opsi: ["Sriwijaya", "Majapahit", "Singasari", "Mataram Kuno"], jawaban: 1 },
+                    { soal: "Secara harfiah, kata 'Bhinneka' dalam semboyan negara memiliki arti...", opsi: ["Satu jua", "Berbeda-beda / beraneka ragam", "Tanah air", "Persatuan"], jawaban: 1 },
+                    { soal: "Makna hakiki dari Bhinneka Tunggal Ika adalah...", opsi: ["Menyamaratakan semua budaya", "Berbeda-beda tetapi tetap satu jua", "Kebebasan mutlak individu", "Dominasi suku tertentu"], jawaban: 1 },
+                    { soal: "Semboyan Bhinneka Tunggal Ika resmi dicantumkan pada lambang negara Garuda Pancasila di bagian...", opsi: ["Kepala Garuda", "Pita yang dicengkeram kuku burung Garuda", "Perisai tengah", "Sayap burung"], jawaban: 1 },
+                    { soal: "Sikap yang bertentangan dengan semangat Bhinneka Tunggal Ika adalah...", opsi: ["Toleransi beragama", "Enosentrisme / menganggap sukunya paling unggul", "Gotong royong", "Musyawarah mufakat"], jawaban: 1 },
+                    { soal: "Keberagaman suku bangsa di Indonesia merupakan sebuah...", opsi: ["Kelemahan fatal", "Kekayaan dan potensi bangsa", "Halangan pembangunan", "Ancaman mutlak"], jawaban: 1 },
+                    { soal: "Sikap saling menghargai pendapat dan keyakinan orang lain mencerminkan pengamalan...", opsi: ["Fanatisme sempit", "Semboyan Bhinneka Tunggal Ika", "Individualisme", "Eksklusivisme"], jawaban: 1 },
+                    { soal: "Penerapan semboyan Bhinneka Tunggal Ika dalam pergaulan sehari-hari ditunjukkan melalui...", opsi: ["Memusuhi kelompok lain", "Sikap inklusif dan saling menghormati", "Menonjolkan perbedaan", "Mengisolasi diri"], jawaban: 1 }
+                ]
+            }
+        };
+
+        let activeQuizPilar = "";
+        let currentQuizIndex = 0;
+        let scoreCount = 0;
+        let userAnswers = []; // Menyimpan pilihan jawaban user per soal
+
+        document.addEventListener("DOMContentLoaded", () => {
+            selectPilarVote('Pancasila');
+
+            const initialHeight = window.innerHeight;
+            window.addEventListener('resize', () => {
+                if (window.innerHeight < initialHeight * 0.75) {
+                    document.body.classList.add('keyboard-open');
+                } else {
+                    document.body.classList.remove('keyboard-open');
+                }
+            });
+        });
+
+        function navigateTo(pageId) {
+            document.querySelectorAll('.page-view').forEach(page => page.classList.add('hidden'));
+            const targetPage = document.getElementById('page-' + pageId);
+            if (targetPage) targetPage.classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-amber-400');
+                btn.classList.add('text-slate-300');
+            });
+            const activeNav = document.getElementById('nav-btn-' + pageId);
+            if (activeNav) {
+                activeNav.classList.add('text-amber-400');
+                activeNav.classList.remove('text-slate-300');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function selectPilarVote(pilarName) {
+            selectedPilarVote = pilarName;
+            selectedCandidate = null;
+            document.getElementById('selected-pilar-title').innerText = pilarName;
+
+            document.querySelectorAll('.pilar-btn').forEach(btn => {
+                if (btn.getAttribute('data-pilar') === pilarName) {
+                    btn.classList.add('active-blue');
+                } else {
+                    btn.classList.remove('active-blue');
+                }
+            });
+
+            const container = document.getElementById('candidate-list');
+            container.innerHTML = '';
+
+            candidatesList.forEach((cand, idx) => {
+                const item = document.createElement('div');
+                item.className = 'candidate-item bg-white/90 hover:bg-white text-slate-800 p-2.5 rounded-xl cursor-pointer flex items-center justify-between border border-amber-300 transition shadow-sm';
+                item.onclick = () => chooseCandidate(cand, item);
+                item.innerHTML = `
+                    <div class="flex items-center space-x-2">
+                        <span class="w-5 h-5 rounded-full bg-amber-200 text-amber-900 font-bold text-[10px] flex items-center justify-center">${idx + 1}</span>
+                        <span class="text-xs font-semibold">${cand}</span>
+                    </div>
+                    <i class="radio-icon fa-regular fa-circle text-slate-400 text-sm"></i>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function chooseCandidate(candName, element) {
+            selectedCandidate = candName;
+            document.querySelectorAll('.candidate-item').forEach(el => {
+                el.classList.remove('border-indigo-900', 'bg-white', 'ring-2', 'ring-indigo-900');
+                el.classList.add('bg-white/90');
+                const icon = el.querySelector('.radio-icon');
+                if (icon) {
+                    icon.className = 'radio-icon fa-regular fa-circle text-slate-400 text-sm';
+                }
+            });
+
+            element.classList.remove('bg-white/90');
+            element.classList.add('bg-white', 'ring-2', 'ring-indigo-900');
+            const icon = element.querySelector('.radio-icon');
+            if (icon) {
+                icon.className = 'radio-icon fa-solid fa-circle-check text-indigo-900 text-sm';
+            }
+        }
+
+        function openPilarDetail(pilar) {
+            activeQuizPilar = pilar;
+            document.getElementById('pilar-modal-title').innerText = pilar;
+            document.getElementById('pilar-materi-text').innerText = pilarData[pilar].materi;
+            document.getElementById('modal-pilar-detail').classList.remove('hidden');
+        }
+
+        function closePilarModal() {
+            document.getElementById('modal-pilar-detail').classList.add('hidden');
+        }
+
+        function openQuizPageFromModal() {
+            closePilarModal();
+            currentQuizIndex = 0;
+            userAnswers = new Array(pilarData[activeQuizPilar].kuis.length).fill(null);
+
+            document.getElementById('quiz-header-title').innerText = `Kuis: ${activeQuizPilar}`;
+
+            document.getElementById('quiz-question-box').classList.remove('hidden');
+            document.getElementById('quiz-result-box').classList.add('hidden');
+
+            navigateTo('quiz');
+            loadQuizQuestionItem();
+        }
+
+        function loadQuizQuestionItem() {
+            const quizList = pilarData[activeQuizPilar].kuis;
+            const qObj = quizList[currentQuizIndex];
+            const currentSelected = userAnswers[currentQuizIndex];
+
+            document.getElementById('quiz-progress-text').innerText = `Pertanyaan ${currentQuizIndex + 1} dari ${quizList.length}`;
+            document.getElementById('quiz-question-text').innerText = qObj.soal;
+
+            const optContainer = document.getElementById('quiz-options-list');
+            optContainer.innerHTML = '';
+
+            qObj.opsi.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+
+                // Cek apakah opsi ini sebelumnya sudah pernah dipilih oleh user
+                if (currentSelected === idx) {
+                    btn.className = 'w-full text-left bg-indigo-50 border-2 border-indigo-500 text-indigo-950 text-xs font-bold p-3 rounded-xl transition shadow-sm';
+                } else {
+                    btn.className = 'w-full text-left bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-800 text-xs font-medium p-3 rounded-xl transition shadow-sm';
+                }
+
+                btn.innerText = `${String.fromCharCode(65 + idx)}. ${opt}`;
+                btn.onclick = () => selectAnswerOption(idx, btn);
+                optContainer.appendChild(btn);
+            });
+
+            updateQuizNavigationButtons();
+        }
+
+        function selectAnswerOption(selectedIndex, clickedBtn) {
+            // Simpan jawaban user untuk soal aktif saat ini
+            userAnswers[currentQuizIndex] = selectedIndex;
+
+            // Perbarui tampilan tombol opsi (bisa diganti-ganti selama belum submit akhir)
+            const options = document.getElementById('quiz-options-list').children;
+            for (let i = 0; i < options.length; i++) {
+                if (i === selectedIndex) {
+                    options[i].className = 'w-full text-left bg-indigo-50 border-2 border-indigo-500 text-indigo-950 text-xs font-bold p-3 rounded-xl transition shadow-sm';
+                } else {
+                    options[i].className = 'w-full text-left bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-800 text-xs font-medium p-3 rounded-xl transition shadow-sm';
+                }
+            }
+
+            updateQuizNavigationButtons();
+        }
+
+        function updateQuizNavigationButtons() {
+            const totalSoal = pilarData[activeQuizPilar].kuis.length;
+            const nextBtn = document.getElementById('next-question-btn');
+
+            // Tombol selalu muncul agar user bisa maju-mundur atau menyelesaikan kuis
+            nextBtn.classList.remove('hidden');
+
+            if (currentQuizIndex < totalSoal - 1) {
+                nextBtn.innerHTML = `<span>Selanjutnya</span> <i class="fa-solid fa-arrow-right ml-1"></i>`;
+            } else {
+                nextBtn.innerHTML = `<span>Selesai & Lihat Skor</span> <i class="fa-solid fa-check ml-1"></i>`;
+            }
+        }
+
+        function handleNextQuestion() {
+            const totalSoal = pilarData[activeQuizPilar].kuis.length;
+
+            if (currentQuizIndex < totalSoal - 1) {
+                currentQuizIndex++;
+                loadQuizQuestionItem();
+            } else {
+                // Hitung skor akhir berdasarkan array jawaban user
+                scoreCount = 0;
+                const quizList = pilarData[activeQuizPilar].kuis;
+                for (let i = 0; i < quizList.length; i++) {
+                    if (userAnswers[i] === quizList[i].jawaban) {
+                        scoreCount++;
+                    }
+                }
+
+                document.getElementById('quiz-question-box').classList.add('hidden');
+                document.getElementById('next-question-btn').classList.add('hidden');
+
+                document.getElementById('final-score-val').innerText = scoreCount;
+
+                let msg = "";
+                if (scoreCount === 10) {
+                    msg = "Luar biasa! Penguasaan materi 4 Pilar Anda sudah sempurna!";
+                } else if (scoreCount >= 7) {
+                    msg = "Bagus sekali! Pemahaman Anda tentang pilar kebangsaan sangat baik.";
+                } else if (scoreCount >= 4) {
+                    msg = "Cukup baik, tingkatkan lagi dengan membaca ringkasan materi lebih teliti ya.";
+                } else {
+                    msg = "Tetap semangat! Pelajari kembali materi ringkas untuk hasil yang lebih optimal.";
+                }
+                document.getElementById('result-message').innerText = msg;
+                document.getElementById('quiz-result-box').classList.remove('hidden');
+            }
+        }
+
+        function openRegisterModal() {
+            document.getElementById('modal-register').classList.remove('hidden');
+        }
+
+        function closeRegisterModal() {
+            document.getElementById('modal-register').classList.add('hidden');
+        }
+
+        function submitRegistration() {
+            const name = document.getElementById('reg-name').value.trim();
+            const kelas = document.getElementById('reg-class').value.trim();
+            const address = document.getElementById('reg-address').value.trim();
+            const phone = document.getElementById('reg-phone').value.trim();
+            const know = document.getElementById('reg-know').value.trim();
+            const reason = document.getElementById('reg-reason').value.trim();
+            const contribution = document.getElementById('reg-contribution').value.trim();
+
+            if (!name || !kelas || !phone) {
+                alert('Silakan lengkapi sekurang-kurangnya Nama, Kelas, dan Nomor Telepon!');
+                return;
+            }
+
+            submitToNetlifyForm('pendaftaran-lcc', {
+                nama: name,
+                kelas: kelas,
+                alamat_rumah: address,
+                telepon: phone,
+                pengetahuan: know,
+                alasan: reason,
+                kontribusi: contribution
+            }).then(response => {
+                if (response.ok) {
+                    document.getElementById('reg-name').value = '';
+                    document.getElementById('reg-class').value = '';
+                    document.getElementById('reg-address').value = '';
+                    document.getElementById('reg-phone').value = '';
+                    document.getElementById('reg-know').value = '';
+                    document.getElementById('reg-reason').value = '';
+                    document.getElementById('reg-contribution').value = '';
+
+                    closeRegisterModal();
+                    showNotifModal('Berhasil!', 'Pendaftaran Anda telah terkirim.', 'success');
+                } else {
+                    showNotifModal('Gagal', 'Terjadi kesalahan saat mengirim data.', 'warning');
+                }
+            }).catch(err => {
+                showNotifModal('Gagal', 'Periksa koneksi internet Anda.', 'warning');
+            });
+        }
+
+        function submitVote() {
+            if (!selectedCandidate) {
+                showNotifModal('Peringatan', 'Silakan pilih salah satu kandidat pembimbing terlebih dahulu.', 'warning');
+                return;
+            }
+
+            const voterName = document.getElementById('voter-name').value.trim() || 'Anonim';
+
+            submitToNetlifyForm('vote-pembimbing', {
+                pilar: selectedPilarVote,
+                kandidat: selectedCandidate,
+                nama_pemilih: voterName
+            }).then(response => {
+                if (response.ok) {
+                    showNotifModal('Vote Berhasil!', `Suara Anda untuk ${selectedCandidate} (${selectedPilarVote}) telah masuk.`, 'success');
+                } else {
+                    showNotifModal('Gagal', 'Terjadi kesalahan saat mengirim vote.', 'warning');
+                }
+            }).catch(err => {
+                showNotifModal('Gagal', 'Periksa koneksi internet Anda.', 'warning');
+            });
+        }
+
+        function kirimKesanPesan() {
+            const nama = document.getElementById('kesan-nama').value.trim() || 'Anonim';
+            const teks = document.getElementById('kesan-teks').value.trim();
+
+            if (!teks) {
+                showNotifModal('Peringatan', 'Silakan tulis kesan & pesan Anda.', 'warning');
+                return;
+            }
+
+            submitToNetlifyForm('kesan-pesan', {
+                nama: nama,
+                pesan: teks
+            }).then(response => {
+                if (response.ok) {
+                    document.getElementById('kesan-nama').value = '';
+                    document.getElementById('kesan-teks').value = '';
+                    showNotifModal('Terima Kasih!', 'Kesan & Pesan Anda berhasil terkirim.', 'success');
+                } else {
+                    showNotifModal('Gagal', 'Terjadi kesalahan saat mengirim pesan.', 'warning');
+                }
+            }).catch(err => {
+                showNotifModal('Gagal', 'Periksa koneksi internet Anda.', 'warning');
+            });
+        }
+
+        function showNotifModal(title, message, type = 'success') {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-msg').innerText = message;
+
+            const iconBg = document.getElementById('modal-icon-bg');
+            const icon = document.getElementById('modal-icon');
+
+            if (type === 'success') {
+                iconBg.className = 'w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto text-xl';
+                icon.className = 'fa-solid fa-circle-check';
+            } else if (type === 'warning') {
+                iconBg.className = 'w-12 h-12 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mx-auto text-xl';
+                icon.className = 'fa-solid fa-triangle-exclamation';
+            } else {
+                iconBg.className = 'w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mx-auto text-xl';
+                icon.className = 'fa-solid fa-circle-info';
+            }
+
+            document.getElementById('modal-notif').classList.remove('hidden');
+        }
+
+        function closeNotifModal() {
+            document.getElementById('modal-notif').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
