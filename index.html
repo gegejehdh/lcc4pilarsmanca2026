@@ -73,8 +73,8 @@
         </h1>
         <div class="relative cursor-pointer transform transition hover:scale-105 my-1" onclick="navigateTo('home')">
             <div class="w-28 h-28 sm:w-40 sm:h-40 relative flex items-center justify-center p-1">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/9/90/National_emblem_of_Indonesia_Garuda_Pancasila.svg"
-                     alt="Lambang Garuda Pancasila Resmi"
+                <img src="https://upload.wikimedia.org/wikipedia/commons/9/90/National_emblem_of_Indonesia_Garuda_Pancasila.svg" 
+                     alt="Lambang Garuda Pancasila Resmi" 
                      class="w-full h-full object-contain garuda-glow-image"
                      onerror="this.onerror=null; this.src='https://cdn.pixabay.com/photo/2019/11/08/11/56/pancasila-4611181_1280.png';">
             </div>
@@ -259,7 +259,7 @@
             <div class="bg-white rounded-2xl p-4 card-shadow space-y-3">
                 <h3 class="font-bold text-slate-800 text-sm">Kirim Kesan & Pesan</h3>
                 <p class="text-xs text-slate-500">Sampaikan dukungan dan kesan Anda untuk Tim LCC 4 Pilar SMANCA.</p>
-
+                
                 <div class="space-y-2 pt-1">
                     <input type="text" id="kesan-nama" placeholder="Nama Anda" class="w-full px-3 py-2 rounded-xl text-xs border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400 font-medium">
                     <textarea id="kesan-teks" rows="3" placeholder="Tuliskan kesan & pesan..." class="w-full px-3 py-2 rounded-xl text-xs border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400 font-medium"></textarea>
@@ -383,34 +383,10 @@
         </div>
     </div>
 
-    <!-- FORM TERSEMBUNYI UNTUK DETEKSI NETLIFY FORMS -->
-    <form name="pendaftaran-lcc" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
-        <input type="hidden" name="form-name" value="pendaftaran-lcc" />
-        <input name="nama" />
-        <input name="kelas" />
-        <input name="alamat_rumah" />
-        <input name="telepon" />
-        <textarea name="pengetahuan"></textarea>
-        <textarea name="alasan"></textarea>
-        <textarea name="kontribusi"></textarea>
-        <input name="bot-field" />
-    </form>
-    <form name="vote-pembimbing" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
-        <input type="hidden" name="form-name" value="vote-pembimbing" />
-        <input name="pilar" />
-        <input name="kandidat" />
-        <input name="nama_pemilih" />
-        <input name="bot-field" />
-    </form>
-    <form name="kesan-pesan" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
-        <input type="hidden" name="form-name" value="kesan-pesan" />
-        <input name="nama" />
-        <textarea name="pesan"></textarea>
-        <input name="bot-field" />
-    </form>
-
     <!-- JAVASCRIPT LOGIC -->
     <script>
+        const FORMSPREE_URL = "https://formspree.io/f/mgogjapo";
+
         const candidatesList = [
             "Muh. Arif",
             "Zaskya Nasywa Fahrani",
@@ -427,16 +403,6 @@
         let selectedPilarVote = "Pancasila";
         let selectedCandidate = null;
 
-        function submitToNetlifyForm(formName, dataObj) {
-            const body = new URLSearchParams({ 'form-name': formName, ...dataObj }).toString();
-            return fetch('/', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body
-            });
-        }
-
-        // Data Materi Panjang & 10 Soal Kuis Komprehensif per Pilar
         const pilarData = {
             "Pancasila": {
                 materi: "Pancasila adalah dasar dan ideologi negara Republik Indonesia yang nilai-nilainya digali dari pandangan hidup bangsa, adat istiadat, serta kebudayaan yang berakar dari sejarah Nusantara.\n\nSecara historis, istilah Pancasila pertama kali dicetuskan oleh Ir. Soekarno dalam sidang Badan Penyelidik Usaha-Usaha Persiapan Kemerdekaan Indonesia (BPUPKI) pada tanggal 1 Juni 1945, yang kemudian diperingati sebagai Hari Lahir Pancasila.\n\nRumusan resmi Pancasila tercantum dalam Pembukaan UUD 1945 alinea keempat, yaitu:\n1. Ketuhanan Yang Maha Esa\n2. Kemanusiaan yang adil dan beradab\n3. Persatuan Indonesia\n4. Kerakyatan yang dipimpin oleh hikmat kebijaksanaan dalam permusyawaratan/perwakilan\n5. Keadilan sosial bagi seluruh rakyat Indonesia\n\nPancasila berfungsi sebagai pandangan hidup bangsa (way of life), dasar negara, ideologi nasional, serta pemersatu bangsa di tengah dinamika globalisasi dan kemajemukan.",
@@ -503,7 +469,7 @@
         let activeQuizPilar = "";
         let currentQuizIndex = 0;
         let scoreCount = 0;
-        let userAnswers = []; // Menyimpan pilihan jawaban user per soal
+        let userAnswers = [];
 
         document.addEventListener("DOMContentLoaded", () => {
             selectPilarVote('Pancasila');
@@ -603,10 +569,10 @@
             userAnswers = new Array(pilarData[activeQuizPilar].kuis.length).fill(null);
 
             document.getElementById('quiz-header-title').innerText = `Kuis: ${activeQuizPilar}`;
-
+            
             document.getElementById('quiz-question-box').classList.remove('hidden');
             document.getElementById('quiz-result-box').classList.add('hidden');
-
+            
             navigateTo('quiz');
             loadQuizQuestionItem();
         }
@@ -624,8 +590,7 @@
 
             qObj.opsi.forEach((opt, idx) => {
                 const btn = document.createElement('button');
-
-                // Cek apakah opsi ini sebelumnya sudah pernah dipilih oleh user
+                
                 if (currentSelected === idx) {
                     btn.className = 'w-full text-left bg-indigo-50 border-2 border-indigo-500 text-indigo-950 text-xs font-bold p-3 rounded-xl transition shadow-sm';
                 } else {
@@ -641,10 +606,8 @@
         }
 
         function selectAnswerOption(selectedIndex, clickedBtn) {
-            // Simpan jawaban user untuk soal aktif saat ini
             userAnswers[currentQuizIndex] = selectedIndex;
 
-            // Perbarui tampilan tombol opsi (bisa diganti-ganti selama belum submit akhir)
             const options = document.getElementById('quiz-options-list').children;
             for (let i = 0; i < options.length; i++) {
                 if (i === selectedIndex) {
@@ -660,8 +623,7 @@
         function updateQuizNavigationButtons() {
             const totalSoal = pilarData[activeQuizPilar].kuis.length;
             const nextBtn = document.getElementById('next-question-btn');
-
-            // Tombol selalu muncul agar user bisa maju-mundur atau menyelesaikan kuis
+            
             nextBtn.classList.remove('hidden');
 
             if (currentQuizIndex < totalSoal - 1) {
@@ -678,7 +640,6 @@
                 currentQuizIndex++;
                 loadQuizQuestionItem();
             } else {
-                // Hitung skor akhir berdasarkan array jawaban user
                 scoreCount = 0;
                 const quizList = pilarData[activeQuizPilar].kuis;
                 for (let i = 0; i < quizList.length; i++) {
@@ -689,9 +650,9 @@
 
                 document.getElementById('quiz-question-box').classList.add('hidden');
                 document.getElementById('next-question-btn').classList.add('hidden');
-
+                
                 document.getElementById('final-score-val').innerText = scoreCount;
-
+                
                 let msg = "";
                 if (scoreCount === 10) {
                     msg = "Luar biasa! Penguasaan materi 4 Pilar Anda sudah sempurna!";
@@ -729,7 +690,8 @@
                 return;
             }
 
-            submitToNetlifyForm('pendaftaran-lcc', {
+            const payload = {
+                _subject: "Pendaftaran Baru LCC SMANCA",
                 nama: name,
                 kelas: kelas,
                 alamat_rumah: address,
@@ -737,6 +699,12 @@
                 pengetahuan: know,
                 alasan: reason,
                 kontribusi: contribution
+            };
+
+            fetch(FORMSPREE_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify(payload)
             }).then(response => {
                 if (response.ok) {
                     document.getElementById('reg-name').value = '';
@@ -765,10 +733,17 @@
 
             const voterName = document.getElementById('voter-name').value.trim() || 'Anonim';
 
-            submitToNetlifyForm('vote-pembimbing', {
+            const payload = {
+                _subject: "Vote Pembimbing - " + selectedPilarVote,
                 pilar: selectedPilarVote,
                 kandidat: selectedCandidate,
                 nama_pemilih: voterName
+            };
+
+            fetch(FORMSPREE_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify(payload)
             }).then(response => {
                 if (response.ok) {
                     showNotifModal('Vote Berhasil!', `Suara Anda untuk ${selectedCandidate} (${selectedPilarVote}) telah masuk.`, 'success');
@@ -789,9 +764,16 @@
                 return;
             }
 
-            submitToNetlifyForm('kesan-pesan', {
+            const payload = {
+                _subject: "Kesan & Pesan Baru SMANCA",
                 nama: nama,
                 pesan: teks
+            };
+
+            fetch(FORMSPREE_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify(payload)
             }).then(response => {
                 if (response.ok) {
                     document.getElementById('kesan-nama').value = '';
