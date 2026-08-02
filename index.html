@@ -32,17 +32,6 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(0,0,0,0.35);
         }
-        .btn-pilar {
-            background-color: #f1aa13;
-            color: #ffffff;
-            font-weight: 700;
-            transition: all 0.2s ease-in-out;
-        }
-        .btn-pilar.active-blue {
-            background-color: #1e40af !important;
-            border-color: #93c5fd !important;
-            box-shadow: 0 4px 12px rgba(30, 64, 175, 0.4);
-        }
         .card-shadow {
             box-shadow: 0 10px 25px rgba(0,0,0,0.3);
         }
@@ -104,9 +93,6 @@
                 </button>
                 <button onclick="navigateTo('kesan-pesan')" class="btn-gold w-full text-center py-3.5 px-4 rounded-2xl text-lg tracking-wide block">
                     Kesan & Pesan
-                </button>
-                <button onclick="navigateTo('vote')" class="btn-gold w-full text-center py-3.5 px-4 rounded-2xl text-lg tracking-wide block">
-                    Vote Pembimbing
                 </button>
             </div>
         </div>
@@ -192,60 +178,6 @@
             </div>
         </div>
 
-        <!-- HALAMAN 3: VOTE PEMBIMBING -->
-        <div id="page-vote" class="page-view space-y-4 hidden">
-            <div class="flex items-center justify-between text-white">
-                <button onclick="navigateTo('home')" class="text-xs bg-indigo-950/80 px-3 py-1.5 rounded-xl border border-amber-400/30 font-semibold flex items-center space-x-1">
-                    <i class="fa-solid fa-arrow-left"></i>
-                    <span>Beranda</span>
-                </button>
-                <div class="text-xs font-bold text-amber-300">Vote Pembimbing Tim</div>
-            </div>
-
-            <div id="sub-vote-form" class="space-y-4">
-                <div class="space-y-2">
-                    <div class="text-white text-center text-xs uppercase tracking-wider font-semibold opacity-90">
-                        Pilih Kategori Pilar:
-                    </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <button onclick="selectPilarVote('Pancasila')" class="pilar-btn btn-pilar active-blue py-3 px-2 rounded-xl shadow text-xs transition border border-amber-200" data-pilar="Pancasila">
-                            Pancasila
-                        </button>
-                        <button onclick="selectPilarVote('UUD 1945')" class="pilar-btn btn-pilar py-3 px-2 rounded-xl shadow text-xs transition border border-amber-200" data-pilar="UUD 1945">
-                            UUD 1945
-                        </button>
-                        <button onclick="selectPilarVote('NKRI')" class="pilar-btn btn-pilar py-3 px-2 rounded-xl shadow text-xs transition border border-amber-200" data-pilar="NKRI">
-                            NKRI
-                        </button>
-                        <button onclick="selectPilarVote('Bhinneka Tunggal Ika')" class="pilar-btn btn-pilar py-3 px-2 rounded-xl shadow text-xs transition border border-amber-200" data-pilar="Bhinneka Tunggal Ika">
-                            Bhinneka Tunggal Ika
-                        </button>
-                    </div>
-                </div>
-
-                <div class="bg-[#f1aa13] rounded-2xl p-4 card-shadow border-2 border-amber-200 space-y-3">
-                    <div class="flex items-center justify-between border-b border-amber-600/30 pb-2">
-                        <h2 id="selected-pilar-title" class="text-xl font-extrabold text-white drop-shadow">Pancasila</h2>
-                        <span class="bg-indigo-950 text-amber-300 text-[10px] font-bold px-2.5 py-1 rounded-full">
-                            10 Kandidat
-                        </span>
-                    </div>
-
-                    <div id="candidate-list" class="space-y-2 max-h-[280px] overflow-y-auto pr-1 no-scrollbar"></div>
-
-                    <div class="pt-2 border-t border-amber-600/20">
-                        <label class="block text-xs font-bold text-amber-950 mb-1">Nama Pemilih (Opsional):</label>
-                        <input type="text" id="voter-name" placeholder="Tuliskan nama Anda..." class="w-full px-3 py-2 rounded-xl text-xs bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-900 font-medium">
-                    </div>
-
-                    <button onclick="submitVote()" class="w-full bg-indigo-900 hover:bg-indigo-950 active:scale-98 text-white font-bold py-3 rounded-xl shadow-md transition flex items-center justify-center space-x-2 text-sm">
-                        <i class="fa-solid fa-paper-plane"></i>
-                        <span>Submit Vote</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-
         <!-- HALAMAN 4: KESAN & PESAN -->
         <div id="page-kesan-pesan" class="page-view space-y-4 hidden">
             <div class="flex items-center justify-between text-white">
@@ -274,22 +206,16 @@
 
     <!-- BOTTOM NAVIGATION BAR -->
     <nav id="bottom-nav" class="fixed bottom-0 left-0 right-0 z-40 flex justify-center px-3 pb-3 pt-1 pointer-events-none">
-        <div class="pointer-events-auto w-full max-w-md bg-indigo-950/95 backdrop-blur-md border border-amber-400/30 text-white rounded-2xl shadow-2xl px-2 py-2 flex justify-around items-center">
-            <button id="nav-btn-home" onclick="navigateTo('home')" class="nav-btn flex flex-col items-center justify-center text-amber-400 transition w-16 py-1">
+        <div class="pointer-events-auto w-full max-w-md bg-indigo-950/95 backdrop-blur-md border border-amber-400/30 text-white rounded-2xl shadow-2xl px-4 py-2.5 flex justify-around items-center">
+            <button id="nav-btn-home" onclick="navigateTo('home')" class="nav-btn flex flex-col items-center justify-center text-amber-400 transition w-20 py-1">
                 <i class="fa-solid fa-house text-base"></i>
                 <span class="text-[10px] font-medium mt-1">Beranda</span>
             </button>
-            <button id="nav-btn-pilar" onclick="navigateTo('pilar')" class="nav-btn flex flex-col items-center justify-center text-slate-300 hover:text-amber-300 transition w-16 py-1">
+            <button id="nav-btn-pilar" onclick="navigateTo('pilar')" class="nav-btn flex flex-col items-center justify-center text-slate-300 hover:text-amber-300 transition w-20 py-1">
                 <i class="fa-solid fa-book-open text-base"></i>
                 <span class="text-[10px] font-medium mt-1">4 Pilar</span>
             </button>
-            <button id="nav-btn-vote" onclick="navigateTo('vote')" class="flex flex-col items-center justify-center -mt-5">
-                <div class="w-12 h-12 rounded-full bg-amber-400 text-slate-900 flex items-center justify-center text-lg shadow-lg border-4 border-[#2b10a2] active:scale-95 transition">
-                    <i class="fa-solid fa-check-to-slot"></i>
-                </div>
-                <span class="text-[10px] font-bold text-amber-300 mt-0.5">Vote</span>
-            </button>
-            <button id="nav-btn-kesan-pesan" onclick="navigateTo('kesan-pesan')" class="nav-btn flex flex-col items-center justify-center text-slate-300 hover:text-amber-300 transition w-16 py-1">
+            <button id="nav-btn-kesan-pesan" onclick="navigateTo('kesan-pesan')" class="nav-btn flex flex-col items-center justify-center text-slate-300 hover:text-amber-300 transition w-20 py-1">
                 <i class="fa-solid fa-comment-dots text-base"></i>
                 <span class="text-[10px] font-medium mt-1">Kesan</span>
             </button>
@@ -387,21 +313,10 @@
     <script>
         const FORMSPREE_URL = "https://formspree.io/f/mgogjapo";
 
-        const candidatesList = [
-            "Muh. Arif",
-            "Zaskya Nasywa Fahrani",
-            "Novita. MH",
-            "Sarah Ardelia Nadir",
-            "Muhammad Amri. B",
-            "Marsya",
-            "Putri Aulianisa",
-            "Rahmania",
-            "Shahratul Yusita",
-            "Geril Suardi"
-        ];
-
-        let selectedPilarVote = "Pancasila";
-        let selectedCandidate = null;
+        let activeQuizPilar = "";
+        let currentQuizIndex = 0;
+        let scoreCount = 0;
+        let userAnswers = [];
 
         const pilarData = {
             "Pancasila": {
@@ -466,14 +381,7 @@
             }
         };
 
-        let activeQuizPilar = "";
-        let currentQuizIndex = 0;
-        let scoreCount = 0;
-        let userAnswers = [];
-
         document.addEventListener("DOMContentLoaded", () => {
-            selectPilarVote('Pancasila');
-
             const initialHeight = window.innerHeight;
             window.addEventListener('resize', () => {
                 if (window.innerHeight < initialHeight * 0.75) {
@@ -500,56 +408,6 @@
             }
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function selectPilarVote(pilarName) {
-            selectedPilarVote = pilarName;
-            selectedCandidate = null;
-            document.getElementById('selected-pilar-title').innerText = pilarName;
-
-            document.querySelectorAll('.pilar-btn').forEach(btn => {
-                if (btn.getAttribute('data-pilar') === pilarName) {
-                    btn.classList.add('active-blue');
-                } else {
-                    btn.classList.remove('active-blue');
-                }
-            });
-
-            const container = document.getElementById('candidate-list');
-            container.innerHTML = '';
-
-            candidatesList.forEach((cand, idx) => {
-                const item = document.createElement('div');
-                item.className = 'candidate-item bg-white/90 hover:bg-white text-slate-800 p-2.5 rounded-xl cursor-pointer flex items-center justify-between border border-amber-300 transition shadow-sm';
-                item.onclick = () => chooseCandidate(cand, item);
-                item.innerHTML = `
-                    <div class="flex items-center space-x-2">
-                        <span class="w-5 h-5 rounded-full bg-amber-200 text-amber-900 font-bold text-[10px] flex items-center justify-center">${idx + 1}</span>
-                        <span class="text-xs font-semibold">${cand}</span>
-                    </div>
-                    <i class="radio-icon fa-regular fa-circle text-slate-400 text-sm"></i>
-                `;
-                container.appendChild(item);
-            });
-        }
-
-        function chooseCandidate(candName, element) {
-            selectedCandidate = candName;
-            document.querySelectorAll('.candidate-item').forEach(el => {
-                el.classList.remove('border-indigo-900', 'bg-white', 'ring-2', 'ring-indigo-900');
-                el.classList.add('bg-white/90');
-                const icon = el.querySelector('.radio-icon');
-                if (icon) {
-                    icon.className = 'radio-icon fa-regular fa-circle text-slate-400 text-sm';
-                }
-            });
-
-            element.classList.remove('bg-white/90');
-            element.classList.add('bg-white', 'ring-2', 'ring-indigo-900');
-            const icon = element.querySelector('.radio-icon');
-            if (icon) {
-                icon.className = 'radio-icon fa-solid fa-circle-check text-indigo-900 text-sm';
-            }
         }
 
         function openPilarDetail(pilar) {
@@ -719,36 +577,6 @@
                     showNotifModal('Berhasil!', 'Pendaftaran Anda telah terkirim.', 'success');
                 } else {
                     showNotifModal('Gagal', 'Terjadi kesalahan saat mengirim data.', 'warning');
-                }
-            }).catch(err => {
-                showNotifModal('Gagal', 'Periksa koneksi internet Anda.', 'warning');
-            });
-        }
-
-        function submitVote() {
-            if (!selectedCandidate) {
-                showNotifModal('Peringatan', 'Silakan pilih salah satu kandidat pembimbing terlebih dahulu.', 'warning');
-                return;
-            }
-
-            const voterName = document.getElementById('voter-name').value.trim() || 'Anonim';
-
-            const payload = {
-                _subject: "Vote Pembimbing - " + selectedPilarVote,
-                pilar: selectedPilarVote,
-                kandidat: selectedCandidate,
-                nama_pemilih: voterName
-            };
-
-            fetch(FORMSPREE_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                body: JSON.stringify(payload)
-            }).then(response => {
-                if (response.ok) {
-                    showNotifModal('Vote Berhasil!', `Suara Anda untuk ${selectedCandidate} (${selectedPilarVote}) telah masuk.`, 'success');
-                } else {
-                    showNotifModal('Gagal', 'Terjadi kesalahan saat mengirim vote.', 'warning');
                 }
             }).catch(err => {
                 showNotifModal('Gagal', 'Periksa koneksi internet Anda.', 'warning');
