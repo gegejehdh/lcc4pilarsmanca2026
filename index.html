@@ -91,6 +91,10 @@
                 <button onclick="openRegisterModal()" class="btn-gold w-full text-center py-3.5 px-4 rounded-2xl text-lg tracking-wide block">
                     Daftar Sekarang
                 </button>
+                <button onclick="navigateTo('vote')" class="btn-gold w-full text-center py-3.5 px-4 rounded-2xl text-lg tracking-wide block flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-check-to-slot"></i>
+                    <span>Vote Pembimbing</span>
+                </button>
                 <button onclick="navigateTo('kesan-pesan')" class="btn-gold w-full text-center py-3.5 px-4 rounded-2xl text-lg tracking-wide block">
                     Kesan & Pesan
                 </button>
@@ -178,6 +182,35 @@
             </div>
         </div>
 
+        <!-- HALAMAN VOTE PEMBIMBING -->
+        <div id="page-vote" class="page-view space-y-4 hidden">
+            <div class="flex items-center justify-between text-white">
+                <button onclick="navigateTo('home')" class="text-xs bg-indigo-950/80 px-3 py-1.5 rounded-xl border border-amber-400/30 font-semibold flex items-center space-x-1">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Beranda</span>
+                </button>
+                <div class="text-xs font-bold text-amber-300">Vote Pembimbing</div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-4 card-shadow space-y-3">
+                <h3 class="font-bold text-slate-800 text-sm">Berikan Dukungan Vote Pembimbing</h3>
+                <p class="text-xs text-slate-500">Pilih guru pembimbing favorit Anda untuk mendukung tim LCC SMANCA.</p>
+                
+                <div class="space-y-2 pt-1">
+                    <input type="text" id="vote-nama" placeholder="Nama Anda (Siswa/Pendukung)" class="w-full px-3 py-2 rounded-xl text-xs border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400 font-medium">
+                    <select id="vote-pilihan" class="w-full px-3 py-2 rounded-xl text-xs border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400 font-medium bg-white">
+                        <option value="" disabled selected>Pilih Guru Pembimbing</option>
+                        <option value="Pembimbing 1">Pembimbing 1</option>
+                        <option value="Pembimbing 2">Pembimbing 2</option>
+                        <option value="Pembimbing 3">Pembimbing 3</option>
+                    </select>
+                    <button onclick="kirimVote()" class="w-full bg-indigo-900 hover:bg-indigo-950 text-white font-bold py-2.5 rounded-xl text-xs transition">
+                        Kirim Vote Sekarang
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <!-- HALAMAN 4: KESAN & PESAN -->
         <div id="page-kesan-pesan" class="page-view space-y-4 hidden">
             <div class="flex items-center justify-between text-white">
@@ -207,15 +240,19 @@
     <!-- BOTTOM NAVIGATION BAR -->
     <nav id="bottom-nav" class="fixed bottom-0 left-0 right-0 z-40 flex justify-center px-3 pb-3 pt-1 pointer-events-none">
         <div class="pointer-events-auto w-full max-w-md bg-indigo-950/95 backdrop-blur-md border border-amber-400/30 text-white rounded-2xl shadow-2xl px-4 py-2.5 flex justify-around items-center">
-            <button id="nav-btn-home" onclick="navigateTo('home')" class="nav-btn flex flex-col items-center justify-center text-amber-400 transition w-20 py-1">
+            <button id="nav-btn-home" onclick="navigateTo('home')" class="nav-btn flex flex-col items-center justify-center text-amber-400 transition w-16 py-1">
                 <i class="fa-solid fa-house text-base"></i>
                 <span class="text-[10px] font-medium mt-1">Beranda</span>
             </button>
-            <button id="nav-btn-pilar" onclick="navigateTo('pilar')" class="nav-btn flex flex-col items-center justify-center text-slate-300 hover:text-amber-300 transition w-20 py-1">
+            <button id="nav-btn-pilar" onclick="navigateTo('pilar')" class="nav-btn flex flex-col items-center justify-center text-slate-300 hover:text-amber-300 transition w-16 py-1">
                 <i class="fa-solid fa-book-open text-base"></i>
                 <span class="text-[10px] font-medium mt-1">4 Pilar</span>
             </button>
-            <button id="nav-btn-kesan-pesan" onclick="navigateTo('kesan-pesan')" class="nav-btn flex flex-col items-center justify-center text-slate-300 hover:text-amber-300 transition w-20 py-1">
+            <button id="nav-btn-vote" onclick="navigateTo('vote')" class="nav-btn flex flex-col items-center justify-center text-slate-300 hover:text-amber-300 transition w-16 py-1">
+                <i class="fa-solid fa-check-to-slot text-base"></i>
+                <span class="text-[10px] font-medium mt-1">Vote</span>
+            </button>
+            <button id="nav-btn-kesan-pesan" onclick="navigateTo('kesan-pesan')" class="nav-btn flex flex-col items-center justify-center text-slate-300 hover:text-amber-300 transition w-16 py-1">
                 <i class="fa-solid fa-comment-dots text-base"></i>
                 <span class="text-[10px] font-medium mt-1">Kesan</span>
             </button>
@@ -577,6 +614,38 @@
                     showNotifModal('Berhasil!', 'Pendaftaran Anda telah terkirim.', 'success');
                 } else {
                     showNotifModal('Gagal', 'Terjadi kesalahan saat mengirim data.', 'warning');
+                }
+            }).catch(err => {
+                showNotifModal('Gagal', 'Periksa koneksi internet Anda.', 'warning');
+            });
+        }
+
+        function kirimVote() {
+            const nama = document.getElementById('vote-nama').value.trim() || 'Anonim';
+            const pilihan = document.getElementById('vote-pilihan').value;
+
+            if (!pilihan) {
+                showNotifModal('Peringatan', 'Silakan pilih guru pembimbing terlebih dahulu.', 'warning');
+                return;
+            }
+
+            const payload = {
+                _subject: "Vote Pembimbing Baru SMANCA",
+                nama: nama,
+                pembimbing: pilihan
+            };
+
+            fetch(FORMSPREE_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify(payload)
+            }).then(response => {
+                if (response.ok) {
+                    document.getElementById('vote-nama').value = '';
+                    document.getElementById('vote-pilihan').selectedIndex = 0;
+                    showNotifModal('Terima Kasih!', 'Vote Anda berhasil dikirim.', 'success');
+                } else {
+                    showNotifModal('Gagal', 'Terjadi kesalahan saat mengirim vote.', 'warning');
                 }
             }).catch(err => {
                 showNotifModal('Gagal', 'Periksa koneksi internet Anda.', 'warning');
