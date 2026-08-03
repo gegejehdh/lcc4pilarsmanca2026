@@ -143,43 +143,82 @@
             </div>
 
             <div class="bg-white rounded-2xl p-5 card-shadow space-y-4">
-                <div class="flex justify-between items-center border-b pb-2">
-                    <span id="quiz-progress-text" class="text-xs font-bold text-indigo-900">Pertanyaan 1 dari 10</span>
-                    <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full">Mode Ujian</span>
+                
+                <!-- BAGIAN 1: FORM INPUT NAMA SEBELUM KUIS DIMULAI -->
+                <div id="quiz-identity-box" class="space-y-3">
+                    <div class="w-12 h-12 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mx-auto text-xl">
+                        <i class="fa-solid fa-user-pen"></i>
+                    </div>
+                    <div class="text-center">
+                        <h3 class="text-sm font-extrabold text-slate-800">Identitas Peserta Kuis</h3>
+                        <p class="text-[11px] text-slate-500 mt-0.5">Silakan masukkan nama dan kelas Anda sebelum mulai mengerjakan. Setiap peserta hanya diberikan **1 kali kesempatan** untuk mengerjakan kuis pada setiap pilar.</p>
+                    </div>
+                    <div class="space-y-2 pt-1">
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-1">Nama Lengkap & Kelas:</label>
+                            <input type="text" id="quiz-student-name" value="" placeholder="Contoh: Geril Suardi" class="w-full px-3 py-2.5 rounded-xl text-xs border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400 font-medium">
+                        </div>
+                        <button onclick="startQuizSession()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-xl text-xs shadow transition flex items-center justify-center space-x-1 mt-2">
+                            <span>Mulai Mengerjakan Soal (Waktu: 5 Menit)</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
                 </div>
 
-                <div id="quiz-question-box" class="space-y-3">
-                    <div id="quiz-question-text" class="text-xs sm:text-sm font-bold text-slate-800 leading-relaxed">
-                        <!-- Soal Kuis -->
+                <!-- BAGIAN 2: AREA SOAL KUIS (Tersembunyi sampai nama diisi) -->
+                <div id="quiz-container-box" class="space-y-4 hidden">
+                    <div class="flex justify-between items-center border-b pb-2">
+                        <span id="quiz-progress-text" class="text-xs font-bold text-indigo-900">Pertanyaan 1 dari 15</span>
+                        <div class="flex items-center space-x-2">
+                            <span id="quiz-timer-badge" class="bg-red-100 text-red-700 text-[10px] font-extrabold px-2 py-0.5 rounded-full flex items-center space-x-1">
+                                <i class="fa-solid fa-clock"></i>
+                                <span id="time-left-display">05:00</span>
+                            </span>
+                            <span id="quiz-user-badge" class="bg-indigo-50 text-indigo-800 text-[10px] font-bold px-2 py-0.5 rounded-full truncate max-w-[110px]"></span>
+                        </div>
                     </div>
-                    <div id="quiz-options-list" class="space-y-2">
-                        <!-- Opsi Kuis -->
+
+                    <div id="quiz-question-box" class="space-y-3">
+                        <div id="quiz-question-text" class="text-xs sm:text-sm font-bold text-slate-800 leading-relaxed">
+                            <!-- Soal Kuis -->
+                        </div>
+                        <div id="quiz-options-list" class="space-y-2">
+                            <!-- Opsi Kuis -->
+                        </div>
+                    </div>
+
+                    <div id="quiz-nav-container" class="pt-2">
+                        <button id="next-question-btn" onclick="handleNextQuestion()" class="w-full bg-indigo-900 hover:bg-indigo-950 text-white font-bold py-3 rounded-xl text-xs shadow transition hidden">
+                            Selanjutnya
+                        </button>
                     </div>
                 </div>
 
-                <!-- Bagian Hasil Kuis (Hanya muncul di akhir) -->
-                <div id="quiz-result-box" class="space-y-3 hidden text-center py-4">
+                <!-- BAGIAN 3: HASIL KUIS (Muncul di akhir sesi kuis) -->
+                <div id="quiz-result-box" class="space-y-3 hidden text-center py-2">
                     <div class="w-16 h-16 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mx-auto text-2xl shadow-inner">
                         <i class="fa-solid fa-award"></i>
                     </div>
                     <div>
                         <h3 class="text-base font-extrabold text-slate-800">Kuis Telah Selesai!</h3>
-                        <p class="text-xs text-slate-500 mt-1">Berikut adalah total perolehan skor akhir Anda:</p>
+                        <p id="result-participant-label" class="text-xs text-indigo-900 font-bold mt-1"></p>
                     </div>
                     <div class="bg-indigo-900 text-white py-3 px-4 rounded-2xl font-black text-xl tracking-wide shadow">
-                        Skor: <span id="final-score-val">0</span> / 10
+                        Skor: <span id="final-score-val">0</span> / 15
                     </div>
                     <div id="result-message" class="text-xs font-semibold text-slate-700"></div>
-                    <button onclick="navigateTo('pilar')" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 rounded-xl text-xs shadow transition">
-                        Kembali ke Menu 4 Pilar
-                    </button>
+                    
+                    <div class="pt-2 space-y-2 border-t">
+                        <button id="submit-score-btn" class="w-full bg-emerald-600 text-white font-bold py-3 rounded-xl text-xs shadow flex items-center justify-center space-x-1 cursor-default">
+                            <i class="fa-solid fa-spinner animate-spin"></i>
+                            <span>Mengirim skor secara otomatis...</span>
+                        </button>
+                        <button onclick="navigateTo('pilar')" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 rounded-xl text-xs shadow transition">
+                            Kembali ke Menu 4 Pilar
+                        </button>
+                    </div>
                 </div>
 
-                <div id="quiz-nav-container" class="pt-2">
-                    <button id="next-question-btn" onclick="handleNextQuestion()" class="w-full bg-indigo-900 hover:bg-indigo-950 text-white font-bold py-3 rounded-xl text-xs shadow transition hidden">
-                        Selanjutnya
-                    </button>
-                </div>
             </div>
         </div>
 
@@ -198,7 +237,7 @@
                 <p class="text-xs text-slate-500">Sampaikan dukungan dan kesan Anda untuk Tim LCC 4 Pilar SMANCA.</p>
                 
                 <div class="space-y-2 pt-1">
-                    <input type="text" id="kesan-nama" placeholder="Nama Anda" class="w-full px-3 py-2 rounded-xl text-xs border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400 font-medium">
+                    <input type="text" id="kesan-nama" value="" placeholder="Contoh: Geril Suardi" class="w-full px-3 py-2 rounded-xl text-xs border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400 font-medium">
                     <textarea id="kesan-teks" rows="3" placeholder="Tuliskan kesan & pesan..." class="w-full px-3 py-2 rounded-xl text-xs border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400 font-medium"></textarea>
                     <button onclick="kirimKesanPesan()" class="w-full bg-indigo-900 hover:bg-indigo-950 text-white font-bold py-2.5 rounded-xl text-xs transition">
                         Kirim Kesan & Pesan
@@ -247,7 +286,7 @@
             <div class="pt-2 border-t">
                 <button onclick="openQuizPageFromModal()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-xl text-xs shadow-md transition flex items-center justify-center space-x-2">
                     <i class="fa-solid fa-pen-to-square"></i>
-                    <span>Mulai Kuis 10 Soal</span>
+                    <span>Mulai Kuis 15 Soal</span>
                 </button>
             </div>
         </div>
@@ -263,11 +302,11 @@
             <div class="space-y-3 text-xs">
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">1. Nama Lengkap:</label>
-                    <input type="text" id="reg-name" placeholder="Nama siswa" class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400">
+                    <input type="text" id="reg-name" value="" placeholder="Contoh: Geril Suardi" class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400">
                 </div>
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">2. Kelas:</label>
-                    <input type="text" id="reg-class" placeholder="Contoh: XI IPA 1" class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400">
+                    <input type="text" id="reg-class" placeholder="Contoh: X Merdeka 1" class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400">
                 </div>
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">3. Alamat Rumah:</label>
@@ -322,6 +361,9 @@
         let currentQuizIndex = 0;
         let scoreCount = 0;
         let userAnswers = [];
+        let verifiedStudentName = "";
+        let quizTimerInterval = null;
+        let timeLeftSeconds = 300; // 5 Menit = 300 Detik
 
         const pilarData = {
             "Pancasila": {
@@ -336,7 +378,12 @@
                     { soal: "Pancasila sebagai dasar negara berarti Pancasila dijadikan sebagai...", opsi: ["Pedoman hiasan semata", "Sumber dari segala sumber hukum negara", "Aturan adat istiadat daerah", "Undang-undang khusus militer"], jawaban: 1 },
                     { soal: "Sila persatuan Indonesia dilambangkan dengan lambang...", opsi: ["Pohon Beringin", "Padi dan Kapas", "Bintang Tunggal", "Rantai"], jawaban: 0 },
                     { soal: "Sikap saling menghormati antar pemeluk agama sejalan dengan pengamalan sila ke...", opsi: ["Sila Pertama", "Sila Kedua", "Sila Ketiga", "Sila Keempat"], jawaban: 0 },
-                    { soal: "Keadilan sosial bagi seluruh rakyat Indonesia merupakan bunyi dari sila ke...", opsi: ["Sila Ke-3", "Sila Ke-4", "Sila Ke-5", "Sila Ke-2"], jawaban: 2 }
+                    { soal: "Keadilan sosial bagi seluruh rakyat Indonesia merupakan bunyi dari sila ke...", opsi: ["Sila Ke-3", "Sila Ke-4", "Sila Ke-5", "Sila Ke-2"], jawaban: 2 },
+                    { soal: "Pengamalan sila kedua Pancasila dalam kehidupan sehari-hari dapat berupa...", opsi: ["Mengakui persamaan derajat manusia", "Mengikuti pemilihan umum", "Menjaga persatuan wilayah", "Beribadah sesuai keyakinan"], jawaban: 0 },
+                    { soal: "Nilai kerakyatan dalam sila keempat mengandung prinsip utama yaitu...", opsi: ["Musyawarah mufakat", "Bebas berkehendak tanpa batas", "Dominasi suara mayoritas mutlak", "Otoritarianisme pimpinan"], jawaban: 0 },
+                    { soal: "Lambang padi dan kapas pada perisai Garuda Pancasila mencerminkan sila ke...", opsi: ["Sila Ketiga", "Sila Keempat", "Sila Kelima", "Sila Kedua"], jawaban: 2 },
+                    { soal: "BPUPKI dalam bahasa Jepang dikenal dengan nama...", opsi: ["Dokuritsu Junbi Cosakai", "Dokuritsu Junbi Inkai", "Hoyo Iinkai", "Chuo Sangi In"], jawaban: 0 },
+                    { soal: "Sidang pertama BPUPKI yang membahas dasar negara berlangsung pada tanggal...", opsi: ["29 Mei - 1 Juni 1945", "10 - 17 Juli 1945", "18 Agustus 1945", "22 Juni 1945"], jawaban: 0 }
                 ]
             },
             "UUD 1945": {
@@ -351,7 +398,12 @@
                     { soal: "Hak asasi manusia diatur secara khusus dalam UUD 1945 pada bab...", opsi: ["Bab XA", "Bab IX", "Bab VII", "Bab XII"], jawaban: 0 },
                     { soal: "Kekuasaan kehakiman di Indonesia menurut UUD 1945 dilakukan oleh Mahkamah Agung dan...", opsi: ["Kejaksaan Agung", "Mahkamah Konstitusi", "Kepolisian Negara", "Dewan Perwakilan Rakyat"], jawaban: 1 },
                     { soal: "Pasal berapakah dalam UUD 1945 yang mengatur tentang bentuk negara kesatuan?", opsi: ["Pasal 1 ayat (1)", "Pasal 2 ayat (1)", "Pasal 3 ayat (1)", "Pasal 4 ayat (1)"], jawaban: 0 },
-                    { soal: "Aturan peralihan dalam UUD 1945 hasil amandemen terdiri dari berapa pasal?", opsi: ["1 pasal", "2 pasal", "3 pasal", "4 pasal"], jawaban: 2 }
+                    { soal: "Aturan peralihan dalam UUD 1945 hasil amandemen terdiri dari berapa pasal?", opsi: ["1 pasal", "2 pasal", "3 pasal", "4 pasal"], jawaban: 2 },
+                    { soal: "Pasal 27 ayat (1) UUD 1945 menjamin kedudukan yang sama warga negara di dalam...", opsi: ["Hukum dan pemerintahan", "Perekonomian nasional", "Pendidikan dan kebudayaan", "Pertahanan keamanan"], jawaban: 0 },
+                    { soal: "Tiap-tiap warga negara berhak dan wajib ikut serta dalam usaha pertahanan dan keamanan negara tercantum dalam pasal...", opsi: ["Pasal 27 ayat (3)", "Pasal 28", "Pasal 30 ayat (1)", "Pasal 31"], jawaban: 2 },
+                    { soal: "Kemerdekaan berserikat dan berkumpul, mengeluarkan pikiran dengan lisan dan tulisan ditetapkan dengan undang-undang diatur dalam pasal...", opsi: ["Pasal 28", "Pasal 29", "Pasal 30", "Pasal 32"], jawaban: 0 },
+                    { soal: "Anggaran Pendapatan dan Belanja Negara (APBN) setiap tahunnya diatur dalam UUD 1945 pada...", opsi: ["Pasal 23", "Pasal 20", "Pasal 24", "Pasal 25"], jawaban: 0 },
+                    { soal: "Negara berdasar atas Ketuhanan Yang Maha Esa merupakan bunyi dari UUD 1945...", opsi: ["Pasal 29 ayat (1)", "Pasal 30 ayat (1)", "Pasal 31 ayat (1)", "Pasal 28E"], jawaban: 0 }
                 ]
             },
             "NKRI": {
@@ -366,7 +418,12 @@
                     { soal: "Sistem pertahanan dan keamanan negara yang dianut NKRI melibatkan seluruh warga negara yang dikenal sebagai...", opsi: ["Pertahanan Semesta", "Militer Wajib", "Pasukan Khusus", "Pertahanan Pasif"], jawaban: 0 },
                     { soal: "Undang-undang yang mengatur tentang pemerintahan daerah di Indonesia saat ini adalah landasan dari penguatan...", opsi: ["Sistem Otonomi Daerah", "Sistem Sentralisasi", "Sistem Monarki", "Sistem Kepartaian"], jawaban: 0 },
                     { soal: "Sumpah Pemuda pada 28 Oktober 1928 merupakan tonggak sejarah penting penegasan...", opsi: ["Satu Nusa, Satu Bangsa, Satu Bahasa", "Kemerdekaan penuh RI", "Pembentukan BPUPKI", "Pemilu pertama"], jawaban: 0 },
-                    { soal: "Siapakah pencipta lagu kebangsaan 'Indonesia Raya' yang mengukuhkan semangat NKRI?", opsi: ["W.R. Supratman", "C. Simanjuntak", "Ismail Marzuki", "Ibu Sud"], jawaban: 0 }
+                    { soal: "Siapakah pencipta lagu kebangsaan 'Indonesia Raya' yang mengukuhkan semangat NKRI?", opsi: ["W.R. Supratman", "C. Simanjuntak", "Ismail Marzuki", "Ibu Sud"], jawaban: 0 },
+                    { soal: "Batas wilayah laut teritorial Indonesia sejauh berapa mil laut dari garis pangkal?", opsi: ["12 mil laut", "200 mil laut", "24 mil laut", "60 mil laut"], jawaban: 0 },
+                    { soal: "Zona Ekonomi Eksklusif (ZEE) Indonesia diukur sejauh berapa mil laut?", opsi: ["200 mil laut", "12 mil laut", "100 mil laut", "350 mil laut"], jawaban: 0 },
+                    { soal: "Lembaga pertahanan negara yang menjaga kedaulatan wilayah laut Republik Indonesia adalah...", opsi: ["TNI Angkatan Laut", "TNI Angkatan Darat", "Kepolisian Republik Indonesia", "Kementerian Luar Negeri"], jawaban: 0 },
+                    { soal: "Deklarasi Djuanda dicetuskan pada tahun...", opsi: ["1957", "1945", "1965", "1928"], jawaban: 0 },
+                    { soal: "Semangat kebangsaan untuk mencintai tanah air disebut juga sebagai...", opsi: ["Patriotisme / Nasionalisme", "Chauvinisme", "Individualisme", "Sekularisme"], jawaban: 0 }
                 ]
             },
             "Bhinneka Tunggal Ika": {
@@ -381,7 +438,12 @@
                     { soal: "Sikap yang bertentangan dengan semangat Bhinneka Tunggal Ika adalah...", opsi: ["Toleransi beragama", "Enosentrisme / menganggap sukunya paling unggul", "Gotong royong", "Musyawarah mufakat"], jawaban: 1 },
                     { soal: "Keberagaman suku bangsa di Indonesia merupakan sebuah...", opsi: ["Kelemahan fatal", "Kekayaan dan potensi bangsa", "Halangan pembangunan", "Ancaman mutlak"], jawaban: 1 },
                     { soal: "Sikap saling menghargai pendapat dan keyakinan orang lain mencerminkan pengamalan...", opsi: ["Fanatisme sempit", "Semboyan Bhinneka Tunggal Ika", "Individualisme", "Eksklusivisme"], jawaban: 1 },
-                    { soal: "Penerapan semboyan Bhinneka Tunggal Ika dalam pergaulan sehari-hari ditunjukkan melalui...", opsi: ["Memusuhi kelompok lain", "Sikap inklusif dan saling menghormati", "Menonjolkan perbedaan", "Mengisolasi diri"], jawaban: 1 }
+                    { soal: "Penerapan semboyan Bhinneka Tunggal Ika dalam pergaulan sehari-hari ditunjukkan melalui...", opsi: ["Memusuhi kelompok lain", "Sikap inklusif dan saling menghormati", "Menonjolkan perbedaan", "Mengisolasi diri"], jawaban: 1 },
+                    { soal: "Perbedaan suku dan budaya di Indonesia hendaknya dipandang sebagai alat...", opsi: ["Pemecah belah bangsa", "Pemersatu bangsa dalam ikatan kebersamaan", "Kompetisi antar daerah", "Pemisah batas wilayah"], jawaban: 1 },
+                    { soal: "Sikap terbuka terhadap masuknya unsur budaya lain tanpa kehilangan jati diri disebut...", opsi: ["Akulturasi budaya", "Asimilasi total", "Etnnosentrisme", "Sekularisme"], jawaban: 0 },
+                    { soal: "Rumah adat, pakaian daerah, dan tarian tradisional yang beragam di Indonesia merupakan wujud dari...", opsi: ["Kekayaan kebudayaan nasional", "Kelemahan ideologi", "Hambatan konstitusi", "Perbedaan politik"], jawaban: 0 },
+                    { soal: "Menjaga kerukunan antarumat beragama di Indonesia diatur dalam kerangka...", opsi: ["Toleransi dan saling menghormati", "Paksaan keyakinan", "Pemisahan kelompok", "Dominasi golongan"], jawaban: 0 },
+                    { soal: "Semboyan Bhinneka Tunggal Ika pertama kali diserap secara resmi dalam lambang negara pada tahun...", opsi: ["1950", "1945", "1959", "1965"], jawaban: 0 }
                 ]
             }
         };
@@ -398,6 +460,10 @@
         });
 
         function navigateTo(pageId) {
+            if (pageId !== 'quiz' && quizTimerInterval) {
+                clearInterval(quizTimerInterval);
+            }
+
             document.querySelectorAll('.page-view').forEach(page => page.classList.add('hidden'));
             const targetPage = document.getElementById('page-' + pageId);
             if (targetPage) targetPage.classList.remove('hidden');
@@ -429,15 +495,60 @@
         function openQuizPageFromModal() {
             closePilarModal();
             currentQuizIndex = 0;
-            userAnswers = new Array(pilarData[activeQuizPilar].kuis.length).fill(null);
-
+            verifiedStudentName = "";
+            document.getElementById('quiz-student-name').value = "";
+            
             document.getElementById('quiz-header-title').innerText = `Kuis: ${activeQuizPilar}`;
             
-            document.getElementById('quiz-question-box').classList.remove('hidden');
+            document.getElementById('quiz-identity-box').classList.remove('hidden');
+            document.getElementById('quiz-container-box').classList.add('hidden');
             document.getElementById('quiz-result-box').classList.add('hidden');
             
             navigateTo('quiz');
+        }
+
+        function startQuizSession() {
+            const nameInput = document.getElementById('quiz-student-name').value.trim();
+            if (!nameInput) {
+                alert('Silakan masukkan Nama Lengkap & Kelas Anda terlebih dahulu!');
+                return;
+            }
+
+            const storageKey = `done_quiz_${activeQuizPilar}_${nameInput.toLowerCase()}`;
+            if (localStorage.getItem(storageKey)) {
+                alert(`Maaf, ${nameInput}, Anda sudah pernah mengerjakan kuis untuk pilar ${activeQuizPilar}. Setiap peserta hanya diberikan 1 kali kesempatan!`);
+                return;
+            }
+
+            verifiedStudentName = nameInput;
+            userAnswers = new Array(pilarData[activeQuizPilar].kuis.length).fill(null);
+
+            document.getElementById('quiz-user-badge').innerText = verifiedStudentName;
+
+            document.getElementById('quiz-identity-box').classList.add('hidden');
+            document.getElementById('quiz-container-box').classList.remove('hidden');
+
+            timeLeftSeconds = 300;
+            updateTimerDisplay();
+            if (quizTimerInterval) clearInterval(quizTimerInterval);
+            quizTimerInterval = setInterval(() => {
+                timeLeftSeconds--;
+                updateTimerDisplay();
+                if (timeLeftSeconds <= 0) {
+                    clearInterval(quizTimerInterval);
+                    alert("Waktu pengerjaan kuis telah habis!");
+                    finishQuizAndSubmit();
+                }
+            }, 1000);
+
             loadQuizQuestionItem();
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeftSeconds / 60);
+            const seconds = timeLeftSeconds % 60;
+            const formatted = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            document.getElementById('time-left-display').innerText = formatted;
         }
 
         function loadQuizQuestionItem() {
@@ -492,7 +603,7 @@
             if (currentQuizIndex < totalSoal - 1) {
                 nextBtn.innerHTML = `<span>Selanjutnya</span> <i class="fa-solid fa-arrow-right ml-1"></i>`;
             } else {
-                nextBtn.innerHTML = `<span>Selesai & Lihat Skor</span> <i class="fa-solid fa-check ml-1"></i>`;
+                nextBtn.innerHTML = `<span>Selesai & Kirim Skor</span> <i class="fa-solid fa-check ml-1"></i>`;
             }
         }
 
@@ -503,32 +614,68 @@
                 currentQuizIndex++;
                 loadQuizQuestionItem();
             } else {
-                scoreCount = 0;
-                const quizList = pilarData[activeQuizPilar].kuis;
-                for (let i = 0; i < quizList.length; i++) {
-                    if (userAnswers[i] === quizList[i].jawaban) {
-                        scoreCount++;
-                    }
-                }
-
-                document.getElementById('quiz-question-box').classList.add('hidden');
-                document.getElementById('next-question-btn').classList.add('hidden');
-                
-                document.getElementById('final-score-val').innerText = scoreCount;
-                
-                let msg = "";
-                if (scoreCount === 10) {
-                    msg = "Luar biasa! Penguasaan materi 4 Pilar Anda sudah sempurna!";
-                } else if (scoreCount >= 7) {
-                    msg = "Bagus sekali! Pemahaman Anda tentang pilar kebangsaan sangat baik.";
-                } else if (scoreCount >= 4) {
-                    msg = "Cukup baik, tingkatkan lagi dengan membaca ringkasan materi lebih teliti ya.";
-                } else {
-                    msg = "Tetap semangat! Pelajari kembali materi ringkas untuk hasil yang lebih optimal.";
-                }
-                document.getElementById('result-message').innerText = msg;
-                document.getElementById('quiz-result-box').classList.remove('hidden');
+                finishQuizAndSubmit();
             }
+        }
+
+        function finishQuizAndSubmit() {
+            if (quizTimerInterval) clearInterval(quizTimerInterval);
+
+            const storageKey = `done_quiz_${activeQuizPilar}_${verifiedStudentName.toLowerCase()}`;
+            localStorage.setItem(storageKey, "true");
+
+            scoreCount = 0;
+            const quizList = pilarData[activeQuizPilar].kuis;
+            for (let i = 0; i < quizList.length; i++) {
+                if (userAnswers[i] === quizList[i].jawaban) {
+                    scoreCount++;
+                }
+            }
+
+            document.getElementById('quiz-container-box').classList.add('hidden');
+            
+            document.getElementById('result-participant-label').innerText = `Nama: ${verifiedStudentName}`;
+            document.getElementById('final-score-val').innerText = scoreCount;
+            
+            let msg = "";
+            if (scoreCount === 15) {
+                msg = "Luar biasa! Penguasaan materi 4 Pilar Anda sudah sempurna!";
+            } else if (scoreCount >= 11) {
+                msg = "Bagus sekali! Pemahaman Anda tentang pilar kebangsaan sangat baik.";
+            } else if (scoreCount >= 6) {
+                msg = "Cukup baik, tingkatkan lagi dengan membaca ringkasan materi lebih teliti ya.";
+            } else {
+                msg = "Tetap semangat! Pelajari kembali materi ringkas untuk hasil yang lebih optimal.";
+            }
+            document.getElementById('result-message').innerText = msg;
+            
+            const submitBtn = document.getElementById('submit-score-btn');
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> <span>Mengirim skor secara otomatis...</span>`;
+            submitBtn.className = "w-full bg-emerald-600 text-white font-bold py-3 rounded-xl text-xs shadow flex items-center justify-center space-x-1 cursor-default";
+
+            document.getElementById('quiz-result-box').classList.remove('hidden');
+
+            const payload = {
+                _subject: `Hasil Skor Kuis ${activeQuizPilar} - SMANCA`,
+                nama_siswa: verifiedStudentName,
+                pilar: activeQuizPilar,
+                skor: `${scoreCount} dari ${quizList.length}`
+            };
+
+            fetch(FORMSPREE_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify(payload)
+            }).then(response => {
+                if (response.ok) {
+                    submitBtn.innerHTML = `<i class="fa-solid fa-circle-check"></i> <span>Skor Berhasil Terkirim Otomatis!</span>`;
+                    submitBtn.className = "w-full bg-slate-700 text-white font-bold py-3 rounded-xl text-xs shadow flex items-center justify-center space-x-1 cursor-default";
+                } else {
+                    submitBtn.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> <span>Gagal Mengirim Otomatis</span>`;
+                }
+            }).catch(err => {
+                submitBtn.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> <span>Periksa Koneksi Internet</span>`;
+            });
         }
 
         function openRegisterModal() {
@@ -589,11 +736,11 @@
         }
 
         function kirimKesanPesan() {
-            const nama = document.getElementById('kesan-nama').value.trim() || 'Anonim';
+            const nama = document.getElementById('kesan-nama').value.trim();
             const teks = document.getElementById('kesan-teks').value.trim();
 
-            if (!teks) {
-                showNotifModal('Peringatan', 'Silakan tulis kesan & pesan Anda.', 'warning');
+            if (!nama || !teks) {
+                showNotifModal('Peringatan', 'Silakan isi Nama dan Kesan & Pesan Anda.', 'warning');
                 return;
             }
 
