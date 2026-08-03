@@ -151,12 +151,12 @@
                     </div>
                     <div class="text-center">
                         <h3 class="text-sm font-extrabold text-slate-800">Identitas Peserta Kuis</h3>
-                        <p class="text-[11px] text-slate-500 mt-0.5">Silakan masukkan nama dan kelas Anda sebelum mulai mengerjakan. Setiap peserta hanya diberikan **1 kali kesempatan** untuk mengerjakan kuis pada setiap pilar.</p>
+                        <p class="text-[11px] text-slate-500 mt-0.5">Silakan masukkan nama Anda sebelum mulai mengerjakan. Setiap peserta hanya diberikan **1 kali kesempatan** untuk mengerjakan kuis pada setiap pilar.</p>
                     </div>
                     <div class="space-y-2 pt-1">
                         <div>
-                            <label class="block text-[11px] font-bold text-slate-700 mb-1">Nama Lengkap & Kelas:</label>
-                            <input type="text" id="quiz-student-name" value="" placeholder="Contoh: Geril Suardi" class="w-full px-3 py-2.5 rounded-xl text-xs border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400 font-medium">
+                            <label class="block text-[11px] font-bold text-slate-700 mb-1">Nama Lengkap:</label>
+                            <input type="text" id="quiz-student-name" placeholder="Contoh: Geril Suardi" class="w-full px-3 py-2.5 rounded-xl text-xs border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400 font-medium">
                         </div>
                         <button onclick="startQuizSession()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-xl text-xs shadow transition flex items-center justify-center space-x-1 mt-2">
                             <span>Mulai Mengerjakan Soal (Waktu: 5 Menit)</span>
@@ -237,7 +237,7 @@
                 <p class="text-xs text-slate-500">Sampaikan dukungan dan kesan Anda untuk Tim LCC 4 Pilar SMANCA.</p>
                 
                 <div class="space-y-2 pt-1">
-                    <input type="text" id="kesan-nama" value="" placeholder="Contoh: Geril Suardi" class="w-full px-3 py-2 rounded-xl text-xs border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400 font-medium">
+                    <input type="text" id="kesan-nama" placeholder="Contoh: Geril Suardi" class="w-full px-3 py-2 rounded-xl text-xs border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400 font-medium">
                     <textarea id="kesan-teks" rows="3" placeholder="Tuliskan kesan & pesan..." class="w-full px-3 py-2 rounded-xl text-xs border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400 font-medium"></textarea>
                     <button onclick="kirimKesanPesan()" class="w-full bg-indigo-900 hover:bg-indigo-950 text-white font-bold py-2.5 rounded-xl text-xs transition">
                         Kirim Kesan & Pesan
@@ -302,30 +302,26 @@
             <div class="space-y-3 text-xs">
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">1. Nama Lengkap:</label>
-                    <input type="text" id="reg-name" value="" placeholder="Contoh: Geril Suardi" class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400">
+                    <input type="text" id="reg-name" placeholder="Contoh: Geril Suardi" class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400">
                 </div>
                 <div>
-                    <label class="block font-semibold text-slate-700 mb-1">2. Kelas:</label>
-                    <input type="text" id="reg-class" placeholder="Contoh: X Merdeka 1" class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400">
-                </div>
-                <div>
-                    <label class="block font-semibold text-slate-700 mb-1">3. Alamat Rumah:</label>
+                    <label class="block font-semibold text-slate-700 mb-1">2. Alamat Rumah:</label>
                     <input type="text" id="reg-address" placeholder="Tuliskan alamat rumah..." class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400">
                 </div>
                 <div>
-                    <label class="block font-semibold text-slate-700 mb-1">4. Nomor Telepon (Aktif):</label>
+                    <label class="block font-semibold text-slate-700 mb-1">3. Nomor Telepon (Aktif):</label>
                     <input type="tel" id="reg-phone" placeholder="0812345678..." class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400">
                 </div>
                 <div>
-                    <label class="block font-semibold text-slate-700 mb-1">5. Apa yang kamu ketahui tentang LCC 4 Pilar?</label>
+                    <label class="block font-semibold text-slate-700 mb-1">4. Apa yang kamu ketahui tentang LCC 4 Pilar?</label>
                     <textarea id="reg-know" rows="2" placeholder="Tuliskan pemahamanmu..." class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400"></textarea>
                 </div>
                 <div>
-                    <label class="block font-semibold text-slate-700 mb-1">6. Alasan ikut seleksi?</label>
+                    <label class="block font-semibold text-slate-700 mb-1">5. Alasan ikut seleksi?</label>
                     <textarea id="reg-reason" rows="2" placeholder="Tuliskan alasanmu..." class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400"></textarea>
                 </div>
                 <div>
-                    <label class="block font-semibold text-slate-700 mb-1">7. Jika terpilih, apa yang akan kamu berikan ke tim?</label>
+                    <label class="block font-semibold text-slate-700 mb-1">6. Jika terpilih, apa yang akan kamu berikan ke tim?</label>
                     <textarea id="reg-contribution" rows="2" placeholder="Tuliskan kontribusimu..." class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400"></textarea>
                 </div>
 
@@ -355,7 +351,7 @@
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        const FORMSPREE_URL = "https://formspree.io/f/mgogjapo";
+        const FORMSPREE_URL = "https://formspree.io/f/maqrrljw";
 
         let activeQuizPilar = "";
         let currentQuizIndex = 0;
@@ -510,7 +506,7 @@
         function startQuizSession() {
             const nameInput = document.getElementById('quiz-student-name').value.trim();
             if (!nameInput) {
-                alert('Silakan masukkan Nama Lengkap & Kelas Anda terlebih dahulu!');
+                alert('Silakan masukkan Nama Lengkap Anda terlebih dahulu!');
                 return;
             }
 
@@ -688,22 +684,20 @@
 
         function submitRegistration() {
             const name = document.getElementById('reg-name').value.trim();
-            const kelas = document.getElementById('reg-class').value.trim();
             const address = document.getElementById('reg-address').value.trim();
             const phone = document.getElementById('reg-phone').value.trim();
             const know = document.getElementById('reg-know').value.trim();
             const reason = document.getElementById('reg-reason').value.trim();
             const contribution = document.getElementById('reg-contribution').value.trim();
 
-            if (!name || !kelas || !phone) {
-                alert('Silakan lengkapi sekurang-kurangnya Nama, Kelas, dan Nomor Telepon!');
+            if (!name || !phone) {
+                alert('Silakan lengkapi sekurang-kurangnya Nama dan Nomor Telepon!');
                 return;
             }
 
             const payload = {
                 _subject: "Pendaftaran Baru LCC SMANCA",
                 nama: name,
-                kelas: kelas,
                 alamat_rumah: address,
                 telepon: phone,
                 pengetahuan: know,
@@ -718,7 +712,6 @@
             }).then(response => {
                 if (response.ok) {
                     document.getElementById('reg-name').value = '';
-                    document.getElementById('reg-class').value = '';
                     document.getElementById('reg-address').value = '';
                     document.getElementById('reg-phone').value = '';
                     document.getElementById('reg-know').value = '';
