@@ -104,7 +104,6 @@
                 <button onclick="navigateTo('kesan-pesan')" class="btn-gold w-full text-center py-3.5 px-4 rounded-2xl text-lg tracking-wide block">
                     Kesan & Pesan
                 </button>
-                <!-- Tombol Instagram Tim -->
                 <a href="https://www.instagram.com/cerdascermat4pilar.smanca?igsh=MTczaHBhcWk5bTJtdg==" target="_blank" class="w-full bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 hover:opacity-90 text-white font-bold py-3.5 px-4 rounded-2xl text-lg tracking-wide text-center shadow-lg transition flex items-center justify-center space-x-2">
                     <i class="fa-brands fa-instagram text-xl"></i>
                     <span>Instagram Tim</span>
@@ -153,8 +152,6 @@
             </div>
 
             <div class="bg-white rounded-2xl p-5 card-shadow space-y-4">
-                
-                <!-- BAGIAN 1: FORM INPUT NAMA SEBELUM KUIS DIMULAI -->
                 <div id="quiz-identity-box" class="space-y-3">
                     <div class="w-12 h-12 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mx-auto text-xl">
                         <i class="fa-solid fa-user-pen"></i>
@@ -175,7 +172,6 @@
                     </div>
                 </div>
 
-                <!-- BAGIAN 2: AREA SOAL KUIS -->
                 <div id="quiz-container-box" class="space-y-4 hidden">
                     <div class="flex justify-between items-center border-b pb-2">
                         <span id="quiz-progress-text" class="text-xs font-bold text-indigo-900">Pertanyaan 1 dari 15</span>
@@ -189,12 +185,8 @@
                     </div>
 
                     <div id="quiz-question-box" class="space-y-3">
-                        <div id="quiz-question-text" class="text-xs sm:text-sm font-bold text-slate-800 leading-relaxed">
-                            <!-- Soal Kuis -->
-                        </div>
-                        <div id="quiz-options-list" class="space-y-2">
-                            <!-- Opsi Kuis -->
-                        </div>
+                        <div id="quiz-question-text" class="text-xs sm:text-sm font-bold text-slate-800 leading-relaxed"></div>
+                        <div id="quiz-options-list" class="space-y-2"></div>
                     </div>
 
                     <div id="quiz-nav-container" class="pt-2">
@@ -204,7 +196,6 @@
                     </div>
                 </div>
 
-                <!-- BAGIAN 3: HASIL KUIS -->
                 <div id="quiz-result-box" class="space-y-3 hidden text-center py-2">
                     <div class="w-16 h-16 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mx-auto text-2xl shadow-inner">
                         <i class="fa-solid fa-award"></i>
@@ -228,7 +219,6 @@
                         </button>
                     </div>
                 </div>
-
             </div>
         </div>
 
@@ -242,10 +232,7 @@
                 <div class="text-xs font-bold text-amber-300">Vote Pembimbing Tim</div>
             </div>
 
-            <!-- CONTAINER UTAMA VOTE -->
             <div class="bg-[#f1aa13] rounded-3xl p-4 card-shadow space-y-4 border-2 border-amber-300">
-                
-                <!-- PILIH KATEGORI PILAR -->
                 <div class="space-y-2">
                     <div class="text-center text-white font-extrabold text-xs tracking-wider uppercase">
                         Pilih Kategori Pilar:
@@ -266,34 +253,21 @@
                     </div>
                 </div>
 
-                <!-- KARTU DAFTAR KANDIDAT PEMBIMBING -->
                 <div class="bg-white rounded-2xl p-4 shadow-lg space-y-3">
                     <div class="flex justify-between items-center border-b pb-2">
                         <h3 id="vote-active-pilar-title" class="font-extrabold text-indigo-950 text-base">Pancasila</h3>
                         <span id="vote-candidate-count" class="bg-indigo-900 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full">10 Kandidat</span>
                     </div>
 
-                    <!-- Tombol Lihat Hasil Terbuka untuk Semua -->
                     <div class="flex justify-end items-center text-[11px]">
                         <button onclick="toggleVoteMode()" id="toggle-vote-mode-btn" class="font-bold text-indigo-900 underline hover:text-indigo-950">
                             📊 Lihat Hasil Voting Publik & Persentase
                         </button>
                     </div>
 
-                    <!-- TAMPILAN 1: LIST KANDIDAT & RADIO BUTTON -->
-                    <div id="vote-candidates-list" class="space-y-2.5 pt-1">
-                        <!-- Di-generate via JS -->
-                    </div>
+                    <div id="vote-candidates-list" class="space-y-2.5 pt-1 hidden"></div>
+                    <div id="vote-stats-container" class="space-y-2.5 pt-1"></div>
 
-                    <!-- TAMPILAN 2: STATISTIK HASIL PUBLIK -->
-                    <div id="vote-stats-container" class="space-y-2.5 pt-1 hidden">
-                        <div class="bg-indigo-50 border border-indigo-100 p-2.5 rounded-xl text-center text-[11px] font-bold text-indigo-950 mb-2">
-                            <i class="fa-solid fa-earth-asia text-indigo-600 mr-1"></i> Hasil Real-Time Publik (Sinkron Antar HP)
-                        </div>
-                        <!-- Di-generate via JS -->
-                    </div>
-
-                    <!-- FORM NAMA PEMILIH -->
                     <div id="voter-input-section" class="pt-2 border-t space-y-2">
                         <label class="block text-[11px] font-extrabold text-slate-800">
                             Nama Pemilih <span class="text-slate-400 font-normal">(Wajib)</span>:
@@ -301,13 +275,11 @@
                         <input type="text" id="voter-name" placeholder="Tuliskan nama Anda..." class="w-full px-3 py-2.5 rounded-xl text-xs border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400 font-medium bg-slate-50">
                     </div>
 
-                    <!-- TOMBOL SUBMIT VOTE -->
                     <button id="submit-vote-btn" onclick="submitVoteSelection()" class="w-full bg-[#2b10a2] hover:bg-indigo-950 text-white font-extrabold py-3.5 rounded-2xl text-sm shadow-xl transition flex items-center justify-center space-x-2 mt-2">
                         <i class="fa-solid fa-paper-plane"></i>
                         <span>Submit Vote</span>
                     </button>
                 </div>
-
             </div>
         </div>
 
@@ -445,24 +417,6 @@
     </div>
 
     <!-- JAVASCRIPT LOGIC DAN INISIALISASI FIREBASE -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-analytics.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyBnsAcsT0c7qHdPR6p8ZBhXa1eP2awb73U",
-            authDomain: "real-time-76923.firebaseapp.com",
-            projectId: "real-time-76923",
-            storageBucket: "real-time-76923.firebasestorage.app",
-            messagingSenderId: "1016614283621",
-            appId: "1:1016614283621:web:0a26adeac5355f05e2d98c",
-            measurementId: "G-6Q2LJDWFM9"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-    </script>
-
     <script>
         const FORMSPREE_URL = "https://formspree.io/f/mgawwodw";
 
@@ -604,7 +558,6 @@
             });
         });
 
-        // FUNGSI UTAMA: Mengambil dan Mensinkronkan Data Voting Real-Time dari Firebase Database
         function fetchLiveVotesFromFirebase() {
             if (typeof db !== 'undefined') {
                 db.ref('votes').on('value', (snapshot) => {
@@ -612,6 +565,8 @@
                     if (document.getElementById('page-vote') && !document.getElementById('page-vote').classList.contains('hidden')) {
                         renderVoteUI();
                     }
+                }, (error) => {
+                    console.error("Gagal membaca database Firebase:", error);
                 });
             }
         }
@@ -658,7 +613,6 @@
             currentQuizIndex = 0;
             verifiedStudentName = "";
             document.getElementById('quiz-student-name').value = "";
-            
             document.getElementById('quiz-header-title').innerText = `Kuis: ${activeQuizPilar}`;
             
             document.getElementById('quiz-identity-box').classList.remove('hidden');
@@ -685,7 +639,6 @@
             userAnswers = new Array(pilarData[activeQuizPilar].kuis.length).fill(null);
 
             document.getElementById('quiz-user-badge').innerText = verifiedStudentName;
-
             document.getElementById('quiz-identity-box').classList.add('hidden');
             document.getElementById('quiz-container-box').classList.remove('hidden');
 
@@ -770,7 +723,6 @@
 
             qObj.opsi.forEach((opt, idx) => {
                 const btn = document.createElement('button');
-                
                 if (currentSelected === idx) {
                     btn.className = 'w-full text-left bg-indigo-50 border-2 border-indigo-500 text-indigo-950 text-xs font-bold p-3 rounded-xl transition shadow-sm';
                 } else {
@@ -839,7 +791,6 @@
             }
 
             document.getElementById('quiz-container-box').classList.add('hidden');
-            
             document.getElementById('result-participant-label').innerText = `Nama: ${verifiedStudentName}`;
             document.getElementById('final-score-val').innerText = scoreCount;
             
@@ -884,11 +835,10 @@
             });
         }
 
-        // --- SISTEM VOTE PUBLIK TERPUSAT (SINKRON ANTAR HP & TIDAK MERESET PILIHAN) ---
+        // --- SISTEM VOTE PUBLIK TERPUSAT & SINKRON ANTAR HP ---
         function setVotePilar(pilarName) {
             activeVotePilar = pilarName;
             
-            // Cek apakah perangkat ini sudah pernah vote di pilar ini sebelumnya
             const existingVote = localStorage.getItem(`voted_perm_${activeVotePilar}`);
             if (existingVote) {
                 selectedVoteCandidate = existingVote;
@@ -923,11 +873,9 @@
             const voterInputSection = document.getElementById('voter-input-section');
             const submitVoteBtn = document.getElementById('submit-vote-btn');
 
-            // Cek apakah perangkat ini sudah vote untuk pilar aktif
             const alreadyVotedCandidate = localStorage.getItem(`voted_perm_${activeVotePilar}`);
 
             if (alreadyVotedCandidate) {
-                // Jika sudah divote dari HP ini, kunci tampilan langsung ke mode statistik hasil dan sembunyikan form input/tombol vote
                 isShowingVoteStats = true;
                 if (voterInputSection) voterInputSection.classList.add('hidden');
                 if (submitVoteBtn) submitVoteBtn.classList.add('hidden');
@@ -980,9 +928,7 @@
         }
 
         function selectCandidate(nama) {
-            // Cek apakah sudah pernah vote sebelumnya di pilar ini
             if (localStorage.getItem(`voted_perm_${activeVotePilar}`)) return;
-
             selectedVoteCandidate = nama;
             renderVoteCandidatesContent();
         }
@@ -1057,25 +1003,23 @@
 
             const storageKey = `voted_perm_${activeVotePilar}`;
             if (localStorage.getItem(storageKey)) {
-                alert(`Anda sudah pernah memvote pembimbing untuk pilar ${activeVotePilar} dari perangkat ini. Pilihan Anda tidak dapat diubah.`);
+                alert(`Anda sudah pernah memvote pembimbing untuk pilar ${activeVotePilar} dari perangkat ini.`);
                 isShowingVoteStats = true;
                 renderVoteUI();
                 return;
             }
 
-            // Kunci permanen di perangkat ini agar tidak tereset dan tidak bisa vote lagi
             localStorage.setItem(storageKey, selectedVoteCandidate);
 
-            // Kirim penambahan vote langsung ke Firebase Realtime Database
             if (typeof db !== 'undefined') {
                 db.ref('votes/' + activeVotePilar + '/' + selectedVoteCandidate).transaction((currentVal) => {
                     return (currentVal || 0) + 1;
                 }, (error, committed) => {
                     if (error) {
-                        alert("Gagal mengirim vote ke server. Periksa koneksi internet Anda.");
+                        alert("Gagal mengirim vote ke server. Periksa aturan keamanan Firebase database.");
                     } else if (committed) {
                         document.getElementById('voter-name').value = '';
-                        showNotifModal('Vote Berhasil!', `Terima kasih ${voterName}, pilihan Anda untuk ${selectedVoteCandidate} di pilar ${activeVotePilar} telah direkam secara permanen dan disinkronkan!`, 'success');
+                        showNotifModal('Vote Berhasil!', `Terima kasih ${voterName}, pilihan Anda untuk ${selectedVoteCandidate} di pilar ${activeVotePilar} telah direkam!`, 'success');
                         isShowingVoteStats = true;
                         renderVoteUI();
                     }
