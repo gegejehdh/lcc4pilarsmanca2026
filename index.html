@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts: Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Firebase SDK (Compat Version untuk kemudahan integrasi Realtime Database) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     <style>
         html {
             scroll-behavior: smooth;
@@ -444,6 +447,23 @@
     <script>
         const FORMSPREE_URL = "https://formspree.io/f/mgawwodw";
 
+        // ==========================================
+        // KONFIGURASI FIREBASE REALTIME DATABASE
+        // ==========================================
+        const firebaseConfig = {
+            apiKey: "ISI_API_KEY_ANDA",
+            authDomain: "ISI_AUTH_DOMAIN_ANDA.firebaseapp.com",
+            databaseURL: "ISI_DATABASE_URL_ANDA.firebaseio.com",
+            projectId: "ISI_PROJECT_ID_ANDA",
+            storageBucket: "ISI_STORAGE_BUCKET_ANDA.appspot.com",
+            messagingSenderId: "ISI_MESSAGING_SENDER_ID_ANDA",
+            appId: "ISI_APP_ID_ANDA"
+        };
+
+        // Inisialisasi Firebase (jika sudah diisi konfigurasi aslinya)
+        // firebase.initializeApp(firebaseConfig);
+        // const db = firebase.database();
+
         let activeQuizPilar = "";
         let currentQuizIndex = 0;
         let scoreCount = 0;
@@ -457,6 +477,7 @@
         let activeVotePilar = "Pancasila";
         let selectedVoteCandidate = "";
         let isShowingVoteStats = false;
+        let liveVotesData = {}; // Menyimpan data vote real-time dari database
 
         const pilarData = {
             "Pancasila": {
@@ -555,15 +576,8 @@
         ];
 
         document.addEventListener("DOMContentLoaded", () => {
-            // RESET DATA VOTING SAAT HALAMAN DIMUAT (Sesuai permintaan)
-            localStorage.removeItem('pembimbing_votes_by_pilar');
-            // Hapus juga kunci vote per individu yang tersimpan sebelumnya
-            for (let i = 0; i < localStorage.length; i++) {
-                let key = localStorage.key(i);
-                if (key && key.startsWith('voted_')) {
-                    localStorage.removeItem(key);
-                }
-            }
+            // Sinkronisasi data vote real-time dari database (jika sudah terhubung)
+            // fetchLiveVotesFromFirebase();
 
             const initialHeight = window.innerHeight;
             window.addEventListener('resize', () => {
@@ -574,6 +588,16 @@
                 }
             });
         });
+
+        // Fungsi opsional untuk menarik data dari Firebase Realtime Database secara real-time
+        function fetchLiveVotesFromFirebase() {
+            // db.ref('votes').on('value', (snapshot) => {
+            //     liveVotesData = snapshot.val() || {};
+            //     if (document.getElementById('page-vote') && !document.getElementById('page-vote').classList.contains('hidden')) {
+            //         renderVoteUI();
+            //     }
+            // });
+        }
 
         function navigateTo(pageId) {
             if (pageId !== 'quiz' && quizTimerInterval) {
@@ -843,7 +867,7 @@
             });
         }
 
-        // --- SISTEM VOTE ---
+        // --- SISTEM VOTE (TERINTEGRASI PERMANEN) ---
         function setVotePilar(pilarName) {
             activeVotePilar = pilarName;
             selectedVoteCandidate = "";
@@ -920,7 +944,8 @@
             const container = document.getElementById('vote-stats-container');
             container.innerHTML = '';
 
-            let allVotesData = JSON.parse(localStorage.getItem('pembimbing_votes_by_pilar') || '{}');
+            // Mengambil data vote dari database (atau fallback ke localStorage jika firebase belum disetup)
+            let allVotesData = liveVotesData && Object.keys(liveVotesData).length > 0 ? liveVotesData : JSON.parse(localStorage.getItem('pembimbing_votes_by_pilar_permanent') || '{}');
             let pilarVotes = allVotesData[activeVotePilar] || {};
 
             let totalVotes = 0;
@@ -970,7 +995,7 @@
                 return;
             }
 
-            const voterKey = `voted_${activeVotePilar}_${voterName.toLowerCase()}`;
+            const voterKey = `voted_perm_${activeVotePilar}_${voterName.toLowerCase()}`;
             if (localStorage.getItem(voterKey)) {
                 alert(`Maaf ${voterName}, Anda sudah pernah memvote pembimbing untuk pilar ${activeVotePilar}. Setiap orang hanya boleh memvote sekali per pilar!`);
                 isShowingVoteStats = true;
@@ -978,19 +1003,26 @@
                 return;
             }
 
+            // Tandai bahwa pemilih ini sudah melakukan vote secara lokal agar tidak bisa vote ulang di perangkat yang sama
             localStorage.setItem(voterKey, selectedVoteCandidate);
 
-            let allVotesData = JSON.parse(localStorage.getItem('pembimbing_votes_by_pilar') || '{}');
+            // Simpan ke localStorage permanen (atau update ke Firebase)
+            let allVotesData = JSON.parse(localStorage.getItem('pembimbing_votes_by_pilar_permanent') || '{}');
             if (!allVotesData[activeVotePilar]) {
                 allVotesData[activeVotePilar] = {};
             }
             allVotesData[activeVotePilar][selectedVoteCandidate] = (allVotesData[activeVotePilar][selectedVoteCandidate] || 0) + 1;
-            localStorage.setItem('pembimbing_votes_by_pilar', JSON.stringify(allVotesData));
+            localStorage.setItem('pembimbing_votes_by_pilar_permanent', JSON.stringify(allVotesData));
+
+            // Jika menggunakan Firebase, data juga dikirim secara online ke server:
+            // db.ref('votes/' + activeVotePilar + '/' + selectedVoteCandidate).transaction((currentVal) => {
+            //     return (currentVal || 0) + 1;
+            // });
 
             document.getElementById('voter-name').value = '';
             selectedVoteCandidate = "";
 
-            showNotifModal('Vote Berhasil!', `Terima kasih ${voterName}, pilihan Anda untuk pembimbing di pilar ${activeVotePilar} telah direkam.`, 'success');
+            showNotifModal('Vote Berhasil!', `Terima kasih ${voterName}, pilihan Anda untuk pembimbing di pilar ${activeVotePilar} telah direkam secara permanen.`, 'success');
             isShowingVoteStats = true;
             renderVoteUI();
         }
