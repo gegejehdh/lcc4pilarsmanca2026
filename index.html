@@ -294,7 +294,7 @@
                     </div>
 
                     <!-- FORM NAMA PEMILIH -->
-                    <div class="pt-2 border-t space-y-2">
+                    <div id="voter-input-section" class="pt-2 border-t space-y-2">
                         <label class="block text-[11px] font-extrabold text-slate-800">
                             Nama Pemilih <span class="text-slate-400 font-normal">(Wajib)</span>:
                         </label>
@@ -302,7 +302,7 @@
                     </div>
 
                     <!-- TOMBOL SUBMIT VOTE -->
-                    <button onclick="submitVoteSelection()" class="w-full bg-[#2b10a2] hover:bg-indigo-950 text-white font-extrabold py-3.5 rounded-2xl text-sm shadow-xl transition flex items-center justify-center space-x-2 mt-2">
+                    <button id="submit-vote-btn" onclick="submitVoteSelection()" class="w-full bg-[#2b10a2] hover:bg-indigo-950 text-white font-extrabold py-3.5 rounded-2xl text-sm shadow-xl transition flex items-center justify-center space-x-2 mt-2">
                         <i class="fa-solid fa-paper-plane"></i>
                         <span>Submit Vote</span>
                     </button>
@@ -884,10 +884,17 @@
             });
         }
 
-        // --- SISTEM VOTE PUBLIK TERPUSAT (SINKRON ANTAR HP) ---
+        // --- SISTEM VOTE PUBLIK TERPUSAT (SINKRON ANTAR HP & TIDAK MERESET PILIHAN) ---
         function setVotePilar(pilarName) {
             activeVotePilar = pilarName;
-            selectedVoteCandidate = "";
+            
+            // Cek apakah perangkat ini sudah pernah vote di pilar ini sebelumnya
+            const existingVote = localStorage.getItem(`voted_perm_${activeVotePilar}`);
+            if (existingVote) {
+                selectedVoteCandidate = existingVote;
+            } else {
+                selectedVoteCandidate = "";
+            }
 
             ["Pancasila", "UUD 1945", "NKRI", "Bhinneka Tunggal Ika"].forEach(p => {
                 const btn = document.getElementById(`btn-cat-${p}`);
@@ -913,16 +920,37 @@
             const listContainer = document.getElementById('vote-candidates-list');
             const statsContainer = document.getElementById('vote-stats-container');
             const toggleBtn = document.getElementById('toggle-vote-mode-btn');
+            const voterInputSection = document.getElementById('voter-input-section');
+            const submitVoteBtn = document.getElementById('submit-vote-btn');
+
+            // Cek apakah perangkat ini sudah vote untuk pilar aktif
+            const alreadyVotedCandidate = localStorage.getItem(`voted_perm_${activeVotePilar}`);
+
+            if (alreadyVotedCandidate) {
+                // Jika sudah divote dari HP ini, kunci tampilan langsung ke mode statistik hasil dan sembunyikan form input/tombol vote
+                isShowingVoteStats = true;
+                if (voterInputSection) voterInputSection.classList.add('hidden');
+                if (submitVoteBtn) submitVoteBtn.classList.add('hidden');
+                if (toggleBtn) toggleBtn.classList.add('hidden');
+            } else {
+                if (voterInputSection) voterInputSection.classList.remove('hidden');
+                if (submitVoteBtn) submitVoteBtn.classList.remove('hidden');
+                if (toggleBtn) toggleBtn.classList.remove('hidden');
+            }
 
             if (isShowingVoteStats) {
                 listContainer.classList.add('hidden');
                 statsContainer.classList.remove('hidden');
-                toggleBtn.innerHTML = "📝 Sembunyikan Hasil / Lakukan Vote";
+                if (!alreadyVotedCandidate && toggleBtn) {
+                    toggleBtn.innerHTML = "📝 Sembunyikan Hasil / Lakukan Vote";
+                }
                 renderVoteStatsContent();
             } else {
                 statsContainer.classList.add('hidden');
                 listContainer.classList.remove('hidden');
-                toggleBtn.innerHTML = "📊 Lihat Hasil Voting Publik & Persentase";
+                if (!alreadyVotedCandidate && toggleBtn) {
+                    toggleBtn.innerHTML = "📊 Lihat Hasil Voting Publik & Persentase";
+                }
                 renderVoteCandidatesContent();
             }
         }
@@ -952,17 +980,28 @@
         }
 
         function selectCandidate(nama) {
+            // Cek apakah sudah pernah vote sebelumnya di pilar ini
+            if (localStorage.getItem(`voted_perm_${activeVotePilar}`)) return;
+
             selectedVoteCandidate = nama;
             renderVoteCandidatesContent();
         }
 
         function renderVoteStatsContent() {
             const container = document.getElementById('vote-stats-container');
-            container.innerHTML = `
-                <div class="bg-indigo-50 border border-indigo-100 p-2.5 rounded-xl text-center text-[11px] font-bold text-indigo-950 mb-2">
-                    <i class="fa-solid fa-earth-asia text-indigo-600 mr-1"></i> Hasil Real-Time Publik (Sinkron Antar HP)
-                </div>
-            `;
+            const alreadyVotedCandidate = localStorage.getItem(`voted_perm_${activeVotePilar}`);
+
+            let bannerHtml = `<div class="bg-indigo-50 border border-indigo-100 p-2.5 rounded-xl text-center text-[11px] font-bold text-indigo-950 mb-2">
+                <i class="fa-solid fa-earth-asia text-indigo-600 mr-1"></i> Hasil Real-Time Publik (Sinkron Antar HP)
+            </div>`;
+
+            if (alreadyVotedCandidate) {
+                bannerHtml = `<div class="bg-emerald-50 border border-emerald-200 p-2.5 rounded-xl text-center text-[11px] font-bold text-emerald-900 mb-2">
+                    <i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> Anda telah memberikan vote untuk: <strong>${alreadyVotedCandidate}</strong> di pilar ini. Pilihan Anda terkunci.
+                </div>`;
+            }
+
+            container.innerHTML = bannerHtml;
 
             let pilarVotes = (liveVotesData && liveVotesData[activeVotePilar]) ? liveVotesData[activeVotePilar] : {};
 
@@ -980,7 +1019,7 @@
             if (totalVotes === 0) {
                 let emptyDiv = document.createElement('div');
                 emptyDiv.className = "text-center py-6 text-slate-500 text-xs";
-                emptyDiv.innerHTML = `Belum ada suara untuk pilar <strong>${activeVotePilar}</strong>. Jadilah yang pertama memberikan vote!`;
+                emptyDiv.innerHTML = `Belum ada suara untuk pilar <strong>${activeVotePilar}</strong>.`;
                 container.appendChild(emptyDiv);
                 return;
             }
@@ -1016,18 +1055,18 @@
                 return;
             }
 
-            const voterKey = `voted_perm_${activeVotePilar}_${voterName.toLowerCase()}`;
-            if (localStorage.getItem(voterKey)) {
-                alert(`Maaf ${voterName}, Anda sudah pernah memvote pembimbing untuk pilar ${activeVotePilar}. Setiap orang hanya boleh memvote sekali per pilar!`);
+            const storageKey = `voted_perm_${activeVotePilar}`;
+            if (localStorage.getItem(storageKey)) {
+                alert(`Anda sudah pernah memvote pembimbing untuk pilar ${activeVotePilar} dari perangkat ini. Pilihan Anda tidak dapat diubah.`);
                 isShowingVoteStats = true;
                 renderVoteUI();
                 return;
             }
 
-            // Tandai di perangkat lokal bahwa nama ini sudah vote
-            localStorage.setItem(voterKey, selectedVoteCandidate);
+            // Kunci permanen di perangkat ini agar tidak tereset dan tidak bisa vote lagi
+            localStorage.setItem(storageKey, selectedVoteCandidate);
 
-            // Kirim penambahan vote langsung ke Firebase Realtime Database agar sama di semua HP
+            // Kirim penambahan vote langsung ke Firebase Realtime Database
             if (typeof db !== 'undefined') {
                 db.ref('votes/' + activeVotePilar + '/' + selectedVoteCandidate).transaction((currentVal) => {
                     return (currentVal || 0) + 1;
@@ -1036,8 +1075,7 @@
                         alert("Gagal mengirim vote ke server. Periksa koneksi internet Anda.");
                     } else if (committed) {
                         document.getElementById('voter-name').value = '';
-                        selectedVoteCandidate = "";
-                        showNotifModal('Vote Berhasil!', `Terima kasih ${voterName}, pilihan Anda untuk pembimbing di pilar ${activeVotePilar} telah direkam dan disinkronkan ke seluruh perangkat!`, 'success');
+                        showNotifModal('Vote Berhasil!', `Terima kasih ${voterName}, pilihan Anda untuk ${selectedVoteCandidate} di pilar ${activeVotePilar} telah direkam secara permanen dan disinkronkan!`, 'success');
                         isShowingVoteStats = true;
                         renderVoteUI();
                     }
