@@ -52,6 +52,9 @@
 </head>
 <body class="min-h-screen pb-28 flex flex-col items-center">
 
+    <!-- AUDIO ALARM UNTUK ANTI-CHEAT -->
+    <audio id="warning-sound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
+
     <!-- APP HEADER -->
     <header id="main-header" class="w-full max-w-md px-4 pt-4 pb-2 text-center flex flex-col items-center bg-[#2b10a2] transition-all duration-300">
         <div class="text-white font-extrabold text-xs sm:text-base tracking-wide uppercase drop-shadow mb-0.5">
@@ -304,7 +307,6 @@
                     <label class="block font-semibold text-slate-700 mb-1">1. Nama Lengkap:</label>
                     <input type="text" id="reg-name" placeholder="Contoh: Geril Suardi" class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400">
                 </div>
-                <!-- TAMBAHAN INPUT KELAS -->
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">2. Kelas:</label>
                     <input type="text" id="reg-class" placeholder="Contoh: X merdeka 1" class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400">
@@ -365,6 +367,7 @@
         let verifiedStudentName = "";
         let quizTimerInterval = null;
         let timeLeftSeconds = 300; // 5 Menit = 300 Detik
+        let hasLeftQuiz = false;   // Flag Anti-Cheat
 
         const pilarData = {
             "Pancasila": {
@@ -529,6 +532,9 @@
             document.getElementById('quiz-identity-box').classList.add('hidden');
             document.getElementById('quiz-container-box').classList.remove('hidden');
 
+            // INISIALISASI FITUR ANTI-CHEAT KELUAR WEB
+            initQuizAntiCheat();
+
             timeLeftSeconds = 300;
             updateTimerDisplay();
             if (quizTimerInterval) clearInterval(quizTimerInterval);
@@ -543,6 +549,53 @@
             }, 1000);
 
             loadQuizQuestionItem();
+        }
+
+        // --- FUNGSI DETEKSI KELUAR WEB (ANTI-CHEAT) ---
+        function initQuizAntiCheat() {
+            hasLeftQuiz = false;
+            window.addEventListener('blur', triggerAntiCheatAlert);
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    triggerAntiCheatAlert();
+                }
+            });
+        }
+
+        function triggerAntiCheatAlert() {
+            const quizContainer = document.getElementById('quiz-container-box');
+            if (quizContainer && !quizContainer.classList.contains('hidden') && !hasLeftQuiz) {
+                hasLeftQuiz = true;
+
+                // 1. Bunyikan Alarm Audio
+                const sound = document.getElementById('warning-sound');
+                if (sound) {
+                    sound.play().catch(e => console.log("Audio play blocked:", e));
+                }
+
+                // 2. Tampilkan Peringatan Visual di Layar
+                showNotifModal(
+                    'PERINGATAN PELANGGARAN!', 
+                    `Halo ${verifiedStudentName}, Anda terdeteksi keluar dari halaman kuis (pindah tab/aplikasi)! Pelanggaran ini telah dicatat dan dilaporkan.`, 
+                    'warning'
+                );
+
+                // 3. Kirim Laporan Pelanggaran Secara Otomatis ke Gmail via Formspree
+                const payload = {
+                    _subject: `⚠️ LAPORAN PELANGGARAN KUIS - ${activeQuizPilar}`,
+                    nama_peserta: verifiedStudentName,
+                    pilar: activeQuizPilar,
+                    keterangan: "Peserta terdeteksi meninggalkan halaman kuis (pindah tab/keluar web)."
+                };
+
+                fetch(FORMSPREE_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify(payload)
+                }).catch(err => {
+                    console.log("Gagal mengirim laporan pelanggaran:", err);
+                });
+            }
         }
 
         function updateTimerDisplay() {
