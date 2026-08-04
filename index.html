@@ -94,6 +94,10 @@
                 <button onclick="openRegisterModal()" class="btn-gold w-full text-center py-3.5 px-4 rounded-2xl text-lg tracking-wide block">
                     Daftar Sekarang
                 </button>
+                <button onclick="navigateTo('vote')" class="btn-gold w-full text-center py-3.5 px-4 rounded-2xl text-lg tracking-wide flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-square-poll-vertical"></i>
+                    <span>Vote Pembimbing</span>
+                </button>
                 <button onclick="navigateTo('kesan-pesan')" class="btn-gold w-full text-center py-3.5 px-4 rounded-2xl text-lg tracking-wide block">
                     Kesan & Pesan
                 </button>
@@ -154,7 +158,7 @@
                     </div>
                     <div class="text-center">
                         <h3 class="text-sm font-extrabold text-slate-800">Identitas Peserta Kuis</h3>
-                        <p class="text-[11px] text-slate-500 mt-0.5">Silakan masukkan nama Anda sebelum mulai mengerjakan. Setiap peserta hanya diberikan **1 kali kesempatan** untuk mengerjakan kuis pada setiap pilar.</p>
+                        <p class="text-[11px] text-slate-500 mt-0.5">Silakan masukkan nama Anda sebelum mulai mengerjakan. Setiap peserta hanya diberikan <strong>1 kali kesempatan</strong> untuk mengerjakan kuis pada setiap pilar.</p>
                     </div>
                     <div class="space-y-2 pt-1">
                         <div>
@@ -225,6 +229,82 @@
             </div>
         </div>
 
+        <!-- HALAMAN 5: VOTE PEMBIMBING & HASIL -->
+        <div id="page-vote" class="page-view space-y-4 hidden">
+            <div class="flex items-center justify-between text-white mb-1">
+                <button onclick="navigateTo('home')" class="text-xs bg-indigo-950/80 px-3 py-1.5 rounded-xl border border-amber-400/30 font-semibold flex items-center space-x-1">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Beranda</span>
+                </button>
+                <div class="text-xs font-bold text-amber-300">Vote Pembimbing Tim</div>
+            </div>
+
+            <!-- CONTAINER UTAMA VOTE -->
+            <div class="bg-[#f1aa13] rounded-3xl p-4 card-shadow space-y-4 border-2 border-amber-300">
+                
+                <!-- PILIH KATEGORI PILAR -->
+                <div class="space-y-2">
+                    <div class="text-center text-white font-extrabold text-xs tracking-wider uppercase">
+                        Pilih Kategori Pilar:
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="setVotePilar('Pancasila')" id="btn-cat-Pancasila" class="py-2.5 px-3 rounded-2xl text-xs font-bold transition shadow bg-indigo-900 text-white border-2 border-indigo-950">
+                            Pancasila
+                        </button>
+                        <button onclick="setVotePilar('UUD 1945')" id="btn-cat-UUD 1945" class="py-2.5 px-3 rounded-2xl text-xs font-bold transition shadow bg-white/90 text-indigo-950 hover:bg-white">
+                            UUD 1945
+                        </button>
+                        <button onclick="setVotePilar('NKRI')" id="btn-cat-NKRI" class="py-2.5 px-3 rounded-2xl text-xs font-bold transition shadow bg-white/90 text-indigo-950 hover:bg-white">
+                            NKRI
+                        </button>
+                        <button onclick="setVotePilar('Bhinneka Tunggal Ika')" id="btn-cat-Bhinneka Tunggal Ika" class="py-2.5 px-3 rounded-2xl text-xs font-bold transition shadow bg-white/90 text-indigo-950 hover:bg-white text-[11px]">
+                            Bhinneka Tunggal Ika
+                        </button>
+                    </div>
+                </div>
+
+                <!-- KARTU DAFTAR KANDIDAT PEMBIMBING -->
+                <div class="bg-white rounded-2xl p-4 shadow-lg space-y-3">
+                    <div class="flex justify-between items-center border-b pb-2">
+                        <h3 id="vote-active-pilar-title" class="font-extrabold text-indigo-950 text-base">Pancasila</h3>
+                        <span id="vote-candidate-count" class="bg-indigo-900 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full">10 Kandidat</span>
+                    </div>
+
+                    <!-- Tombol Lihat Hasil -->
+                    <div class="flex justify-end items-center text-[11px]">
+                        <button onclick="toggleVoteMode()" id="toggle-vote-mode-btn" class="font-bold text-indigo-900 underline hover:text-indigo-950">
+                            📊 Lihat Hasil Voting & Persentase
+                        </button>
+                    </div>
+
+                    <!-- TAMPILAN 1: LIST KANDIDAT & RADIO BUTTON -->
+                    <div id="vote-candidates-list" class="space-y-2.5 pt-1">
+                        <!-- Di-generate via JS -->
+                    </div>
+
+                    <!-- TAMPILAN 2: STATISTIK HASIL (Tersembunyi secara default) -->
+                    <div id="vote-stats-container" class="space-y-2.5 pt-1 hidden">
+                        <!-- Di-generate via JS -->
+                    </div>
+
+                    <!-- FORM NAMA PEMILIH -->
+                    <div class="pt-2 border-t space-y-2">
+                        <label class="block text-[11px] font-extrabold text-slate-800">
+                            Nama Pemilih <span class="text-slate-400 font-normal">(Wajib)</span>:
+                        </label>
+                        <input type="text" id="voter-name" placeholder="Tuliskan nama Anda..." class="w-full px-3 py-2.5 rounded-xl text-xs border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400 font-medium bg-slate-50">
+                    </div>
+
+                    <!-- TOMBOL SUBMIT VOTE -->
+                    <button onclick="submitVoteSelection()" class="w-full bg-[#2b10a2] hover:bg-indigo-950 text-white font-extrabold py-3.5 rounded-2xl text-sm shadow-xl transition flex items-center justify-center space-x-2 mt-2">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>Submit Vote</span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
         <!-- HALAMAN 4: KESAN & PESAN -->
         <div id="page-kesan-pesan" class="page-view space-y-4 hidden">
             <div class="flex items-center justify-between text-white">
@@ -261,6 +341,10 @@
             <button id="nav-btn-pilar" onclick="navigateTo('pilar')" class="nav-btn flex flex-col items-center justify-center text-slate-300 hover:text-amber-300 transition w-20 py-1">
                 <i class="fa-solid fa-book-open text-base"></i>
                 <span class="text-[10px] font-medium mt-1">4 Pilar</span>
+            </button>
+            <button id="nav-btn-vote" onclick="navigateTo('vote')" class="nav-btn flex flex-col items-center justify-center text-slate-300 hover:text-amber-300 transition w-20 py-1">
+                <i class="fa-solid fa-square-poll-vertical text-base"></i>
+                <span class="text-[10px] font-medium mt-1">Vote</span>
             </button>
             <button id="nav-btn-kesan-pesan" onclick="navigateTo('kesan-pesan')" class="nav-btn flex flex-col items-center justify-center text-slate-300 hover:text-amber-300 transition w-20 py-1">
                 <i class="fa-solid fa-comment-dots text-base"></i>
@@ -358,7 +442,7 @@
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        const FORMSPREE_URL = "https://formspree.io/f/maqrrljw";
+        const FORMSPREE_URL = "https://formspree.io/f/mgawwodw";
 
         let activeQuizPilar = "";
         let currentQuizIndex = 0;
@@ -366,8 +450,13 @@
         let userAnswers = [];
         let verifiedStudentName = "";
         let quizTimerInterval = null;
-        let timeLeftSeconds = 300; // 5 Menit = 300 Detik
-        let hasLeftQuiz = false;   // Flag Anti-Cheat
+        let timeLeftSeconds = 300; 
+        let hasLeftQuiz = false;   
+
+        // Variabel untuk Halaman Vote
+        let activeVotePilar = "Pancasila";
+        let selectedVoteCandidate = "";
+        let isShowingVoteStats = false;
 
         const pilarData = {
             "Pancasila": {
@@ -452,7 +541,30 @@
             }
         };
 
+        const listPembimbing = [
+            { id: 1, nama: "Muh. Arif" },
+            { id: 2, nama: "Zaskya Nasywa Fahrani" },
+            { id: 3, nama: "Novita. MH" },
+            { id: 4, nama: "Sarah Ardelia Nadir" },
+            { id: 5, nama: "Muhammad Amri. B" },
+            { id: 6, nama: "Marsya" },
+            { id: 7, nama: "Rahmania" },
+            { id: 8, nama: "Putri Aulianisa" },
+            { id: 9, nama: "Shahratul Yusita" },
+            { id: 10, nama: "Geril Suardi" }
+        ];
+
         document.addEventListener("DOMContentLoaded", () => {
+            // RESET DATA VOTING SAAT HALAMAN DIMUAT (Sesuai permintaan)
+            localStorage.removeItem('pembimbing_votes_by_pilar');
+            // Hapus juga kunci vote per individu yang tersimpan sebelumnya
+            for (let i = 0; i < localStorage.length; i++) {
+                let key = localStorage.key(i);
+                if (key && key.startsWith('voted_')) {
+                    localStorage.removeItem(key);
+                }
+            }
+
             const initialHeight = window.innerHeight;
             window.addEventListener('resize', () => {
                 if (window.innerHeight < initialHeight * 0.75) {
@@ -480,6 +592,10 @@
             if (activeNav) {
                 activeNav.classList.add('text-amber-400');
                 activeNav.classList.remove('text-slate-300');
+            }
+
+            if (pageId === 'vote') {
+                renderVoteUI();
             }
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -532,7 +648,6 @@
             document.getElementById('quiz-identity-box').classList.add('hidden');
             document.getElementById('quiz-container-box').classList.remove('hidden');
 
-            // INISIALISASI FITUR ANTI-CHEAT KELUAR WEB
             initQuizAntiCheat();
 
             timeLeftSeconds = 300;
@@ -551,7 +666,6 @@
             loadQuizQuestionItem();
         }
 
-        // --- FUNGSI DETEKSI KELUAR WEB (ANTI-CHEAT) ---
         function initQuizAntiCheat() {
             hasLeftQuiz = false;
             window.addEventListener('blur', triggerAntiCheatAlert);
@@ -567,20 +681,17 @@
             if (quizContainer && !quizContainer.classList.contains('hidden') && !hasLeftQuiz) {
                 hasLeftQuiz = true;
 
-                // 1. Bunyikan Alarm Audio
                 const sound = document.getElementById('warning-sound');
                 if (sound) {
                     sound.play().catch(e => console.log("Audio play blocked:", e));
                 }
 
-                // 2. Tampilkan Peringatan Visual di Layar
                 showNotifModal(
                     'PERINGATAN PELANGGARAN!', 
                     `Halo ${verifiedStudentName}, Anda terdeteksi keluar dari halaman kuis (pindah tab/aplikasi)! Pelanggaran ini telah dicatat dan dilaporkan.`, 
                     'warning'
                 );
 
-                // 3. Kirim Laporan Pelanggaran Secara Otomatis ke Gmail via Formspree
                 const payload = {
                     _subject: `⚠️ LAPORAN PELANGGARAN KUIS - ${activeQuizPilar}`,
                     nama_peserta: verifiedStudentName,
@@ -730,6 +841,158 @@
             }).catch(err => {
                 submitBtn.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> <span>Periksa Koneksi Internet</span>`;
             });
+        }
+
+        // --- SISTEM VOTE ---
+        function setVotePilar(pilarName) {
+            activeVotePilar = pilarName;
+            selectedVoteCandidate = "";
+            isShowingVoteStats = false;
+
+            ["Pancasila", "UUD 1945", "NKRI", "Bhinneka Tunggal Ika"].forEach(p => {
+                const btn = document.getElementById(`btn-cat-${p}`);
+                if (btn) {
+                    if (p === pilarName) {
+                        btn.className = "py-2.5 px-3 rounded-2xl text-xs font-bold transition shadow bg-indigo-900 text-white border-2 border-indigo-950";
+                    } else {
+                        btn.className = "py-2.5 px-3 rounded-2xl text-xs font-bold transition shadow bg-white/90 text-indigo-950 hover:bg-white";
+                    }
+                }
+            });
+
+            document.getElementById('vote-active-pilar-title').innerText = pilarName;
+            renderVoteUI();
+        }
+
+        function toggleVoteMode() {
+            isShowingVoteStats = !isShowingVoteStats;
+            renderVoteUI();
+        }
+
+        function renderVoteUI() {
+            const listContainer = document.getElementById('vote-candidates-list');
+            const statsContainer = document.getElementById('vote-stats-container');
+            const toggleBtn = document.getElementById('toggle-vote-mode-btn');
+
+            if (isShowingVoteStats) {
+                listContainer.classList.add('hidden');
+                statsContainer.classList.remove('hidden');
+                toggleBtn.innerHTML = "📝 Kembali ke Pilihan Vote";
+                renderVoteStatsContent();
+            } else {
+                statsContainer.classList.add('hidden');
+                listContainer.classList.remove('hidden');
+                toggleBtn.innerHTML = "📊 Lihat Hasil Voting & Persentase";
+                renderVoteCandidatesContent();
+            }
+        }
+
+        function renderVoteCandidatesContent() {
+            const container = document.getElementById('vote-candidates-list');
+            container.innerHTML = '';
+
+            listPembimbing.forEach(item => {
+                const isSelected = selectedVoteCandidate === item.nama;
+                
+                const div = document.createElement('div');
+                div.className = `flex items-center justify-between p-3 rounded-2xl border-2 transition cursor-pointer ${isSelected ? 'bg-indigo-50 border-indigo-600 shadow-md' : 'bg-amber-50/50 hover:bg-amber-50 border-amber-200/80'}`;
+                div.onclick = () => selectCandidate(item.nama);
+
+                div.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <span class="w-7 h-7 rounded-xl bg-amber-400 text-indigo-950 font-black text-xs flex items-center justify-center shadow-inner">${item.id}</span>
+                        <span class="font-bold text-slate-800 text-xs sm:text-sm">${item.nama}</span>
+                    </div>
+                    <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center ${isSelected ? 'border-indigo-600 bg-indigo-600' : 'border-slate-300 bg-white'}">
+                        ${isSelected ? '<i class="fa-solid fa-check text-white text-[10px]"></i>' : ''}
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function selectCandidate(nama) {
+            selectedVoteCandidate = nama;
+            renderVoteCandidatesContent();
+        }
+
+        function renderVoteStatsContent() {
+            const container = document.getElementById('vote-stats-container');
+            container.innerHTML = '';
+
+            let allVotesData = JSON.parse(localStorage.getItem('pembimbing_votes_by_pilar') || '{}');
+            let pilarVotes = allVotesData[activeVotePilar] || {};
+
+            let totalVotes = 0;
+            listPembimbing.forEach(item => {
+                totalVotes += (pilarVotes[item.nama] || 0);
+            });
+
+            let sortedList = [...listPembimbing].sort((a, b) => {
+                let countA = pilarVotes[a.nama] || 0;
+                let countB = pilarVotes[b.nama] || 0;
+                return countB - countA;
+            });
+
+            if (totalVotes === 0) {
+                container.innerHTML = `<div class="text-center py-6 text-slate-500 text-xs">Belum ada suara untuk pilar <strong>${activeVotePilar}</strong>. Jadilah yang pertama memberikan vote!</div>`;
+                return;
+            }
+
+            sortedList.forEach((item, index) => {
+                let count = pilarVotes[item.nama] || 0;
+                let percentage = totalVotes > 0 ? Math.round((count / totalVotes) * 100) : 0;
+
+                let rowDiv = document.createElement('div');
+                rowDiv.className = "bg-slate-50 border border-slate-200 rounded-xl p-2.5 space-y-1.5 text-xs";
+                rowDiv.innerHTML = `
+                    <div class="flex justify-between items-center font-bold text-slate-800">
+                        <span class="truncate max-w-[200px]">${index + 1}. ${item.nama}</span>
+                        <span class="text-indigo-900 bg-indigo-100 px-2 py-0.5 rounded-full text-[10px]">${count} Suara (${percentage}%)</span>
+                    </div>
+                    <div class="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
+                        <div class="bg-amber-500 h-2 rounded-full transition-all duration-500" style="width: ${percentage}%"></div>
+                    </div>
+                `;
+                container.appendChild(rowDiv);
+            });
+        }
+
+        function submitVoteSelection() {
+            const voterName = document.getElementById('voter-name').value.trim();
+
+            if (!selectedVoteCandidate) {
+                alert('Silakan pilih salah satu kandidat pembimbing terlebih dahulu!');
+                return;
+            }
+            if (!voterName) {
+                alert('Silakan masukkan Nama Pemilih Anda!');
+                return;
+            }
+
+            const voterKey = `voted_${activeVotePilar}_${voterName.toLowerCase()}`;
+            if (localStorage.getItem(voterKey)) {
+                alert(`Maaf ${voterName}, Anda sudah pernah memvote pembimbing untuk pilar ${activeVotePilar}. Setiap orang hanya boleh memvote sekali per pilar!`);
+                isShowingVoteStats = true;
+                renderVoteUI();
+                return;
+            }
+
+            localStorage.setItem(voterKey, selectedVoteCandidate);
+
+            let allVotesData = JSON.parse(localStorage.getItem('pembimbing_votes_by_pilar') || '{}');
+            if (!allVotesData[activeVotePilar]) {
+                allVotesData[activeVotePilar] = {};
+            }
+            allVotesData[activeVotePilar][selectedVoteCandidate] = (allVotesData[activeVotePilar][selectedVoteCandidate] || 0) + 1;
+            localStorage.setItem('pembimbing_votes_by_pilar', JSON.stringify(allVotesData));
+
+            document.getElementById('voter-name').value = '';
+            selectedVoteCandidate = "";
+
+            showNotifModal('Vote Berhasil!', `Terima kasih ${voterName}, pilihan Anda untuk pembimbing di pilar ${activeVotePilar} telah direkam.`, 'success');
+            isShowingVoteStats = true;
+            renderVoteUI();
         }
 
         function openRegisterModal() {
