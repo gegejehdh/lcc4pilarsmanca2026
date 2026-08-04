@@ -35,6 +35,13 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(0,0,0,0.35);
         }
+        .btn-locked {
+            background-color: #475569;
+            color: #cbd5e1;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: all 0.2s ease-in-out;
+        }
         .card-shadow {
             box-shadow: 0 10px 25px rgba(0,0,0,0.3);
         }
@@ -114,7 +121,7 @@
                     <i class="fa-solid fa-arrow-left"></i>
                     <span>Kembali</span>
                 </button>
-                <div class="text-xs font-bold text-amber-300">Pilih Sub-Materi 4 Pilar</div>
+                <div class="text-xs font-bold text-amber-300">Pilih Sub-Materi & Kuis</div>
             </div>
 
             <div class="grid grid-cols-1 gap-3">
@@ -132,6 +139,15 @@
                 </button>
                 <button onclick="openPilarDetail('Bhinneka Tunggal Ika')" class="btn-gold w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between">
                     <span>Bhinneka Tunggal Ika</span>
+                    <i class="fa-solid fa-chevron-right text-sm"></i>
+                </button>
+
+                <!-- TOMBOL EVALUASI TERKUNCI -->
+                <button onclick="openPilarDetail('Evaluasi')" id="btn-evaluasi-menu" class="btn-locked w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between">
+                    <span class="flex items-center space-x-2">
+                        <i id="evaluasi-lock-icon" class="fa-solid fa-lock text-sm text-amber-400"></i>
+                        <span>Evaluasi (19 Agt 2026)</span>
+                    </span>
                     <i class="fa-solid fa-chevron-right text-sm"></i>
                 </button>
             </div>
@@ -154,7 +170,7 @@
                     </div>
                     <div class="text-center">
                         <h3 class="text-sm font-extrabold text-slate-800">Identitas Peserta Kuis</h3>
-                        <p class="text-[11px] text-slate-500 mt-0.5">Silakan masukkan nama Anda sebelum mulai mengerjakan. Setiap peserta hanya diberikan <strong>1 kali kesempatan</strong> untuk mengerjakan kuis pada setiap pilar.</p>
+                        <p class="text-[11px] text-slate-500 mt-0.5">Silakan masukkan nama Anda sebelum mulai mengerjakan. Setiap peserta hanya diberikan <strong>1 kali kesempatan</strong> untuk mengerjakan kuis.</p>
                     </div>
                     <div class="space-y-2 pt-1">
                         <div>
@@ -271,14 +287,14 @@
             </div>
 
             <div class="space-y-3 text-xs text-slate-700 leading-relaxed text-justify">
-                <div class="bg-indigo-50 border border-indigo-100 p-3 rounded-xl font-semibold text-indigo-950">
+                <div id="modal-banner-box" class="bg-indigo-50 border border-indigo-100 p-3 rounded-xl font-semibold text-indigo-950">
                     <i class="fa-solid fa-book-bookmark mr-1"></i> Ringkasan Materi Komprehensif LCC 4 Pilar
                 </div>
                 <p id="pilar-materi-text" class="font-medium whitespace-pre-line"></p>
             </div>
 
             <div class="pt-2 border-t">
-                <button onclick="openQuizPageFromModal()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-xl text-xs shadow-md transition flex items-center justify-center space-x-2">
+                <button id="modal-action-btn" onclick="openQuizPageFromModal()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-xl text-xs shadow-md transition flex items-center justify-center space-x-2">
                     <i class="fa-solid fa-pen-to-square"></i>
                     <span>Mulai Kuis 15 Soal</span>
                 </button>
@@ -375,6 +391,9 @@
         let timeLeftSeconds = 300; 
         let hasLeftQuiz = false;   
 
+        // TANGGAL BUKA EVALUASI: 19 Agustus 2026 (Format: YYYY-MM-DD)
+        const targetEvaluationDate = new Date("2026-08-19T00:00:00");
+
         const pilarData = {
             "Pancasila": {
                 materi: "Pancasila adalah dasar dan ideologi negara Republik Indonesia yang nilai-nilainya digali dari pandangan hidup bangsa, adat istiadat, serta kebudayaan yang berakar dari sejarah Nusantara.\n\nSecara historis, istilah Pancasila pertama kali dicetuskan oleh Ir. Soekarno dalam sidang Badan Penyelidik Usaha-Usaha Persiapan Kemerdekaan Indonesia (BPUPKI) pada tanggal 1 Juni 1945, yang kemudian diperingati sebagai Hari Lahir Pancasila.\n\nRumusan resmi Pancasila tercantum dalam Pembukaan UUD 1945 alinea keempat, yaitu:\n1. Ketuhanan Yang Maha Esa\n2. Kemanusiaan yang adil dan beradab\n3. Persatuan Indonesia\n4. Kerakyatan yang dipimpin oleh hikmat kebijaksanaan dalam permusyawaratan/perwakilan\n5. Keadilan sosial bagi seluruh rakyat Indonesia\n\nPancasila berfungsi sebagai pandangan hidup bangsa (way of life), dasar negara, ideologi nasional, serta pemersatu bangsa di tengah dinamika globalisasi dan kemajemukan.",
@@ -455,6 +474,26 @@
                     { soal: "Menjaga kerukunan antarumat beragama di Indonesia diatur dalam kerangka...", opsi: ["Toleransi dan saling menghormati", "Paksaan keyakinan", "Pemisahan kelompok", "Dominasi golongan"], jawaban: 0 },
                     { soal: "Semboyan Bhinneka Tunggal Ika pertama kali diserap secara resmi dalam lambang negara pada tahun...", opsi: ["1950", "1945", "1959", "1965"], jawaban: 0 }
                 ]
+            },
+            "Evaluasi": {
+                materi: "Evaluasi Akhir Tim LCC 4 Pilar SMANCA.\n\nSoal-soal evaluasi ini mencakup keseluruhan materi komprehensif dari 4 Pilar Kebangsaan: Pancasila, UUD 1945, NKRI, dan Bhinneka Tunggal Ika.\n\nKerjakan dengan teliti sebagai uji kompetensi akhir sebelum menghadapi perlombaan yang sebenarnya.",
+                kuis: [
+                    { soal: "Evaluasi 1: Apa inti utama dari pengamalan Pancasila sebagai ideologi terbuka?", opsi: ["Kaku dan tidak boleh berubah", "Dinamis mengikuti perkembangan zaman tanpa kehilangan nilai dasarnya", "Mengikuti seluruh budaya asing", "Hanya berlaku bagi pejabat negara"], jawaban: 1 },
+                    { soal: "Evaluasi 2: Lembaga manakah yang memegang kekuasaan legislatif bersama Presiden setelah amandemen UUD 1945?", opsi: ["MPR", "DPR", "DPA", "MK"], jawaban: 1 },
+                    { soal: "Evaluasi 3: Konsep Wawasan Nusantara memandang wilayah Indonesia sebagai...", opsi: ["Wilayah yang terpisah-pisah", "Satu kesatuan politik, ekonomi, sosial budaya, dan pertahanan keamanan", "Kawasan bebas militer internasional", "Wilayah terisolasi"], jawaban: 1 },
+                    { soal: "Evaluasi 4: Nilai luhur yang terkandung dalam semboyan Bhinneka Tunggal Ika mengajarkan kita untuk...", opsi: ["Menghilangkan seluruh perbedaan budaya", "Menjunjung tinggi toleransi dan persatuan di tengah keragaman", "Memilih-milih teman pergaulan", "Mengunggulkan suku sendiri"], jawaban: 1 },
+                    { soal: "Evaluasi 5: Hari Lahir Pancasila diperingati setiap tanggal...", opsi: ["1 Juni", "17 Agustus", "1 Oktober", "18 Agustus"], jawaban: 0 },
+                    { soal: "Evaluasi 6: Pasal berapakah dalam UUD 1945 yang mengatur tentang kebebasan memeluk agama?", opsi: ["Pasal 28E", "Pasal 29", "Pasal 30", "Pasal 31"], jawaban: 1 },
+                    { soal: "Evaluasi 7: Deklarasi Djuanda tahun 1957 memperjuangkan konsep tentang...", opsi: ["Batas wilayah perairan nusantara", "Sistem pendidikan nasional", "Otonomi khusus daerah", "Pertahanan militer darat"], jawaban: 0 },
+                    { soal: "Evaluasi 8: Kitab Sutasoma yang memuat semboyan Bhinneka Tunggal Ika dikarang oleh...", opsi: ["Mpu Prapanca", "Mpu Tantular", "Mpu Gandring", "Mpu Panuluh"], jawaban: 1 },
+                    { soal: "Evaluasi 9: Sidang PPKI yang mengesahkan UUD 1945 dilaksanakan pada tanggal...", opsi: ["17 Agustus 1945", "18 Agustus 1945", "22 Juni 1945", "29 Mei 1945"], jawaban: 1 },
+                    { soal: "Evaluasi 10: Sikap cinta tanah air dan bangsa sendiri disebut juga sebagai...", opsi: ["Chauvinisme", "Nasionalisme", "Individualisme", "Hedonisme"], jawaban: 1 },
+                    { soal: "Evaluasi 11: Lambang pohon beringin pada perisai Garuda Pancasila mencerminkan sila ke...", opsi: ["Sila Pertama", "Sila Kedua", "Sila Ketiga", "Sila Keempat"], jawaban: 2 },
+                    { soal: "Evaluasi 12: Pasal 1 ayat (1) UUD 1945 menegaskan bahwa Negara Indonesia ialah...", opsi: ["Negara Federal", "Negara Kesatuan yang berbentuk Republik", "Negara Kerajaan", "Negara dominion"], jawaban: 1 },
+                    { soal: "Evaluasi 13: Perjuangan bangsa Indonesia untuk mencapai kemerdekaan tercantum dalam Pembukaan UUD 1945 alinea ke...", opsi: ["Alinea Pertama", "Alinea Kedua", "Alinea Ketiga", "Alinea Keempat"], jawaban: 1 },
+                    { soal: "Evaluasi 14: Bentuk ancaman non-militer terhadap kedaulatan bangsa dapat berupa...", opsi: ["Agresi militer fisik", "Invasi angkatan bersenjata", "Ancaman ideologi, budaya, dan ekonomi global yang merusak", "Blokade laut militer"], jawaban: 2 },
+                    { soal: "Evaluasi 15: Tujuan utama diadakannya LCC 4 Pilar MPR RI adalah...", opsi: ["Mencari juara kelas", "Memperkuat wawasan kebangsaan dan pemahaman konstitusi generasi muda", "Menguji kecepatan lari", "Pelatihan kemiliteran"], jawaban: 1 }
+                ]
             }
         };
 
@@ -467,7 +506,26 @@
                     document.body.classList.remove('keyboard-open');
                 }
             });
+            checkEvaluationLockStatus();
         });
+
+        function checkEvaluationLockStatus() {
+            const now = new Date();
+            const btnEval = document.getElementById('btn-evaluasi-menu');
+            const iconEval = document.getElementById('evaluasi-lock-icon');
+
+            if (now >= targetEvaluationDate) {
+                // Sudah tanggal 19 Agustus 2026 atau lewat -> Buka kunci
+                btnEval.className = "btn-gold w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between";
+                iconEval.className = "fa-solid fa-unlock text-sm text-amber-200";
+                btnEval.querySelector("span span").innerText = "Evaluasi (Dibuka)";
+            } else {
+                // Masih terkunci
+                btnEval.className = "btn-locked w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between";
+                iconEval.className = "fa-solid fa-lock text-sm text-amber-400";
+                btnEval.querySelector("span span").innerText = "Evaluasi (19 Agt 2026)";
+            }
+        }
 
         function navigateTo(pageId) {
             if (pageId !== 'quiz' && quizTimerInterval) {
@@ -492,9 +550,29 @@
         }
 
         function openPilarDetail(pilar) {
+            if (pilar === 'Evaluasi') {
+                const now = new Date();
+                if (now < targetEvaluationDate) {
+                    showNotifModal(
+                        'Kuis Masih Terkunci', 
+                        'Menu Evaluasi baru dapat diakses dan dikerjakan mulai tanggal 19 Agustus 2026.', 
+                        'warning'
+                    );
+                    return;
+                }
+            }
+
             activeQuizPilar = pilar;
             document.getElementById('pilar-modal-title').innerText = pilar;
             document.getElementById('pilar-materi-text').innerText = pilarData[pilar].materi;
+            
+            const actionBtn = document.getElementById('modal-action-btn');
+            if (pilar === 'Evaluasi') {
+                actionBtn.innerHTML = `<i class="fa-solid fa-pen-to-square"></i> <span>Mulai Evaluasi (15 Soal)</span>`;
+            } else {
+                actionBtn.innerHTML = `<i class="fa-solid fa-pen-to-square"></i> <span>Mulai Kuis 15 Soal</span>`;
+            }
+
             document.getElementById('modal-pilar-detail').classList.remove('hidden');
         }
 
@@ -507,7 +585,7 @@
             currentQuizIndex = 0;
             verifiedStudentName = "";
             document.getElementById('quiz-student-name').value = "";
-            document.getElementById('quiz-header-title').innerText = `Kuis: ${activeQuizPilar}`;
+            document.getElementById('quiz-header-title').innerText = activeQuizPilar === 'Evaluasi' ? 'Evaluasi Akhir' : `Kuis: ${activeQuizPilar}`;
             
             document.getElementById('quiz-identity-box').classList.remove('hidden');
             document.getElementById('quiz-container-box').classList.add('hidden');
@@ -525,7 +603,7 @@
 
             const storageKey = `done_quiz_${activeQuizPilar}_${nameInput.toLowerCase()}`;
             if (localStorage.getItem(storageKey)) {
-                alert(`Maaf, ${nameInput}, Anda sudah pernah mengerjakan kuis untuk pilar ${activeQuizPilar}. Setiap peserta hanya diberikan 1 kali kesempatan!`);
+                alert(`Maaf, ${nameInput}, Anda sudah pernah mengerjakan ${activeQuizPilar}. Setiap peserta hanya diberikan 1 kali kesempatan!`);
                 return;
             }
 
@@ -546,7 +624,7 @@
                 updateTimerDisplay();
                 if (timeLeftSeconds <= 0) {
                     clearInterval(quizTimerInterval);
-                    alert("Waktu pengerjaan kuis telah habis!");
+                    alert("Waktu pengerjaan telah habis!");
                     finishQuizAndSubmit();
                 }
             }, 1000);
@@ -581,7 +659,7 @@
                 );
 
                 const payload = {
-                    _subject: `⚠️ LAPORAN PELANGGARAN KUIS - ${activeQuizPilar}`,
+                    _subject: `⚠️ LAPORAN PELANGGARAN - ${activeQuizPilar}`,
                     nama_peserta: verifiedStudentName,
                     pilar: activeQuizPilar,
                     keterangan: "Peserta terdeteksi meninggalkan halaman kuis (pindah tab/keluar web)."
@@ -690,13 +768,13 @@
             
             let msg = "";
             if (scoreCount === 15) {
-                msg = "Luar biasa! Penguasaan materi 4 Pilar Anda sudah sempurna!";
+                msg = "Luar biasa! Penguasaan materi Anda sudah sempurna!";
             } else if (scoreCount >= 11) {
-                msg = "Bagus sekali! Pemahaman Anda tentang pilar kebangsaan sangat baik.";
+                msg = "Bagus sekali! Pemahaman Anda sangat baik.";
             } else if (scoreCount >= 6) {
-                msg = "Cukup baik, tingkatkan lagi dengan membaca ringkasan materi lebih teliti ya.";
+                msg = "Cukup baik, tingkatkan lagi dengan membaca ringkasan materi lebih teliti.";
             } else {
-                msg = "Tetap semangat! Pelajari kembali materi ringkas untuk hasil yang lebih optimal.";
+                msg = "Tetap semangat! Pelajari kembali materi untuk hasil yang lebih optimal.";
             }
             document.getElementById('result-message').innerText = msg;
             
@@ -707,7 +785,7 @@
             document.getElementById('quiz-result-box').classList.remove('hidden');
 
             const payload = {
-                _subject: `Hasil Skor Kuis ${activeQuizPilar} - SMANCA`,
+                _subject: `Hasil Skor ${activeQuizPilar} - SMANCA`,
                 nama_siswa: verifiedStudentName,
                 pilar: activeQuizPilar,
                 skor: `${scoreCount} dari ${quizList.length}`
