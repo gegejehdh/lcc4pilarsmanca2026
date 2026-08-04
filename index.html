@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts: Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Firebase SDK (Compat Version untuk kemudahan integrasi Realtime Database) -->
+    <!-- Firebase SDK (Compat Version) -->
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     <style>
@@ -175,7 +175,7 @@
                     </div>
                 </div>
 
-                <!-- BAGIAN 2: AREA SOAL KUIS (Tersembunyi sampai nama diisi) -->
+                <!-- BAGIAN 2: AREA SOAL KUIS -->
                 <div id="quiz-container-box" class="space-y-4 hidden">
                     <div class="flex justify-between items-center border-b pb-2">
                         <span id="quiz-progress-text" class="text-xs font-bold text-indigo-900">Pertanyaan 1 dari 15</span>
@@ -204,7 +204,7 @@
                     </div>
                 </div>
 
-                <!-- BAGIAN 3: HASIL KUIS (Muncul di akhir sesi kuis) -->
+                <!-- BAGIAN 3: HASIL KUIS -->
                 <div id="quiz-result-box" class="space-y-3 hidden text-center py-2">
                     <div class="w-16 h-16 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mx-auto text-2xl shadow-inner">
                         <i class="fa-solid fa-award"></i>
@@ -285,7 +285,7 @@
                         <!-- Di-generate via JS -->
                     </div>
 
-                    <!-- TAMPILAN 2: STATISTIK HASIL (Tersembunyi secara default) -->
+                    <!-- TAMPILAN 2: STATISTIK HASIL -->
                     <div id="vote-stats-container" class="space-y-2.5 pt-1 hidden">
                         <!-- Di-generate via JS -->
                     </div>
@@ -356,7 +356,7 @@
         </div>
     </nav>
 
-    <!-- MODAL MATERI (Panjang) -->
+    <!-- MODAL MATERI -->
     <div id="modal-pilar-detail" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl p-5 max-w-sm w-full max-h-[90vh] overflow-y-auto shadow-2xl space-y-4 no-scrollbar">
             <div class="flex justify-between items-center border-b pb-2 sticky top-0 bg-white z-10">
@@ -364,7 +364,6 @@
                 <button onclick="closePilarModal()" class="text-slate-400 hover:text-slate-600 text-sm"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
-            <!-- Konten Materi Panjang -->
             <div class="space-y-3 text-xs text-slate-700 leading-relaxed text-justify">
                 <div class="bg-indigo-50 border border-indigo-100 p-3 rounded-xl font-semibold text-indigo-950">
                     <i class="fa-solid fa-book-bookmark mr-1"></i> Ringkasan Materi Komprehensif LCC 4 Pilar
@@ -372,7 +371,6 @@
                 <p id="pilar-materi-text" class="font-medium whitespace-pre-line"></p>
             </div>
 
-            <!-- Tombol Masuk Halaman Kuis Terpisah -->
             <div class="pt-2 border-t">
                 <button onclick="openQuizPageFromModal()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-xl text-xs shadow-md transition flex items-center justify-center space-x-2">
                     <i class="fa-solid fa-pen-to-square"></i>
@@ -460,7 +458,7 @@
             appId: "ISI_APP_ID_ANDA"
         };
 
-        // Inisialisasi Firebase (jika sudah diisi konfigurasi aslinya)
+        // Jika Anda sudah memasukkan API key Firebase, un-comment dua baris di bawah ini:
         // firebase.initializeApp(firebaseConfig);
         // const db = firebase.database();
 
@@ -477,7 +475,7 @@
         let activeVotePilar = "Pancasila";
         let selectedVoteCandidate = "";
         let isShowingVoteStats = false;
-        let liveVotesData = {}; // Menyimpan data vote real-time dari database
+        let liveVotesData = {}; 
 
         const pilarData = {
             "Pancasila": {
@@ -576,8 +574,8 @@
         ];
 
         document.addEventListener("DOMContentLoaded", () => {
-            // Sinkronisasi data vote real-time dari database (jika sudah terhubung)
-            // fetchLiveVotesFromFirebase();
+            // Sinkronisasi data vote real-time dari database jika aktif
+            fetchLiveVotesFromFirebase();
 
             const initialHeight = window.innerHeight;
             window.addEventListener('resize', () => {
@@ -589,14 +587,15 @@
             });
         });
 
-        // Fungsi opsional untuk menarik data dari Firebase Realtime Database secara real-time
         function fetchLiveVotesFromFirebase() {
-            // db.ref('votes').on('value', (snapshot) => {
-            //     liveVotesData = snapshot.val() || {};
-            //     if (document.getElementById('page-vote') && !document.getElementById('page-vote').classList.contains('hidden')) {
-            //         renderVoteUI();
-            //     }
-            // });
+            if (typeof db !== 'undefined') {
+                db.ref('votes').on('value', (snapshot) => {
+                    liveVotesData = snapshot.val() || {};
+                    if (document.getElementById('page-vote') && !document.getElementById('page-vote').classList.contains('hidden')) {
+                        renderVoteUI();
+                    }
+                });
+            }
         }
 
         function navigateTo(pageId) {
@@ -867,7 +866,7 @@
             });
         }
 
-        // --- SISTEM VOTE (TERINTEGRASI PERMANEN) ---
+        // --- SISTEM VOTE ---
         function setVotePilar(pilarName) {
             activeVotePilar = pilarName;
             selectedVoteCandidate = "";
@@ -944,8 +943,7 @@
             const container = document.getElementById('vote-stats-container');
             container.innerHTML = '';
 
-            // Mengambil data vote dari database (atau fallback ke localStorage jika firebase belum disetup)
-            let allVotesData = liveVotesData && Object.keys(liveVotesData).length > 0 ? liveVotesData : JSON.parse(localStorage.getItem('pembimbing_votes_by_pilar_permanent') || '{}');
+            let allVotesData = (liveVotesData && Object.keys(liveVotesData).length > 0) ? liveVotesData : JSON.parse(localStorage.getItem('pembimbing_votes_by_pilar_permanent') || '{}');
             let pilarVotes = allVotesData[activeVotePilar] || {};
 
             let totalVotes = 0;
@@ -1003,10 +1001,10 @@
                 return;
             }
 
-            // Tandai bahwa pemilih ini sudah melakukan vote secara lokal agar tidak bisa vote ulang di perangkat yang sama
+            // Simpan status bahwa nama ini sudah vote secara lokal
             localStorage.setItem(voterKey, selectedVoteCandidate);
 
-            // Simpan ke localStorage permanen (atau update ke Firebase)
+            // Simpan ke localStorage permanen lokal
             let allVotesData = JSON.parse(localStorage.getItem('pembimbing_votes_by_pilar_permanent') || '{}');
             if (!allVotesData[activeVotePilar]) {
                 allVotesData[activeVotePilar] = {};
@@ -1014,10 +1012,12 @@
             allVotesData[activeVotePilar][selectedVoteCandidate] = (allVotesData[activeVotePilar][selectedVoteCandidate] || 0) + 1;
             localStorage.setItem('pembimbing_votes_by_pilar_permanent', JSON.stringify(allVotesData));
 
-            // Jika menggunakan Firebase, data juga dikirim secara online ke server:
-            // db.ref('votes/' + activeVotePilar + '/' + selectedVoteCandidate).transaction((currentVal) => {
-            //     return (currentVal || 0) + 1;
-            // });
+            // Jika Firebase aktif, kirim juga ke server secara online
+            if (typeof db !== 'undefined') {
+                db.ref('votes/' + activeVotePilar + '/' + selectedVoteCandidate).transaction((currentVal) => {
+                    return (currentVal || 0) + 1;
+                });
+            }
 
             document.getElementById('voter-name').value = '';
             selectedVoteCandidate = "";
