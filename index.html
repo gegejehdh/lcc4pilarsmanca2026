@@ -288,7 +288,7 @@
                     <!-- TAMPILAN 2: STATISTIK HASIL PUBLIK -->
                     <div id="vote-stats-container" class="space-y-2.5 pt-1 hidden">
                         <div class="bg-indigo-50 border border-indigo-100 p-2.5 rounded-xl text-center text-[11px] font-bold text-indigo-950 mb-2">
-                            <i class="fa-solid fa-earth-asia text-indigo-600 mr-1"></i> Hasil Real-Time Publik (Dapat dilihat oleh siapa saja)
+                            <i class="fa-solid fa-earth-asia text-indigo-600 mr-1"></i> Hasil Real-Time Publik (Sinkron Antar HP)
                         </div>
                         <!-- Di-generate via JS -->
                     </div>
@@ -446,11 +446,9 @@
 
     <!-- JAVASCRIPT LOGIC DAN INISIALISASI FIREBASE -->
     <script type="module">
-        // Import Firebase modules dari CDN resmi
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-analytics.js";
 
-        // Konfigurasi Firebase Anda
         const firebaseConfig = {
             apiKey: "AIzaSyBnsAcsT0c7qHdPR6p8ZBhXa1eP2awb73U",
             authDomain: "real-time-76923.firebaseapp.com",
@@ -461,7 +459,6 @@
             measurementId: "G-6Q2LJDWFM9"
         };
 
-        // Inisialisasi Firebase App & Analytics
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
     </script>
@@ -469,7 +466,6 @@
     <script>
         const FORMSPREE_URL = "https://formspree.io/f/mgawwodw";
 
-        // Inisialisasi Firebase Database menggunakan Compat SDK untuk sinkronisasi Real-Time Voting
         const firebaseCompatConfig = {
             apiKey: "AIzaSyBnsAcsT0c7qHdPR6p8ZBhXa1eP2awb73U",
             authDomain: "real-time-76923.firebaseapp.com",
@@ -494,10 +490,9 @@
         let timeLeftSeconds = 300; 
         let hasLeftQuiz = false;   
 
-        // Variabel untuk Halaman Vote (Hasil Publik)
         let activeVotePilar = "Pancasila";
         let selectedVoteCandidate = "";
-        let isShowingVoteStats = true; // Dibuat default true agar langsung terbuka dan bisa dilihat semua orang
+        let isShowingVoteStats = true; 
         let liveVotesData = {}; 
 
         const pilarData = {
@@ -609,6 +604,7 @@
             });
         });
 
+        // FUNGSI UTAMA: Mengambil dan Mensinkronkan Data Voting Real-Time dari Firebase Database
         function fetchLiveVotesFromFirebase() {
             if (typeof db !== 'undefined') {
                 db.ref('votes').on('value', (snapshot) => {
@@ -888,7 +884,7 @@
             });
         }
 
-        // --- SISTEM VOTE PUBLIK ---
+        // --- SISTEM VOTE PUBLIK TERPUSAT (SINKRON ANTAR HP) ---
         function setVotePilar(pilarName) {
             activeVotePilar = pilarName;
             selectedVoteCandidate = "";
@@ -964,12 +960,11 @@
             const container = document.getElementById('vote-stats-container');
             container.innerHTML = `
                 <div class="bg-indigo-50 border border-indigo-100 p-2.5 rounded-xl text-center text-[11px] font-bold text-indigo-950 mb-2">
-                    <i class="fa-solid fa-earth-asia text-indigo-600 mr-1"></i> Hasil Real-Time Publik (Dapat dilihat oleh siapa saja)
+                    <i class="fa-solid fa-earth-asia text-indigo-600 mr-1"></i> Hasil Real-Time Publik (Sinkron Antar HP)
                 </div>
             `;
 
-            let allVotesData = (liveVotesData && Object.keys(liveVotesData).length > 0) ? liveVotesData : JSON.parse(localStorage.getItem('pembimbing_votes_by_pilar_permanent') || '{}');
-            let pilarVotes = allVotesData[activeVotePilar] || {};
+            let pilarVotes = (liveVotesData && liveVotesData[activeVotePilar]) ? liveVotesData[activeVotePilar] : {};
 
             let totalVotes = 0;
             listPembimbing.forEach(item => {
@@ -1029,27 +1024,25 @@
                 return;
             }
 
+            // Tandai di perangkat lokal bahwa nama ini sudah vote
             localStorage.setItem(voterKey, selectedVoteCandidate);
 
-            let allVotesData = JSON.parse(localStorage.getItem('pembimbing_votes_by_pilar_permanent') || '{}');
-            if (!allVotesData[activeVotePilar]) {
-                allVotesData[activeVotePilar] = {};
-            }
-            allVotesData[activeVotePilar][selectedVoteCandidate] = (allVotesData[activeVotePilar][selectedVoteCandidate] || 0) + 1;
-            localStorage.setItem('pembimbing_votes_by_pilar_permanent', JSON.stringify(allVotesData));
-
+            // Kirim penambahan vote langsung ke Firebase Realtime Database agar sama di semua HP
             if (typeof db !== 'undefined') {
                 db.ref('votes/' + activeVotePilar + '/' + selectedVoteCandidate).transaction((currentVal) => {
                     return (currentVal || 0) + 1;
+                }, (error, committed) => {
+                    if (error) {
+                        alert("Gagal mengirim vote ke server. Periksa koneksi internet Anda.");
+                    } else if (committed) {
+                        document.getElementById('voter-name').value = '';
+                        selectedVoteCandidate = "";
+                        showNotifModal('Vote Berhasil!', `Terima kasih ${voterName}, pilihan Anda untuk pembimbing di pilar ${activeVotePilar} telah direkam dan disinkronkan ke seluruh perangkat!`, 'success');
+                        isShowingVoteStats = true;
+                        renderVoteUI();
+                    }
                 });
             }
-
-            document.getElementById('voter-name').value = '';
-            selectedVoteCandidate = "";
-
-            showNotifModal('Vote Berhasil!', `Terima kasih ${voterName}, pilihan Anda untuk pembimbing di pilar ${activeVotePilar} telah direkam secara permanen.`, 'success');
-            isShowingVoteStats = true;
-            renderVoteUI();
         }
 
         function openRegisterModal() {
