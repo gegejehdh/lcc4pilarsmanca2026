@@ -273,10 +273,10 @@
                         <span id="vote-candidate-count" class="bg-indigo-900 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full">10 Kandidat</span>
                     </div>
 
-                    <!-- Tombol Lihat Hasil -->
+                    <!-- Tombol Lihat Hasil Terbuka untuk Semua -->
                     <div class="flex justify-end items-center text-[11px]">
                         <button onclick="toggleVoteMode()" id="toggle-vote-mode-btn" class="font-bold text-indigo-900 underline hover:text-indigo-950">
-                            📊 Lihat Hasil Voting & Persentase
+                            📊 Lihat Hasil Voting Publik & Persentase
                         </button>
                     </div>
 
@@ -285,8 +285,11 @@
                         <!-- Di-generate via JS -->
                     </div>
 
-                    <!-- TAMPILAN 2: STATISTIK HASIL -->
+                    <!-- TAMPILAN 2: STATISTIK HASIL PUBLIK -->
                     <div id="vote-stats-container" class="space-y-2.5 pt-1 hidden">
+                        <div class="bg-indigo-50 border border-indigo-100 p-2.5 rounded-xl text-center text-[11px] font-bold text-indigo-950 mb-2">
+                            <i class="fa-solid fa-earth-asia text-indigo-600 mr-1"></i> Hasil Real-Time Publik (Dapat dilihat oleh siapa saja)
+                        </div>
                         <!-- Di-generate via JS -->
                     </div>
 
@@ -471,10 +474,10 @@
         let timeLeftSeconds = 300; 
         let hasLeftQuiz = false;   
 
-        // Variabel untuk Halaman Vote
+        // Variabel untuk Halaman Vote (Hasil Publik)
         let activeVotePilar = "Pancasila";
         let selectedVoteCandidate = "";
-        let isShowingVoteStats = false;
+        let isShowingVoteStats = true; // Dibuat default true agar langsung terbuka dan bisa dilihat semua orang
         let liveVotesData = {}; 
 
         const pilarData = {
@@ -574,7 +577,6 @@
         ];
 
         document.addEventListener("DOMContentLoaded", () => {
-            // Sinkronisasi data vote real-time dari database jika aktif
             fetchLiveVotesFromFirebase();
 
             const initialHeight = window.innerHeight;
@@ -866,11 +868,10 @@
             });
         }
 
-        // --- SISTEM VOTE ---
+        // --- SISTEM VOTE PUBLIK ---
         function setVotePilar(pilarName) {
             activeVotePilar = pilarName;
             selectedVoteCandidate = "";
-            isShowingVoteStats = false;
 
             ["Pancasila", "UUD 1945", "NKRI", "Bhinneka Tunggal Ika"].forEach(p => {
                 const btn = document.getElementById(`btn-cat-${p}`);
@@ -900,12 +901,12 @@
             if (isShowingVoteStats) {
                 listContainer.classList.add('hidden');
                 statsContainer.classList.remove('hidden');
-                toggleBtn.innerHTML = "📝 Kembali ke Pilihan Vote";
+                toggleBtn.innerHTML = "📝 Sembunyikan Hasil / Lakukan Vote";
                 renderVoteStatsContent();
             } else {
                 statsContainer.classList.add('hidden');
                 listContainer.classList.remove('hidden');
-                toggleBtn.innerHTML = "📊 Lihat Hasil Voting & Persentase";
+                toggleBtn.innerHTML = "📊 Lihat Hasil Voting Publik & Persentase";
                 renderVoteCandidatesContent();
             }
         }
@@ -941,7 +942,11 @@
 
         function renderVoteStatsContent() {
             const container = document.getElementById('vote-stats-container');
-            container.innerHTML = '';
+            container.innerHTML = `
+                <div class="bg-indigo-50 border border-indigo-100 p-2.5 rounded-xl text-center text-[11px] font-bold text-indigo-950 mb-2">
+                    <i class="fa-solid fa-earth-asia text-indigo-600 mr-1"></i> Hasil Real-Time Publik (Dapat dilihat oleh siapa saja)
+                </div>
+            `;
 
             let allVotesData = (liveVotesData && Object.keys(liveVotesData).length > 0) ? liveVotesData : JSON.parse(localStorage.getItem('pembimbing_votes_by_pilar_permanent') || '{}');
             let pilarVotes = allVotesData[activeVotePilar] || {};
@@ -958,7 +963,10 @@
             });
 
             if (totalVotes === 0) {
-                container.innerHTML = `<div class="text-center py-6 text-slate-500 text-xs">Belum ada suara untuk pilar <strong>${activeVotePilar}</strong>. Jadilah yang pertama memberikan vote!</div>`;
+                let emptyDiv = document.createElement('div');
+                emptyDiv.className = "text-center py-6 text-slate-500 text-xs";
+                emptyDiv.innerHTML = `Belum ada suara untuk pilar <strong>${activeVotePilar}</strong>. Jadilah yang pertama memberikan vote!`;
+                container.appendChild(emptyDiv);
                 return;
             }
 
@@ -1001,10 +1009,8 @@
                 return;
             }
 
-            // Simpan status bahwa nama ini sudah vote secara lokal
             localStorage.setItem(voterKey, selectedVoteCandidate);
 
-            // Simpan ke localStorage permanen lokal
             let allVotesData = JSON.parse(localStorage.getItem('pembimbing_votes_by_pilar_permanent') || '{}');
             if (!allVotesData[activeVotePilar]) {
                 allVotesData[activeVotePilar] = {};
@@ -1012,7 +1018,6 @@
             allVotesData[activeVotePilar][selectedVoteCandidate] = (allVotesData[activeVotePilar][selectedVoteCandidate] || 0) + 1;
             localStorage.setItem('pembimbing_votes_by_pilar_permanent', JSON.stringify(allVotesData));
 
-            // Jika Firebase aktif, kirim juga ke server secara online
             if (typeof db !== 'undefined') {
                 db.ref('votes/' + activeVotePilar + '/' + selectedVoteCandidate).transaction((currentVal) => {
                     return (currentVal || 0) + 1;
