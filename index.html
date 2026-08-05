@@ -189,7 +189,7 @@
                             <input type="text" id="quiz-student-name" placeholder="Contoh: Geril Suardi" class="w-full px-3 py-2.5 rounded-xl text-xs border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400 font-medium">
                         </div>
                         <button onclick="startQuizSession()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-xl text-xs shadow transition flex items-center justify-center space-x-1 mt-2 cursor-pointer">
-                            <span>Mulai Mengerjakan Soal (Waktu: 7 Menit)</span>
+                            <span>Mulai Mengerjakan Soal (Waktu: 10 Menit)</span>
                             <i class="fa-solid fa-arrow-right"></i>
                         </button>
                     </div>
@@ -202,7 +202,7 @@
                             <!-- WAKTU BERGERAK REAL-TIME -->
                             <span id="quiz-timer-badge" class="bg-red-100 text-red-700 text-[10px] font-extrabold px-2 py-0.5 rounded-full flex items-center space-x-1 animate-pulse">
                                 <i class="fa-solid fa-clock"></i>
-                                <span id="time-left-display">07:00</span>
+                                <span id="time-left-display">10:00</span>
                             </span>
                             <span id="quiz-user-badge" class="bg-indigo-50 text-indigo-800 text-[10px] font-bold px-2 py-0.5 rounded-full truncate max-w-[110px]"></span>
                         </div>
@@ -413,7 +413,7 @@
         let userAnswers = [];
         let verifiedStudentName = "";
         let quizTimerInterval = null;
-        let timeLeftSeconds = 420; // 7 menit
+        let timeLeftSeconds = 600; // 10 menit
         let hasLeftQuiz = false;   
         let activeQuizList = []; 
 
@@ -714,7 +714,7 @@
 
             initQuizAntiCheat();
 
-            timeLeftSeconds = 420; // 7 Menit
+            timeLeftSeconds = 600; // 10 Menit
             updateTimerDisplay();
             if (quizTimerInterval) clearInterval(quizTimerInterval);
             quizTimerInterval = setInterval(() => {
