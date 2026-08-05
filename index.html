@@ -123,7 +123,7 @@
                     <i class="fa-solid fa-arrow-left"></i>
                     <span>Kembali</span>
                 </button>
-                <div class="text-xs font-bold text-amber-300">Pilih Sub-Materi & Kuis (20 Soal)</div>
+                <div class="text-xs font-bold text-amber-300">Pilih Sub-Materi & Kuis</div>
             </div>
 
             <div class="grid grid-cols-1 gap-3">
@@ -141,6 +141,15 @@
                 </button>
                 <button onclick="openPilarDetail('Bhinneka Tunggal Ika')" class="btn-gold w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between">
                     <span>Bhinneka Tunggal Ika</span>
+                    <i class="fa-solid fa-chevron-right text-sm"></i>
+                </button>
+
+                <!-- TOMBOL KUIS SEDEKAH (DIKUNCI) -->
+                <button onclick="openPilarDetail('Kuis Sedekah')" id="btn-kuissedekah-menu" class="btn-locked w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between">
+                    <span class="flex items-center space-x-2">
+                        <i id="kuissedekah-lock-icon" class="fa-solid fa-lock text-sm text-amber-400"></i>
+                        <span>Kuis Sedekah (Segera Dibuka)</span>
+                    </span>
                     <i class="fa-solid fa-chevron-right text-sm"></i>
                 </button>
 
@@ -229,7 +238,7 @@
                         <p id="result-participant-label" class="text-xs text-indigo-900 font-bold mt-1"></p>
                     </div>
                     <div class="bg-indigo-900 text-white py-3 px-4 rounded-2xl font-black text-xl tracking-wide shadow">
-                        Skor: <span id="final-score-val">0</span> / 20
+                        Skor: <span id="final-score-val">0</span> / <span id="final-total-val">20</span>
                     </div>
                     <div id="result-message" class="text-xs font-semibold text-slate-700"></div>
                     
@@ -313,7 +322,7 @@
 
             <div class="space-y-3 text-xs text-slate-700 leading-relaxed text-justify">
                 <div id="modal-banner-box" class="bg-indigo-50 border border-indigo-100 p-3 rounded-xl font-semibold text-indigo-950">
-                    <i class="fa-solid fa-book-bookmark mr-1"></i> Ringkasan Materi Komprehensif LCC 4 Pilar
+                    <i class="fa-solid fa-book-bookmark mr-1"></i> Ringkasan Materi & Kuis Spesial LCC 4 Pilar
                 </div>
                 <p id="pilar-materi-text" class="font-medium whitespace-pre-line"></p>
             </div>
@@ -321,7 +330,7 @@
             <div class="pt-2 border-t">
                 <button id="modal-action-btn" onclick="openQuizPageFromModal()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-xl text-xs shadow-md transition flex items-center justify-center space-x-2 cursor-pointer">
                     <i class="fa-solid fa-pen-to-square"></i>
-                    <span>Mulai Kuis 20 Soal</span>
+                    <span>Mulai Kuis</span>
                 </button>
             </div>
         </div>
@@ -422,7 +431,7 @@
 
         const pilarData = {
             "Pancasila": {
-                materi: "Pancasila adalah dasar dan ideologi negara Republik Indonesia yang nilai-nilainya digali dari pandangan hidup bangsa, adat istiadat, serta kebudayaan yang berakar dari sejarah Nusantara.\n\nSecara historis, istilah Pancasila pertama kali dicetuskan oleh Ir. Soekarno dalam sidang Badan Penyelidik Usaha-Usaha Persiapan Kemerdekaan Indonesia (BPUPKI) pada tanggal 1 Juni 1945, yang kemudian diperingati sebagai Hari Lahir Pancasila.\n\nRumusan resmi Pancasila tercantum dalam Pembukaan UUD 1945 alinea keempat, yaitu:\n1. Ketuhanan Yang Maha Esa\n2. Kemanusiaan yang adil dan beradab\n3. Persatuan Indonesia\n4. Kerakyatan yang dipimpin oleh hikmat kebijaksanaan dalam permusyawaratan/perwakilan\n5. Keadilan sosial bagi seluruh rakyat Indonesia\n\nPancasila berfungsi sebagai pandangan hidup bangsa (way of life), dasar negara, ideologi nasional, serta pemersatu bangsa di tengah dinamika globalisasi dan kemajemukan.",
+                materi: "Pancasila adalah dasar dan ideologi negara Republik Indonesia yang nilai-nilainya digali dari pandangan hidup bangsa, adat istiadat, serta kebudayaan yang berakar dari sejarah Nusantara.",
                 kuis: [
                     { soal: "Dalam persidangan BPUPKI, rumusan dasar negara yang diusulkan oleh Mr. Mohammad Yamin pada tanggal 29 Mei 1945 mencakup lima asas, yaitu...", opsi: ["Peri Kebangsaan, Peri Kemanusiaan, Peri Ketuhanan, Peri Kerakyatan, dan Kesejahteraan Rakyat", "Ketuhanan Yang Maha Esa, Internasionalisme, Mufakat, Kesejahteraan, dan Ketuhanan", "Persatuan, Kekeluargaan, Keseimbangan Lahir Batin, Musyawarah, dan Keadilan Rakyat", "Kebangsaan Indonesia, Internasionalisme, Mufakat, Kesejahteraan Sosial, dan Ketuhanan Yang Berkebudayaan"], jawaban: 0 },
                     { soal: "Piagam Jakarta yang disahkan oleh Panitia Sembilan pada 22 Juni 1945 mengalami perubahan krusial pada kalimat sila pertama atas usul tokoh Indonesia Timur demi menjaga integritas nasional. Siapakah tokoh yang menyampaikan usul keberatan dari masyarakat Indonesia Timur tersebut?", opsi: ["Mohammad Hatta", "Johannes Latuharhary", "Prof. Dr. Soepomo", "Mr. Achmad Subardjo"], jawaban: 1 },
@@ -447,7 +456,7 @@
                 ]
             },
             "UUD 1945": {
-                materi: "Undang-Undang Dasar Negara Republik Indonesia Tahun 1945 atau UUD 1945 adalah hukum dasar tertulis (konstitusi) yang menjadi landasan konstitusional dalam penyelenggaraan negara Republik Indonesia.\n\nMateri ini mencakup pemahaman mendalam mengenai pasal-pasal konstitusi, bentuk kedaulatan, lembaga negara, hak asasi manusia, serta penyelenggaraan pemerintahan negara.",
+                materi: "Undang-Undang Dasar Negara Republik Indonesia Tahun 1945 atau UUD 1945 adalah hukum dasar tertulis (konstitusi) yang menjadi landasan konstitusional.",
                 kuis: [
                     { soal: "Berdasarkan Pasal 1 ayat (1) UUD 1945, negara Indonesia ialah...", opsi: ["Negara Serikat berbentuk Republik", "Negara Kesatuan, yang berbentuk Republik", "Negara Kerajaan Konstitusional", "Negara Dominion"], jawaban: 1 },
                     { soal: "Berdasarkan Pasal 1 ayat (2) UUD 1945, kedaulatan berada di tangan rakyat dan dilaksanakan...", opsi: ["Menurut Undang-Undang Dasar", "Oleh Majelis Permusyawaratan Rakyat sepenuhnya", "Oleh Presiden atas nama rakyat", "Berdasarkan dekrit presiden"], jawaban: 0 },
@@ -472,7 +481,7 @@
                 ]
             },
             "NKRI": {
-                materi: "Negara Kesatuan Republik Indonesia (NKRI) adalah bentuk negara kesatuan yang merdeka dan berdaulat dengan kekuasaan pemerintahan berada di tangan pemerintah pusat, meskipun menganut prinsip otonomi daerah yang luas.\n\nPasal 1 ayat (1) UUD 1945 dengan tegas menyatakan: 'Negara Indonesia ialah Negara Kesatuan, yang berbentuk Republik'. Konsepsi wawasan nusantara memandang wilayah Indonesia sebagai satu kesatuan politik, ekonomi, sosial budaya, serta pertahanan keamanan.\n\nMenjaga keutuhan NKRI merupakan kewajiban konstitusional sekaligus moral bagi setiap warga negara Indonesia guna menangkis segala bentuk ancaman, tantangan, hambatan, dan gangguan (ATHG) baik dari dalam maupun luar negeri.",
+                materi: "Negara Kesatuan Republik Indonesia (NKRI) adalah bentuk negara kesatuan yang merdeka dan berdaulat.",
                 kuis: [
                     { soal: "Deklarasi Djuanda yang dicetuskan pada tanggal 13 Desember 1957 memiliki arti penting bagi NKRI karena...", opsi: ["Mengubah bentuk negara dari federal menjadi kesatuan", "Menyatukan perairan di antara pulau-pulau di Indonesia sebagai bagian integral wilayah kedaulatan teritorial negara", "Menetapkan bahasa Indonesia sebagai bahasa persatuan", "Membubarkan partai politik radikal"], jawaban: 1 },
                     { soal: "Konsepsi Wawasan Nusantara memandang wilayah nusantara sebagai satu kesatuan yang utuh. Aspek sosial budaya dalam wawasan nusantara mengandung arti bahwa...", opsi: ["Masyarakat Indonesia adalah satu kesatuan budaya yang seragam tanpa variasi", "Budaya Indonesia merupakan satu kesatuan dengan corak ragam budaya yang menggambarkan kekayaan bangsa", "Perekonomian nasional diselenggarakan sebagai usaha bersama", "Kekayaan wilayah nusantara adalah milik bersama"], jawaban: 1 },
@@ -497,7 +506,7 @@
                 ]
             },
             "Bhinneka Tunggal Ika": {
-                materi: "Bhinneka Tunggal Ika adalah semboyan resmi negara Republik Indonesia yang menggambarkan semangat persatuan dan kesatuan bangsa di tengah keragaman suku, agama, ras, antargolongan, adat istiadat, dan bahasa.\n\nSemboyan ini bersumber dari kakawin Sutasoma karya Mpu Tantular pada masa Kerajaan Majapahit abad ke-14. Secara harfiah, 'Bhinneka' berarti beraneka ragam, 'Tunggal' berarti satu, dan 'Ika' berarti itu. Jadi, maknanya adalah 'Meskipun berbeda-beda tetap satu jua'.\n\nDalam kehidupan bernegara, semboyan ini menjadi pedoman toleransi multikultural, merawat kerukunan nasional, serta mengokohkan ikatan kebangsaan agar tidak mudah terpecah belah oleh isu suku, agama, ras, dan antargolongan (SARA).",
+                materi: "Bhinneka Tunggal Ika adalah semboyan resmi negara Republik Indonesia yang menggambarkan semangat persatuan dan kesatuan bangsa di tengah keragaman.",
                 kuis: [
                     { soal: "Dalam Kakawin Sutasoma karya Mpu Tantular pada pupuh 139 bait 5, kalimat lengkap yang memuat frasa Bhinneka Tunggal Ika secara filosofis berbunyi...", opsi: ["Bhinneka tunggal ika tan hana dharma mangrwa", "Rwaneka dhatu winuwus buddha wiswa", "Tan hana darma mangrwa", "Sira tan kabeh sinembah"], jawaban: 0 },
                     { soal: "Apa makna teologis dan filosofis yang terkandung di balik bait Kakawin Sutasoma mengenai 'Jina dan Buddha'?", opsi: ["Pengakuan atas toleransi beragama antara umat Buddha dan Siwa (Hindu) yang hidup berdampingan secara damai di Majapahit", "Keharusan untuk menyatukan seluruh agama menjadi satu ajaran tunggal negara", "Penolakan terhadap semua bentuk ibadah di luar kerajaan", "Keunggulan mutlak agama Buddha terhadap agama lainnya"], jawaban: 0 },
@@ -519,6 +528,32 @@
                     { soal: "Manakah pelajar yang mencerminkan pengamalan Bhinneka Tunggal Ika di sekolah?", opsi: ["Membentuk kelompok belajar yang inklusif tanpa memandang latar belakang suku atau agama teman", "Membuat kelompok eksklusif daerah", "Menghindari teman yang berbeda keyakinan saat berdiskusi", "Mengejek logat bicara siswa dari daerah lain"], jawaban: 0 },
                     { soal: "Dalam tinjauan hukum positif Indonesia, penodaan terhadap lambang negara atau semboyan resmi negara diatur sanksi pidananya dalam...", opsi: ["UU No. 24 Tahun 2009 tentang Bendera, Bahasa, dan Lambang Negara serta Lagu Kebangsaan", "Kitab Undang-Undang Hukum Acara Pidana", "Peraturan Daerah tentang Ketertiban Umum", "Undang-Undang Otonomi Khusus"], jawaban: 0 },
                     { soal: "Makna hakiki dari kata 'Tunggal' dalam semboyan Bhinneka Tunggal Ika adalah...", opsi: ["Pengikatan diri dalam satu kesatuan kebangsaan di bawah payung NKRI", "Peleburan seluruh agama menjadi satu aliran", "Pusat pemerintahan yang bersifat sentralistik mutlak", "Penyeragaman adat istiadat seluruh suku"], jawaban: 0 }
+                ]
+            },
+            "Kuis Sedekah": {
+                materi: "Kuis Sedekah Spesial LCC 4 Pilar SMANCA.\n\nMenyajikan kumpulan 21 soal komprehensif mulai dari Pancasila, UUD 1945, NKRI, Bhinneka Tunggal Ika, hingga wawasan pendidikan nasional.",
+                kuis: [
+                    { soal: "Secara etimologis, kata Pancasila berasal dari bahasa Sanskerta. Kata 'pañca' berarti ....", opsi: ["Lima", "Dasar", "Pedoman", "Aturan", "Kesatuan"], jawaban: 0 },
+                    { soal: "Rumusan dasar negara yang diusulkan Mohammad Yamin secara tertulis adalah ....", opsi: ["Peri Kebangsaan, Peri Kemanusiaan, Peri Ketuhanan, Peri Kerakyatan, Kesejahteraan Rakyat", "Kebangsaan Indonesia, Internasionalisme, Mufakat, Kesejahteraan Sosial, Ketuhanan", "Persatuan Indonesia, Kerakyatan, Keadilan, Ketuhanan, Kemanusiaan", "Ketuhanan Yang Maha Esa, Kemanusiaan, Persatuan, Kerakyatan, Keadilan Sosial", "Nasionalisme, Demokrasi, Keadilan, Persatuan, Ketuhanan"], jawaban: 0 },
+                    { soal: "Tokoh yang menyampaikan konsep negara integralistik dalam Sidang BPUPKI adalah ....", opsi: ["Mohammad Yamin", "Mohammad Hatta", "Soepomo", "Ir. Soekarno", "A.A. Maramis"], jawaban: 2 },
+                    { soal: "Rumusan dasar negara yang disampaikan Ir. Soekarno pada 1 Juni 1945 dikenal sebagai ....", opsi: ["Piagam Jakarta", "Trisila dan Ekasila", "Sapta Marga", "Catur Dharma", "Dasa Sila"], jawaban: 1 },
+                    { soal: "Pancasila ditetapkan sebagai dasar negara Indonesia pada tanggal ....", opsi: ["1 Juni 1945", "22 Juni 1945", "17 Agustus 1945", "18 Agustus 1945", "29 Agustus 1945"], jawaban: 3 },
+                    { soal: "Konstitusi dalam arti luas mencakup ....", opsi: ["Hanya Undang-Undang Dasar", "Seluruh ketentuan dasar yang mengatur penyelenggaraan negara, baik tertulis maupun tidak tertulis", "Peraturan Presiden", "Undang-Undang dan Peraturan Pemerintah", "Putusan Mahkamah Konstitusi"], jawaban: 1 },
+                    { soal: "Bunyi Pasal 1 ayat (2) UUD NRI Tahun 1945 adalah ....", opsi: ["Indonesia adalah negara hukum.", "Negara Indonesia ialah Negara Kesatuan yang berbentuk Republik.", "Kedaulatan berada di tangan rakyat dan dilaksanakan menurut Undang-Undang Dasar.", "Presiden memegang kekuasaan pemerintahan menurut Undang-Undang Dasar.", "MPR terdiri atas anggota DPR dan anggota DPD."], jawaban: 2 },
+                    { soal: "Pasal 7C UUD NRI Tahun 1945 bertujuan untuk ....", opsi: ["Memperkuat kekuasaan Presiden", "Menjamin prinsip checks and balances antara Presiden dan DPR", "Memberikan kewenangan DPR membubarkan Presiden", "Memberikan kewenangan Presiden membubarkan MPR", "Mengatur masa jabatan Presiden"], jawaban: 1 },
+                    { soal: "Berdasarkan Pasal 8 UUD NRI Tahun 1945, apabila Presiden mangkat, berhenti, diberhentikan, atau tidak dapat melakukan kewajibannya, maka jabatan Presiden akan digantikan oleh ....", opsi: ["Ketua MPR", "Ketua DPR", "Wakil Presiden", "Ketua Mahkamah Agung", "Menteri Dalam Negeri"], jawaban: 2 },
+                    { soal: "Norma hukum tertulis tertinggi di Indonesia adalah ....", opsi: ["Pancasila", "TAP MPR", "UUD NRI Tahun 1945", "Undang-Undang", "Peraturan Pemerintah"], jawaban: 2 },
+                    { soal: "Prinsip negara kesatuan mengandung makna bahwa ....", opsi: ["Setiap daerah memiliki kedaulatan sendiri", "Kedaulatan negara tidak terbagi-bagi", "Pemerintah daerah lebih tinggi daripada pemerintah pusat", "Setiap provinsi dapat membuat konstitusi sendiri", "Seluruh kebijakan ditentukan pemerintah daerah"], jawaban: 1 },
+                    { soal: "Salah satu alasan Indonesia memilih bentuk negara kesatuan adalah ....", opsi: ["Menghindari keberagaman budaya", "Memperkuat persatuan dan kesatuan bangsa", "Mempermudah pemisahan wilayah", "Menghapus pemerintah daerah", "Mengurangi jumlah provinsi"], jawaban: 1 },
+                    { soal: "Wawasan Nusantara merupakan ....", opsi: ["Sistem pertahanan negara", "Cara pandang bangsa Indonesia terhadap diri dan lingkungannya sebagai satu kesatuan", "Bentuk pemerintahan Indonesia", "Sistem ekonomi nasional", "Dasar negara Indonesia"], jawaban: 1 },
+                    { soal: "Berikut yang termasuk ancaman nonmiliter terhadap NKRI adalah ....", opsi: ["Agresi militer", "Invasi negara lain", "Penyebaran hoaks yang memecah persatuan", "Pelanggaran wilayah oleh kapal asing", "Blokade militer"], jawaban: 2 },
+                    { soal: "Salah satu bentuk bela negara di lingkungan sekolah adalah ....", opsi: ["Menghindari upacara bendera", "Mematuhi tata tertib sekolah dan menjaga persatuan", "Menolak pendapat teman", "Mengutamakan kepentingan kelompok", "Menyebarkan informasi yang belum tentu benar"], jawaban: 1 },
+                    { soal: "Kalimat lengkap semboyan Bhinneka Tunggal Ika adalah ....", opsi: ["Bhinneka Tunggal Ika Tan Hana Dharma Mangrwa", "Tut Wuri Handayani", "Ing Ngarsa Sung Tuladha", "Ing Madya Mangun Karsa", "Satyam Eva Jayate"], jawaban: 0 },
+                    { soal: "Makna kalimat 'Tan Hana Dharma Mangrwa' adalah ....", opsi: ["Tidak ada tujuan yang berbeda", "Tidak ada pengabdian yang mendua", "Tidak ada kebenaran yang mendua", "Tidak ada bangsa yang berbeda", "Tidak ada hukum yang berbeda"], jawaban: 1 },
+                    { soal: "Pada masa Kerajaan Majapahit, semboyan Bhinneka Tunggal Ika digunakan untuk ....", opsi: ["Menyatukan berbagai agama dan kepercayaan", "Menentukan batas wilayah kerajaan", "Mengatur sistem perdagangan", "Menetapkan hukum kerajaan", "Mengatur pemerintahan desa"], jawaban: 0 },
+                    { soal: "Berikut yang paling mencerminkan penerapan Bhinneka Tunggal Ika di sekolah adalah ....", opsi: ["Berteman hanya dengan siswa yang satu suku", "Menghargai pendapat teman meskipun berbeda latar belakang", "Mengutamakan kepentingan kelompok sendiri", "Menolak budaya daerah lain", "Membatasi pergaulan berdasarkan agama"], jawaban: 1 },
+                    { soal: "Hubungan antara Bhinneka Tunggal Ika dan NKRI adalah ....", opsi: ["Keduanya merupakan lembaga negara", "Bhinneka Tunggal Ika menjadi semangat persatuan dalam menjaga keutuhan NKRI", "NKRI merupakan bagian dari Bhinneka Tunggal Ika", "Bhinneka Tunggal Ika mengatur sistem pemerintahan Indonesia", "NKRI dibentuk berdasarkan Kitab Sutasoma"], jawaban: 1 },
+                    { soal: "Arti semboyan 'Tut Wuri Handayani' adalah ....", opsi: ["Di depan memberi teladan.", "Di tengah membangun semangat atau kemauan.", "Dari belakang memberikan dorongan atau motivasi.", "Bersatu dalam keberagaman.", "Belajar sepanjang hayat."], jawaban: 2 }
                 ]
             },
             "Evaluasi 1": {
@@ -573,7 +608,6 @@
             }
         };
 
-        // Fungsi pembantu untuk mengacak array (Fisher-Yates Shuffle)
         function shuffleArray(array) {
             let arr = [...array];
             for (let i = arr.length - 1; i > 0; i--) {
@@ -598,6 +632,13 @@
         function checkEvaluationLockStatus() {
             const now = new Date();
             
+            // Kuis Sedekah (Dibuat tetap terkunci sesuai permintaan)
+            const btnKuisSedekah = document.getElementById('btn-kuissedekah-menu');
+            const iconKuisSedekah = document.getElementById('kuissedekah-lock-icon');
+            btnKuisSedekah.className = "btn-locked w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between";
+            iconKuisSedekah.className = "fa-solid fa-lock text-sm text-amber-400";
+            btnKuisSedekah.querySelector("span span").innerText = "Kuis Sedekah (Segera Dibuka)";
+
             const btnEval1 = document.getElementById('btn-evaluasi1-menu');
             const iconEval1 = document.getElementById('evaluasi1-lock-icon');
             if (now >= targetEval1Date) {
@@ -647,6 +688,10 @@
 
         function openPilarDetail(pilar) {
             const now = new Date();
+            if (pilar === 'Kuis Sedekah') {
+                showNotifModal('Kuis Terkunci', 'Menu Kuis Sedekah saat ini masih dikunci dan belum dibuka.', 'warning');
+                return;
+            }
             if (pilar === 'Evaluasi 1' && now < targetEval1Date) {
                 showNotifModal('Kuis Terkunci', 'Menu Evaluasi 1 baru dapat dikerjakan mulai tanggal 19 Agustus 2026.', 'warning');
                 return;
@@ -661,11 +706,7 @@
             document.getElementById('pilar-materi-text').innerText = pilarData[pilar].materi;
             
             const actionBtn = document.getElementById('modal-action-btn');
-            if (pilar.startsWith('Evaluasi')) {
-                actionBtn.innerHTML = `<i class="fa-solid fa-pen-to-square"></i> <span>Mulai ${pilar} (20 Soal)</span>`;
-            } else {
-                actionBtn.innerHTML = `<i class="fa-solid fa-pen-to-square"></i> <span>Mulai Kuis 20 Soal</span>`;
-            }
+            actionBtn.innerHTML = `<i class="fa-solid fa-pen-to-square"></i> <span>Mulai Kuis ${pilar}</span>`;
 
             document.getElementById('modal-pilar-detail').classList.remove('hidden');
         }
@@ -679,9 +720,8 @@
             currentQuizIndex = 0;
             verifiedStudentName = "";
             document.getElementById('quiz-student-name').value = "";
-            document.getElementById('quiz-header-title').innerText = activeQuizPilar.startsWith('Evaluasi') ? activeQuizPilar : `Kuis: ${activeQuizPilar}`;
+            document.getElementById('quiz-header-title').innerText = activeQuizPilar;
             
-            // Soal diacak secara otomatis saat kuis dimuat
             activeQuizList = shuffleArray(pilarData[activeQuizPilar].kuis);
 
             document.getElementById('quiz-identity-box').classList.remove('hidden');
@@ -714,7 +754,7 @@
 
             initQuizAntiCheat();
 
-            timeLeftSeconds = 600; // 10 Menit
+            timeLeftSeconds = 600; 
             updateTimerDisplay();
             if (quizTimerInterval) clearInterval(quizTimerInterval);
             quizTimerInterval = setInterval(() => {
@@ -862,14 +902,13 @@
             document.getElementById('quiz-container-box').classList.add('hidden');
             document.getElementById('result-participant-label').innerText = `Nama: ${verifiedStudentName}`;
             document.getElementById('final-score-val').innerText = scoreCount;
+            document.getElementById('final-total-val').innerText = activeQuizList.length;
             
             let msg = "";
-            if (scoreCount === 20) {
-                msg = "Luar biasa! Penguasaan materi Anda sempurna (20/20)!";
-            } else if (scoreCount >= 15) {
+            if (scoreCount === activeQuizList.length) {
+                msg = `Luar biasa! Penguasaan materi Anda sempurna (${scoreCount}/${activeQuizList.length})!`;
+            } else if (scoreCount >= Math.floor(activeQuizList.length * 0.75)) {
                 msg = "Sangat membanggakan! Pemikiran Anda teruji dengan baik.";
-            } else if (scoreCount >= 10) {
-                msg = "Cukup baik, tingkatkan lagi ketelitian dalam memahami materi.";
             } else {
                 msg = "Tetap semangat! Pelajari kembali pembahasan konstitusi untuk hasil lebih maksimal.";
             }
