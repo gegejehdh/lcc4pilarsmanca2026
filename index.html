@@ -144,11 +144,11 @@
                     <i class="fa-solid fa-chevron-right text-sm"></i>
                 </button>
 
-                <!-- TOMBOL KUIS SEDEKAH (DIKUNCI) -->
+                <!-- TOMBOL KUIS SEDEKAH (DENGAN HITUNG MUNDUR 20:00 WITA) -->
                 <button onclick="openPilarDetail('Kuis Sedekah')" id="btn-kuissedekah-menu" class="btn-locked w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between">
                     <span class="flex items-center space-x-2">
                         <i id="kuissedekah-lock-icon" class="fa-solid fa-lock text-sm text-amber-400"></i>
-                        <span>Kuis Sedekah (Segera Dibuka)</span>
+                        <span id="kuissedekah-text-label">Kuis Sedekah (Buka 20:00 WITA)</span>
                     </span>
                     <i class="fa-solid fa-chevron-right text-sm"></i>
                 </button>
@@ -198,7 +198,7 @@
                             <input type="text" id="quiz-student-name" placeholder="Contoh: Geril Suardi" class="w-full px-3 py-2.5 rounded-xl text-xs border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400 font-medium">
                         </div>
                         <button onclick="startQuizSession()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-xl text-xs shadow transition flex items-center justify-center space-x-1 mt-2 cursor-pointer">
-                            <span>Mulai Mengerjakan Soal (Waktu: 10 Menit)</span>
+                            <span>Mulai Mengerjakan Soal (Waktu: 20 Menit)</span>
                             <i class="fa-solid fa-arrow-right"></i>
                         </button>
                     </div>
@@ -206,12 +206,12 @@
 
                 <div id="quiz-container-box" class="space-y-4 hidden">
                     <div class="flex justify-between items-center border-b pb-2">
-                        <span id="quiz-progress-text" class="text-xs font-bold text-indigo-900">Pertanyaan 1 dari 20</span>
+                        <span id="quiz-progress-text" class="text-xs font-bold text-indigo-900">Pertanyaan 1 dari 24</span>
                         <div class="flex items-center space-x-2">
                             <!-- WAKTU BERGERAK REAL-TIME -->
                             <span id="quiz-timer-badge" class="bg-red-100 text-red-700 text-[10px] font-extrabold px-2 py-0.5 rounded-full flex items-center space-x-1 animate-pulse">
                                 <i class="fa-solid fa-clock"></i>
-                                <span id="time-left-display">10:00</span>
+                                <span id="time-left-display">20:00</span>
                             </span>
                             <span id="quiz-user-badge" class="bg-indigo-50 text-indigo-800 text-[10px] font-bold px-2 py-0.5 rounded-full truncate max-w-[110px]"></span>
                         </div>
@@ -238,7 +238,7 @@
                         <p id="result-participant-label" class="text-xs text-indigo-900 font-bold mt-1"></p>
                     </div>
                     <div class="bg-indigo-900 text-white py-3 px-4 rounded-2xl font-black text-xl tracking-wide shadow">
-                        Skor: <span id="final-score-val">0</span> / <span id="final-total-val">20</span>
+                        Skor: <span id="final-score-val">0</span> / <span id="final-total-val">24</span>
                     </div>
                     <div id="result-message" class="text-xs font-semibold text-slate-700"></div>
                     
@@ -422,7 +422,7 @@
         let userAnswers = [];
         let verifiedStudentName = "";
         let quizTimerInterval = null;
-        let timeLeftSeconds = 600; // 10 menit
+        let timeLeftSeconds = 600; 
         let hasLeftQuiz = false;   
         let activeQuizList = []; 
 
@@ -435,24 +435,24 @@
                 kuis: [
                     { soal: "Dalam persidangan BPUPKI, rumusan dasar negara yang diusulkan oleh Mr. Mohammad Yamin pada tanggal 29 Mei 1945 mencakup lima asas, yaitu...", opsi: ["Peri Kebangsaan, Peri Kemanusiaan, Peri Ketuhanan, Peri Kerakyatan, dan Kesejahteraan Rakyat", "Ketuhanan Yang Maha Esa, Internasionalisme, Mufakat, Kesejahteraan, dan Ketuhanan", "Persatuan, Kekeluargaan, Keseimbangan Lahir Batin, Musyawarah, dan Keadilan Rakyat", "Kebangsaan Indonesia, Internasionalisme, Mufakat, Kesejahteraan Sosial, dan Ketuhanan Yang Berkebudayaan"], jawaban: 0 },
                     { soal: "Piagam Jakarta yang disahkan oleh Panitia Sembilan pada 22 Juni 1945 mengalami perubahan krusial pada kalimat sila pertama atas usul tokoh Indonesia Timur demi menjaga integritas nasional. Siapakah tokoh yang menyampaikan usul keberatan dari masyarakat Indonesia Timur tersebut?", opsi: ["Mohammad Hatta", "Johannes Latuharhary", "Prof. Dr. Soepomo", "Mr. Achmad Subardjo"], jawaban: 1 },
-                    { soal: "Secara filosofis, kedudukan Pancasila sebagai Staatsfundamentalnorm (pokok kaidah negara yang fundamental) mengandung implikasi yuridis bahwa...", opsi: ["Pancasila dapat diamandemen oleh MPR melalui sidang istimewa", "Pancasila adalah norma hukum tertinggi yang menjadi sumber dari segala sumber hukum", "Pancasila tidak mengikat hukum positif di bawah UUD 1945", "Pancasila bersifat fleksibel terhadap perubahan ideologi global"], jawaban: 1 },
+                    { soal: "Secara filosofis, kedudukan dasar negara yang menjadi Staatsfundamentalnorm (pokok kaidah negara yang fundamental) di Indonesia memuat norma tertinggi yang bersumber dari...", opsi: ["Pancasila", "Ketetapan Parlemen", "Traktat Konstitusi Internasional", "Hukum Adat Regional"], jawaban: 0 },
                     { soal: "Pengamalan sila keempat Pancasila tidak semata-mata dimaknai sebagai voting terbanyak, melainkan harus berlandaskan pada konsep 'hikmat kebijaksanaan'. Apa makna substansial dari frasa tersebut?", opsi: ["Keputusan mutlak berada di tangan pemimpin sidang", "Penggunaan akal sehat yang jernih dengan penuh tanggung jawab moral kepada Tuhan", "Dominasi suara mayoritas mutlak atas kelompok minoritas", "Keputusan diambil berdasarkan negosiasi kepentingan kelompok politik"], jawaban: 1 },
-                    { soal: "Dalam tinjauan ideologis, mengapa Pancasila dikategorikan sebagai ideologi terbuka dan bukan ideologi tertutup?", opsi: ["Nilai dasarnya dapat diubah total sesuai pesanan rezim yang berkuasa", "Karena nilai instrumental dan praksisnya dapat dikembangkan secara dinamis tanpa mengubah nilai dasarnya", "Pancasila menyerap seluruh elemen kapitalisme liberal secara bebas", "Pancasila tidak memiliki batasan norma susila dalam implementasinya"], jawaban: 1 },
+                    { soal: "Dalam tinjauan ideologis, mengapa dasar negara Republik Indonesia dikategorikan sebagai ideologi terbuka?", opsi: ["Nilai dasarnya dapat diubah total sesuai pesanan rezim yang berkuasa", "Karena nilai instrumental dan praksisnya dapat dikembangkan secara dinamis tanpa mengubah nilai dasarnya", "Ideologi tersebut menyerap seluruh elemen kapitalisme liberal secara bebas", "Ideologi tersebut tidak memiliki batasan norma susila dalam implementasinya"], jawaban: 1 },
                     { soal: "Sidang PPKI tanggal 18 Agustus 1945 tidak hanya mengesahkan UUD 1945, tetapi juga menyetujui perubahan tujuh kata pada sila pertama Piagam Jakarta. Rumusan asli tujuh kata tersebut adalah...", opsi: ["...dengan kewajiban menjalankan syariat Islam bagi pemeluk-pemeluknya", "...dengan kewajiban mematuhi hukum agama Islam", "...berdasarkan atas ketuhanan dengan syariat Islam", "...menjalankan ajaran Islam bagi umat Islam Indonesia"], jawaban: 0 },
-                    { soal: "Hubungan kausal-organis antara Pancasila dan Pembukaan UUD 1945 ditegaskan melalui fakta bahwa...", opsi: ["Pancasila tercantum secara eksplisit pada batang tubuh pasal 1", "Pembukaan UUD 1945 merupakan penuangan jiwa Pancasila kedalam bentuk peraturan perundang-undangan tertinggi", "Pancasila dan Pembukaan UUD 1945 dibentuk pada waktu dan sidang yang berbeda total", "Pancasila hanya berfungsi sebagai hiasan mukaddimah konstitusi"], jawaban: 1 },
+                    { soal: "Hubungan kausal-organis antara dasar negara dan Pembukaan UUD 1945 ditegaskan melalui fakta bahwa...", opsi: ["Pancasila tercantum secara eksplisit pada batang tubuh pasal 1", "Pembukaan UUD 1945 merupakan penuangan jiwa dasar negara ke dalam bentuk peraturan perundang-undangan tertinggi", "Pancasila dan Pembukaan UUD 1945 dibentuk pada waktu dan sidang yang berbeda total", "Pancasila hanya berfungsi sebagai hiasan mukaddimah konstitusi"], jawaban: 1 },
                     { soal: "Sila kedua Pancasila, 'Kemanusiaan yang adil dan beradab', mengandung muatan universal yang selaras dengan prinsip Hak Asasi Manusia internasional, namun berakar pada...", opsi: ["Individualisme barat yang menjunjung kebebasan mutlak", "Pengakuan atas harkat dan martabat manusia sebagai makhluk ciptaan Tuhan yang bermoral", "Kedaulatan mutlak negara atas hak hidup individu", "Paham utilitarisme murni untuk kesejahteraan kelompok mayoritas"], jawaban: 1 },
                     { soal: "Di dalam struktur perisai burung Garuda, lambang rantai emas yang diletakkan di latar belakang merah terdiri atas gelang-gelang persegi dan bulat yang saling terkait. Jumlah keseluruhan gelang rantai tersebut adalah...", opsi: ["17 gelang", "8 gelang", "45 gelang", "30 gelang"], jawaban: 0 },
                     { soal: "Kritik utama Ir. Soekarno terhadap gagasan 'Nasionale Staat' yang dikemukakan oleh para pemikir barat pada pidato 1 Juni 1945 adalah...", opsi: ["Negara nasional barat seringkali terjebak dalam imperialisme dan chauvinisme ekonomi", "Negara barat tidak memiliki undang-undang dasar tertulis", "Negara barat menolak sistem demokrasi perwakilan", "Negara barat terlalu mengandalkan sistem agraris tradisional"], jawaban: 0 },
                     { soal: "Manakah di bawah ini yang merupakan perwujudan dari nilai praksis (penerapan nyata dalam kehidupan sehari-hari) dari sila ketiga Pancasila?", opsi: ["Membayar pajak tepat pada waktunya", "Mengembangkan sikap cinta tanah air dan bangsa serta rela berkorban demi kepentingan negara", "Menghadiri peribadatan agama sendiri secara khusyuk", "Mengikuti pemilihan umum secara rahasia"], jawaban: 1 },
-                    { soal: "Dalam kedudukannya sebagai pandangan hidup bangsa (way of life), Pancasila berfungsi sebagai...", opsi: ["Petunjuk arah dan pedoman dalam menyelesaikan segala persoalan bermasyarakat, berbangsa, dan bernegara", "Dokumen historis museum nasional semata", "Hukum pidana khusus untuk pelanggaran makar", "Landasan operasional anggaran pendapatan belanja negara"], jawaban: 0 },
+                    { soal: "Dalam kedudukannya sebagai pandangan hidup bangsa (way of life), apa fungsi utama dari falsafah negara Indonesia?", opsi: ["Petunjuk arah dan pedoman dalam menyelesaikan segala persoalan bermasyarakat, berbangsa, dan bernegara", "Dokumen historis museum nasional semata", "Hukum pidana khusus untuk pelanggaran makar", "Landasan operasional anggaran pendapatan belanja negara"], jawaban: 0 },
                     { soal: "Konsep keadilan sosial pada sila kelima Pancasila mencakup prinsip keseimbangan antara...", opsi: ["Hak dan kewajiban serta penghormatan terhadap hak milik orang lain", "Mayoritas mutlak dan minoritas pasif", "Pemerintah pusat dan investor asing", "Pertumbuhan ekonomi makro dan inflasi daerah"], jawaban: 0 },
                     { soal: "Sidang BPUPKI yang membahas khusus perumusan dasar negara (Sidang Pertama) dipimpin oleh seorang ketua berkebangsaan Jepang, namun diketuai secara aktif oleh tokoh Indonesia yaitu...", opsi: ["Dr. K.R.T. Radjiman Wedyodiningrat", "Ir. Soekarno", "Mr. A.K. Pringgodigdo", "Prof. Dr. Soepomo"], jawaban: 0 },
-                    { soal: "Dalam literatur sejarah tata negara, rumusan Pancasila yang sah dan resmi secara yuridis konstitusional terdapat dalam...", opsi: ["Pidato Soekarno 1 Juni 1945", "Naskah Piagam Jakarta 22 Juni 1945", "Pembukaan UUD 1945 alinea keempat", "Keputusan Presiden nomor 18 tahun 1950"], jawaban: 2 },
-                    { soal: "Sikap intoleransi dan fanatisme sempit bertentangan secara diametral dengan nilai yang terkandung dalam sila...", opsi: ["Sila Pertama dan Sila Kedua", "Sila Ketiga dan Sila Keempat", "Semua sila dalam Pancasila secara komprehensif", "Sila Kelima semata"], jawaban: 2 },
-                    { soal: "Mengapa para pendiri negara (The Founding Fathers) sepakat menolak bentuk negara teokrasi maupun sekularisme ekstrem, dan memilih Pancasila sebagai jalan tengah?", opsi: ["Karena Pancasila menempatkan nilai ketuhanan yang berkebudayaan dan bermoral luhur tanpa memihak satu agama tertentu", "Indonesia didirikan atas dasar satu agama resmi negara", "Paham sekuler lebih cocok dengan adat ketimuran", "Desakan kekuatan militer asing pada masa itu"], jawaban: 0 },
+                    { soal: "Dalam literatur sejarah tata negara, rumusan dasar negara yang sah dan resmi secara yuridis konstitusional terdapat dalam...", opsi: ["Pidato Soekarno 1 Juni 1945", "Naskah Piagam Jakarta 22 Juni 1945", "Pembukaan UUD 1945 alinea keempat", "Keputusan Presiden nomor 18 tahun 1950"], jawaban: 2 },
+                    { soal: "Sikap intoleransi dan fanatisme sempit bertentangan secara diametral dengan nilai yang terkandung dalam...", opsi: ["Sila Pertama dan Sila Kedua", "Sila Ketiga dan Sila Keempat", "Seluruh nilai dasar negara secara komprehensif", "Sila Kelima semata"], jawaban: 2 },
+                    { soal: "Mengapa para pendiri negara (The Founding Fathers) sepakat menolak bentuk negara teokrasi maupun sekularisme ekstrem, dan memilih falsafah bangsa sebagai jalan tengah?", opsi: ["Karena dasar negara tersebut menempatkan nilai ketuhanan yang berkebudayaan dan bermoral luhur tanpa memihak satu agama tertentu", "Indonesia didirikan atas dasar satu agama resmi negara", "Paham sekuler lebih cocok dengan adat ketimuran", "Desakan kekuatan militer asing pada masa itu"], jawaban: 0 },
                     { soal: "Manifestasi pengamalan sila pertama dalam kehidupan bernegara modern diwujudkan melalui...", opsi: ["Pemberian kebebasan seluas-luasnya untuk menista agama", "Jaminan kebebasan beragama dan beribadat sesuai keyakinan serta penolakan terhadap ateisme", "Pemisahan total urusan agama dari kebijakan moral negara", "Pengutamaan satu aliran keagamaan tertentu dalam birokrasi"], jawaban: 1 },
-                    { soal: "Apa implikasi dari sifat 'hierarkis piramidal' pada susunan sila-sila Pancasila?", opsi: ["Sila pertama menjiwai sila kedua, ketiga, keempat, dan kelima; dan seterusnya", "Sila kelima merupakan dasar utama yang menopang sila pertama", "Setiap sila berdiri sendiri tanpa ada hubungan kausal", "Sila ketiga memiliki kedudukan hukum di atas sila lainnya"], jawaban: 0 },
-                    { soal: "Peran utama Badan Penyelidik Usaha-Usaha Persiapan Kemerdekaan (BPUPKI) dalam sejarah lahirnya Pancasila adalah...", opsi: ["Menyelidiki dan merumuskan dasar-dasar serta rancangan konstitusi bagi negara Indonesia merdeka", "Menandatangani penyerahan kedaulatan kepada tentara sekutu", "Menetapkan garis batas wilayah teritorial laut nusantara", "Membentuk kabinet darurat perang kemerdekaan"], jawaban: 0 }
+                    { soal: "Apa implikasi dari sifat 'hierarkis piramidal' pada susunan sila-sila falsafah negara?", opsi: ["Sila pertama menjiwai sila kedua, ketiga, keempat, dan kelima; dan seterusnya", "Sila kelima merupakan dasar utama yang menopang sila pertama", "Setiap sila berdiri sendiri tanpa ada hubungan kausal", "Sila ketiga memiliki kedudukan hukum di atas sila lainnya"], jawaban: 0 },
+                    { soal: "Peran utama Badan Penyelidik Usaha-Usaha Persiapan Kemerdekaan (BPUPKI) dalam sejarah lahirnya dasar negara adalah...", opsi: ["Menyelidiki dan merumuskan dasar-dasar serta rancangan konstitusi bagi negara Indonesia merdeka", "Menandatangani penyerahan kedaulatan kepada tentara sekutu", "Menetapkan garis batas wilayah teritorial laut nusantara", "Membentuk kabinet darurat perang kemerdekaan"], jawaban: 0 }
                 ]
             },
             "UUD 1945": {
@@ -494,14 +494,14 @@
                     { soal: "Apa bentuk manifestasi konkret dari wawasan pertahanan dan keamanan nusantara?", opsi: ["Bahwa ancaman terhadap satu pulau atau daerah pada hakikatnya merupakan ancaman bagi seluruh bangsa dan negara", "Pertahanan militer diserahkan sepenuhnya kepada aliansi militer internasional", "Setiap provinsi wajib memiliki angkatan bersenjata mandiri", "Keamanan wilayah perbatasan diurus oleh pemerintah daerah setempat"], jawaban: 0 },
                     { soal: "Dalam sejarah ketatanegaraan Indonesia, perubahan bentuk negara dari Republik Indonesia Serikat (RIS) kembali menjadi Negara Kesatuan Republik Indonesia terjadi pada tanggal...", opsi: ["17 Agustus 1950", "27 Desember 1949", "5 Juli 1959", "18 Agustus 1945"], jawaban: 0 },
                     { soal: "Pulau Sipadan dan Ligitan yang pernah menjadi sengketa batas wilayah antara Indonesia dan Malaysia akhirnya diputuskan oleh Mahkamah Internasional pada tahun 2002 dimenangkan oleh negara...", opsi: ["Indonesia berdasarkan asas uti possidetis juris", "Malaysia berdasarkan bukti administratif penguasaan efektif", "Singapura melalui arbitrasi bersama", "Filipina melalui klaim batas maritim"], jawaban: 1 },
-                    { soal: "Faktor integratif nasional yang menjadi pemersatu utama berbagai suku bangsa di Indonesia dalam bingkai NKRI adalah...", opsi: ["Pancasila, UUD 1945, bendera Sang Merah Putih, dan Bahasa Indonesia", "Kesamaan ras dan garis keturunan", "Sistem perekonomian pasar bebas", "Dominasi satu kebudayaan mayoritas"], jawaban: 0 },
+                    { soal: "Faktor integratif nasional yang menjadi pemersatu utama berbagai suku bangsa di Indonesia dalam bingkai NKRI adalah...", opsi: ["Konsensus nasional (Pancasila, UUD 1945, bendera Sang Merah Putih, dan Bahasa Indonesia)", "Kesamaan ras dan garis keturunan", "Sistem perekonomian pasar bebas", "Dominasi satu kebudayaan mayoritas"], jawaban: 0 },
                     { soal: "Peran diplomasi internasional dalam menjaga keutuhan NKRI sangat krusial, salah satunya melalui pengakuan PBB terhadap konsep negara kepulauan yang diperjuangkan lewat konvensi hukum laut internasional yaitu...", opsi: ["UNCLOS 1982", "Konvensi Jenewa 1949", "Traktat Versailles", "Deklarasi Bangkok 1967"], jawaban: 0 },
                     { soal: "Manakah tindakan di bawah ini yang dikategorikan sebagai ancaman disintegrasi bangsa dari dalam (internal)?", opsi: ["Intervensi militer negara adidaya", "Gerakan separatisme bersenjata dan konflik horizontal bernuansa SARA", "Embargo ekonomi global", "Pencurian ikan oleh kapal asing (illegal fishing)"], jawaban: 1 },
                     { soal: "UUD 1945 menegaskan bahwa usaha pertahanan dan keamanan negara dilaksanakan melalui sistem...", opsi: ["Pertahanan keamanan rakyat semesta oleh TNI dan Polri sebagai kekuatan utama dan rakyat sebagai kekuatan pendukung", "Militerisme profesional tanpa keterlibatan warga sipil", "Pertahanan pasif diplomasi internasional", "Keamanan swakarsa korporasi swasta"], jawaban: 0 },
                     { soal: "Makna filosofis dari semboyan 'Sekali Merdeka Tetap Merdeka' dalam konteks NKRI adalah...", opsi: ["Komitmen abadi bangsa Indonesia untuk mempertahankan kedaulatan kemerdekaan dari segala bentuk penjajahan", "Penolakan terhadap kerja sama ekonomi internasional", "Kewajiban wajib militer bagi seluruh warga", "Keharusan menutup batas wilayah dari perdagangan luar negeri"], jawaban: 0 },
                     { soal: "Kedaulatan negara Republik Indonesia di udara mencakup seluruh ruang udara yang berada di atas wilayah daratan dan perairan territorial, berdasarkan prinsip hukum internasional disebut sebagai...", opsi: ["Sovereignty complete and exclusive", "Freedom of the high skies", "International airspace transit", "Open sky policy regional"], jawaban: 0 },
                     { soal: "Apa tujuan strategis dari pembangunan nasional yang merata di seluruh wilayah nusantara?", opsi: ["Menghilangkan kesenjangan antar daerah dan memperkuat ketahanan nasional secara menyeluruh", "Meningkatkan persaingan tidak sehat antar provinsi", "Memusatkan seluruh fasilitas industri di ibu kota negara", "Menyeragamkan seluruh tradisi daerah lokal"], jawaban: 0 },
-                    { soal: "Pancasila sebagai ideologi pemersatu bangsa memiliki fungsi vital dalam menangkal radikalisme karena...", opsi: ["Menanamkan nilai moderasi beragama, kemanusiaan, dan persatuan nasional", "Melarang seluruh organisasi keagamaan berdiri di Indonesia", "Mewajibkan paham politik tunggal bagi seluruh warga", "Menghapus pelajaran sejarah nasional di sekolah"], jawaban: 0 },
+                    { soal: "Falsafah pemersatu bangsa memiliki fungsi vital dalam menangkal radikalisme karena...", opsi: ["Menanamkan nilai moderasi beragama, kemanusiaan, dan persatuan nasional", "Melarang seluruh organisasi keagamaan berdiri di Indonesia", "Mewajibkan paham politik tunggal bagi seluruh warga", "Menghapus pelajaran sejarah nasional di sekolah"], jawaban: 0 },
                     { soal: "Sebagai generasi muda pelajar SMANCA, bentuk bela negara non-fisik yang paling esensial di era digital adalah...", opsi: ["Belajar dengan tekun, menguasai ilmu pengetahuan, serta menjaga persatuan di media sosial dari hoaks pemecah belah", "Mengikuti latihan tempur di hutan militer", "Menutup akses internet agar terhindar dari budaya asing", "Membuat aplikasi game perang nasional"], jawaban: 0 }
                 ]
             },
@@ -512,7 +512,7 @@
                     { soal: "Apa makna teologis dan filosofis yang terkandung di balik bait Kakawin Sutasoma mengenai 'Jina dan Buddha'?", opsi: ["Pengakuan atas toleransi beragama antara umat Buddha dan Siwa (Hindu) yang hidup berdampingan secara damai di Majapahit", "Keharusan untuk menyatukan seluruh agama menjadi satu ajaran tunggal negara", "Penolakan terhadap semua bentuk ibadah di luar kerajaan", "Keunggulan mutlak agama Buddha terhadap agama lainnya"], jawaban: 0 },
                     { soal: "Peraturan Pemerintah atau Peraturan Presiden manakah yang secara resmi menetapkan lambang negara Garuda Pancasila beserta semboyan Bhinneka Tunggal Ika?", opsi: ["PP No. 66 Tahun 1951", "Pasal 36A UUD 1945", "UU No. 24 Tahun 2009", "Ketetapan MPR No. II/MPR/1978"], jawaban: 0 },
                     { soal: "Dalam konteks sosiologis masyarakat multikultural, penerapan semboyan Bhinneka Tunggal Ika menuntut terwujudnya sikap...", opsi: ["Etnosentrisme kelompok", "Inklusivisme, toleransi aktif, dan penghormatan terhadap identitas kultural yang beragam", "Asimilasi total di mana budaya lokal harus dilebur", "Eksklusivisme suku dan daerah"], jawaban: 1 },
-                    { soal: "Manakah di bawah ini yang merupakan bentuk ancaman sosial budaya terhadap integrasi nasional yang bertentangan dengan prinsip Bhinneka Tunggal Ika?", opsi: ["Primordialisme sempit, chauvinisme, dan konflik horizontal berbasis SARA", "Akulturasi seni tradisional nusantara dengan seni modern", "Penyelenggaraan festival budaya lintas daerah", "Pengembangan dialog antarumat beragama"], jawaban: 0 },
+                    { soal: "Manakah di bawah ini yang merupakan bentuk ancaman sosial budaya terhadap integrasi nasional yang bertentangan dengan prinsip Bhinneka Tunggal Ika?", opsi: ["Primordialisme sempit, chauvinisme, dan konflik horizontal berbasis SARA", "Akulturasi seni tradisional nusantara dengan seni modern", "Penyelenggaraan festival budaya lintas daerah", "Engembangan dialog antarumat beragama"], jawaban: 0 },
                     { soal: "Secara etimologis, kata 'Bhinneka' berasal dari gabungan kata 'bhinta' dan 'ika'. Menurut kaidah tata bahasa Sanskerta, perubahan kata tersebut mengalami proses...", opsi: ["Sandhi (penggabungan bunyi kata)", "Afiksasi awalan", "Reduplikasi kata dasar", "Konsonan rangkap"], jawaban: 0 },
                     { soal: "Siapakah perancang lambang negara Republik Indonesia (Garuda Pancasila) yang mencantumkan pita bertuliskan Bhinneka Tunggal Ika pada cengkeraman kuku burung Garuda?", opsi: ["Sultan Hamid II dari Pontianak", "Mohammad Yamin", "Ir. Soekarno", "Ki Hadjar Dewantara"], jawaban: 0 },
                     { soal: "Mengapa Mpu Tantular menuliskan kakawin Sutasoma pada masa kejayaan Majapahit?", opsi: ["Sebagai risalah perdamaian agama untuk meredakan ketegangan antara aliran Siwa dan Buddha demi keutuhan kerajaan", "Sebagai pujian mutlak kepada kekuasaan raja Hayam Wuruk", "As a guide for maritime trade laws of the archipelago", "Sebagai naskah undang-undang pidana kerajaan"], jawaban: 0 },
@@ -520,24 +520,28 @@
                     { soal: "Apa perbedaan mendasar antara konsep 'Asimilasi' dan 'Integrasi' dalam kerangka Bhinneka Tunggal Ika?", opsi: ["Asimilasi meleburkan budaya asli hingga hilang jati dirinya, sedangkan integrasi menyatukan kelompok berbeda tanpa menghilangkan identitas asal", "Asimilasi dilarang oleh undang-undang, integrasi diwajibkan", "Integrasi bersifat paksaan militer, asimilasi bersifat sukarela", "Tidak ada perbedaan makna secara sosiologis"], jawaban: 0 },
                     { soal: "Sikap mental yang menganggap kebudayaan sukunya sendiri lebih tinggi dibandingkan kebudayaan suku lain disebut...", opsi: ["Etnosentrisme", "Nasionalisme", "Patriotisme", "Cosmopolitanism"], jawaban: 0 },
                     { soal: "In the history of its usage, the Garuda Pancasila state symbol was first introduced to the general public on...", opsi: ["15 February 1950", "17 August 1945", "27 December 1949", "1 June 1945"], jawaban: 0 },
-                    { soal: "Bagaimana cara merawat semangat Bhinneka Tunggal Ika di era globalisasi digital saat ini?", opsi: ["Menyaring informasi dengan bijak, menolak ujaran kebencian berbasis SARA, dan mempromosikan toleransi", "Menutup total akses internet dari luar negeri", "Membuat batasan pergaulan hanya dengan satu suku", "Mengabaikan kebudayaan lokal demi budaya populer asing"], jawaban: 0 },
+                    { soal: "Bagaimana cara merawat semangat Bhinneka Tunggal Ika di era digital saat ini?", opsi: ["Menyaring informasi dengan bijak, menolak ujaran kebencian berbasis SARA, dan mempromosikan toleransi", "Menutup total akses internet dari luar negeri", "Membuat batasan pergaulan hanya dengan satu suku", "Mengabaikan kebudayaan lokal demi budaya populer asing"], jawaban: 0 },
                     { soal: "Prinsip kesetaraan (egalitarianisme) dalam bingkai Bhinneka Tunggal Ika mengandung makna bahwa...", opsi: ["Setiap warga negara memiliki kedudukan, hak, dan kewajiban yang sama di hadapan hukum tanpa diskriminasi SARA", "Semua warga negara harus memiliki tingkat kekayaan yang sama rata", "Kelompok mayoritas berhak mengatur seluruh kebijakan minoritas", "Pemerintah berhak membatasi hak politik suku tertentu"], jawaban: 0 },
                     { soal: "Bentuk nyata penghargaan terhadap keragaman budaya nusantara di tingkat internasional adalah...", opsi: ["Pengakuan UNESCO terhadap berbagai warisan budaya takbenda Indonesia (seperti Batik, Wayang, Angklung, dan Pencak Silat)", "Pengiriman pasukan perdamaian PBB", "Kerjasama perdagangan bebas ASEAN", "Penyelenggaraan konferensi tingkat tinggi G20"], jawaban: 0 },
                     { soal: "Apa akibat fatal apabila semboyan Bhinneka Tunggal Ika hanya dijadikan simbol seremonial tanpa penghayatan nilai?", opsi: ["Timbulnya disintegrasi bangsa, konflik sosial, dan pudurnya rasa nasionalisme", "Peningkatan devisa negara secara drastis", "Kemajuan teknologi informasi yang pesat", "Penguatan otonomi daerah yang mandiri"], jawaban: 0 },
-                    { soal: "Hubungan antara Sila Ketiga Pancasila ('Persatuan Indonesia') dengan semboyan Bhinneka Tunggal Ika bersifat...", opsi: ["Saling menjiwai dan memperkuat sebagai landasan ideologis persatuan multikultural", "Bertentangan secara hukum tata negara", "Berdiri sendiri tanpa kaitan konseptual", "Merupakan produk hukum kolonial yang diadopsi"], jawaban: 0 },
+                    { soal: "Hubungan antara Sila Ketiga dengan semboyan Bhinneka Tunggal Ika bersifat...", opsi: ["Saling menjiwai dan memperkuat sebagai landasan ideologis persatuan multikultural", "Bertentangan secara hukum tata negara", "Berdiri sendiri tanpa kaitan konseptual", "Merupakan produk hukum kolonial yang diadopsi"], jawaban: 0 },
                     { soal: "Manakah pelajar yang mencerminkan pengamalan Bhinneka Tunggal Ika di sekolah?", opsi: ["Membentuk kelompok belajar yang inklusif tanpa memandang latar belakang suku atau agama teman", "Membuat kelompok eksklusif daerah", "Menghindari teman yang berbeda keyakinan saat berdiskusi", "Mengejek logat bicara siswa dari daerah lain"], jawaban: 0 },
                     { soal: "Dalam tinjauan hukum positif Indonesia, penodaan terhadap lambang negara atau semboyan resmi negara diatur sanksi pidananya dalam...", opsi: ["UU No. 24 Tahun 2009 tentang Bendera, Bahasa, dan Lambang Negara serta Lagu Kebangsaan", "Kitab Undang-Undang Hukum Acara Pidana", "Peraturan Daerah tentang Ketertiban Umum", "Undang-Undang Otonomi Khusus"], jawaban: 0 },
                     { soal: "Makna hakiki dari kata 'Tunggal' dalam semboyan Bhinneka Tunggal Ika adalah...", opsi: ["Pengikatan diri dalam satu kesatuan kebangsaan di bawah payung NKRI", "Peleburan seluruh agama menjadi satu aliran", "Pusat pemerintahan yang bersifat sentralistik mutlak", "Penyeragaman adat istiadat seluruh suku"], jawaban: 0 }
                 ]
             },
             "Kuis Sedekah": {
-                materi: "Kuis Sedekah Spesial LCC 4 Pilar SMANCA.\n\nMenyajikan kumpulan 21 soal komprehensif mulai dari Pancasila, UUD 1945, NKRI, Bhinneka Tunggal Ika, hingga wawasan pendidikan nasional.",
+                materi: "Kuis Sedekah Spesial LCC 4 Pilar SMANCA.\n\nMenyajikan kumpulan 24 soal komprehensif mulai dari Pancasila, UUD 1945, NKRI, Bhinneka Tunggal Ika, hingga wawasan pendidikan nasional.",
                 kuis: [
                     { soal: "Secara etimologis, kata Pancasila berasal dari bahasa Sanskerta. Kata 'pañca' berarti ....", opsi: ["Lima", "Dasar", "Pedoman", "Aturan", "Kesatuan"], jawaban: 0 },
                     { soal: "Rumusan dasar negara yang diusulkan Mohammad Yamin secara tertulis adalah ....", opsi: ["Peri Kebangsaan, Peri Kemanusiaan, Peri Ketuhanan, Peri Kerakyatan, Kesejahteraan Rakyat", "Kebangsaan Indonesia, Internasionalisme, Mufakat, Kesejahteraan Sosial, Ketuhanan", "Persatuan Indonesia, Kerakyatan, Keadilan, Ketuhanan, Kemanusiaan", "Ketuhanan Yang Maha Esa, Kemanusiaan, Persatuan, Kerakyatan, Keadilan Sosial", "Nasionalisme, Demokrasi, Keadilan, Persatuan, Ketuhanan"], jawaban: 0 },
                     { soal: "Tokoh yang menyampaikan konsep negara integralistik dalam Sidang BPUPKI adalah ....", opsi: ["Mohammad Yamin", "Mohammad Hatta", "Soepomo", "Ir. Soekarno", "A.A. Maramis"], jawaban: 2 },
-                    { soal: "Rumusan dasar negara yang disampaikan Ir. Soekarno pada 1 Juni 1945 dikenal sebagai ....", opsi: ["Piagam Jakarta", "Trisila dan Ekasila", "Sapta Marga", "Catur Dharma", "Dasa Sila"], jawaban: 1 },
-                    { soal: "Pancasila ditetapkan sebagai dasar negara Indonesia pada tanggal ....", opsi: ["1 Juni 1945", "22 Juni 1945", "17 Agustus 1945", "18 Agustus 1945", "29 Agustus 1945"], jawaban: 3 },
+                    { 
+                        soal: "Dalam sidang BPUPKI, gagasan fundamental mengenai lima prinsip dasar negara merdeka yang disampaikan oleh Ir. Soekarno pada tanggal 1 Juni 1945 dinamakan oleh beliau sebagai...", 
+                        opsi: ["Pancasila", "Piagam Jakarta", "Bukan Ini", "Sapta Marga", "Catur Dharma"], 
+                        jawaban: 0 
+                    },
+                    { soal: "Dasar negara Indonesia disahkan secara resmi oleh PPKI pada tanggal ....", opsi: ["1 Juni 1945", "22 Juni 1945", "17 Agustus 1945", "18 Agustus 1945", "29 Agustus 1945"], jawaban: 3 },
                     { soal: "Konstitusi dalam arti luas mencakup ....", opsi: ["Hanya Undang-Undang Dasar", "Seluruh ketentuan dasar yang mengatur penyelenggaraan negara, baik tertulis maupun tidak tertulis", "Peraturan Presiden", "Undang-Undang dan Peraturan Pemerintah", "Putusan Mahkamah Konstitusi"], jawaban: 1 },
                     { soal: "Bunyi Pasal 1 ayat (2) UUD NRI Tahun 1945 adalah ....", opsi: ["Indonesia adalah negara hukum.", "Negara Indonesia ialah Negara Kesatuan yang berbentuk Republik.", "Kedaulatan berada di tangan rakyat dan dilaksanakan menurut Undang-Undang Dasar.", "Presiden memegang kekuasaan pemerintahan menurut Undang-Undang Dasar.", "MPR terdiri atas anggota DPR dan anggota DPD."], jawaban: 2 },
                     { soal: "Pasal 7C UUD NRI Tahun 1945 bertujuan untuk ....", opsi: ["Memperkuat kekuasaan Presiden", "Menjamin prinsip checks and balances antara Presiden dan DPR", "Memberikan kewenangan DPR membubarkan Presiden", "Memberikan kewenangan Presiden membubarkan MPR", "Mengatur masa jabatan Presiden"], jawaban: 1 },
@@ -549,33 +553,52 @@
                     { soal: "Berikut yang termasuk ancaman nonmiliter terhadap NKRI adalah ....", opsi: ["Agresi militer", "Invasi negara lain", "Penyebaran hoaks yang memecah persatuan", "Pelanggaran wilayah oleh kapal asing", "Blokade militer"], jawaban: 2 },
                     { soal: "Salah satu bentuk bela negara di lingkungan sekolah adalah ....", opsi: ["Menghindari upacara bendera", "Mematuhi tata tertib sekolah dan menjaga persatuan", "Menolak pendapat teman", "Mengutamakan kepentingan kelompok", "Menyebarkan informasi yang belum tentu benar"], jawaban: 1 },
                     { soal: "Kalimat lengkap semboyan Bhinneka Tunggal Ika adalah ....", opsi: ["Bhinneka Tunggal Ika Tan Hana Dharma Mangrwa", "Tut Wuri Handayani", "Ing Ngarsa Sung Tuladha", "Ing Madya Mangun Karsa", "Satyam Eva Jayate"], jawaban: 0 },
-                    { soal: "Makna kalimat 'Tan Hana Dharma Mangrwa' adalah ....", opsi: ["Tidak ada tujuan yang berbeda", "Tidak ada pengabdian yang mendua", "Tidak ada kebenaran yang mendua", "Tidak ada bangsa yang berbeda", "Tidak ada hukum yang berbeda"], jawaban: 1 },
+                    { soal: "Makna kalimat 'Tan Hana Dharma Mangrwa' adalah ....", opsi: ["Tidak ada tujuan yang berbeda", "Tidak ada pengabdian yang mendua", "Tidak ada kebenaran yang mendua", "Tidak ada bangsa yang berbeda", "Tidak ada hukum yang berbeda"], jawaban: 2 },
+                    { 
+                        soal: "Dalam pidato 1 Juni 1945, Ir. Soekarno menyatakan bahwa jika lima prinsip dasar negara diperas menjadi tiga prinsip (Trisila) yaitu sosio-nasionalisme, sosio-demokrasi, dan ketuhanan, serta jika diperas kembali menjadi satu prinsip tunggal (Ekasila), maka prinsip tersebut adalah...", 
+                        opsi: ["Gotong royong", "Persatuan", "Keadilan", "Kemanusiaan", "Musyawarah"], 
+                        jawaban: 0 
+                    },
                     { soal: "Pada masa Kerajaan Majapahit, semboyan Bhinneka Tunggal Ika digunakan untuk ....", opsi: ["Menyatukan berbagai agama dan kepercayaan", "Menentukan batas wilayah kerajaan", "Mengatur sistem perdagangan", "Menetapkan hukum kerajaan", "Mengatur pemerintahan desa"], jawaban: 0 },
                     { soal: "Berikut yang paling mencerminkan penerapan Bhinneka Tunggal Ika di sekolah adalah ....", opsi: ["Berteman hanya dengan siswa yang satu suku", "Menghargai pendapat teman meskipun berbeda latar belakang", "Mengutamakan kepentingan kelompok sendiri", "Menolak budaya daerah lain", "Membatasi pergaulan berdasarkan agama"], jawaban: 1 },
                     { soal: "Hubungan antara Bhinneka Tunggal Ika dan NKRI adalah ....", opsi: ["Keduanya merupakan lembaga negara", "Bhinneka Tunggal Ika menjadi semangat persatuan dalam menjaga keutuhan NKRI", "NKRI merupakan bagian dari Bhinneka Tunggal Ika", "Bhinneka Tunggal Ika mengatur sistem pemerintahan Indonesia", "NKRI dibentuk berdasarkan Kitab Sutasoma"], jawaban: 1 },
-                    { soal: "Arti semboyan 'Tut Wuri Handayani' adalah ....", opsi: ["Di depan memberi teladan.", "Di tengah membangun semangat atau kemauan.", "Dari belakang memberikan dorongan atau motivasi.", "Bersatu dalam keberagaman.", "Belajar sepanjang hayat."], jawaban: 2 }
+                    { 
+                        soal: "Di dalam struktur pemerintahan wilayah di Indonesia, jabatan kepala pemerintahan pada tingkat kecamatan yang diangkat oleh bupati/walikota (bukan dipilih langsung melalui pemilu rakyat) adalah...", 
+                        opsi: ["Camat", "Gubernur", "Kepala Desa", "DPR", "Bupati"], 
+                        jawaban: 0 
+                    },
+                    { 
+                        soal: "Pasal 34 ayat (1) UUD NRI Tahun 1945 secara tegas menyatakan bahwa fakir miskin dan anak-anak yang terlantar dipelihara oleh...", 
+                        opsi: ["Negara", "Pemerintah Daerah", "Kementerian Sosial", "Organisasi Masyarakat", "Badan Amal Nasional"], 
+                        jawaban: 0 
+                    },
+                    { 
+                        soal: "Siapakah nama-nama anggota Tim LCC 4 Pilar SMANCA saat ini?", 
+                        opsi: ["Arif, Kia, Novita, Sarah, Amri, Marsya, Ica, Niah, Rara, dan Geril", "Ahmad, Budi, Candra, Dedi, Eko, Fajar, Gilang, Hari, Indah, dan Joko", "Siti, Aminah, Fatimah, Zahra, Aisyah, Khadijah, Maryam, Asiyah, Salma, dan Nabila", "Andi, Bayu, Citra, Doni, Eka, Fitri, Galih, Hana, Ilham, dan Jihan"], 
+                        jawaban: 0 
+                    }
                 ]
             },
             "Evaluasi 1": {
                 materi: "Evaluasi 1 Tim LCC 4 Pilar SMANCA.\n\nSoal-soal evaluasi ini mencakup pendalaman komprehensif materi Pancasila, konstitusi, dan sistem tata negara.",
                 kuis: [
-                    { soal: "Evaluasi 1 - No 1: Dalam teori hukum tata negara, Pancasila berkedudukan sebagai 'Staatsfundamentalnorm'. Apa konsekuensi yuridis utama dari kedudukan tersebut?", opsi: ["Pancasila adalah norma dasar yang tidak dapat diubah oleh siapapun termasuk MPR hasil pemilu", "Pancasila dapat diamandemen kapan saja melalui dekrit presiden", "Pancasila berada di bawah kedudukan UUD 1945", "Pancasila hanya berlaku sebagai moral etika perorangan"], jawaban: 0 },
+                    { soal: "Evaluasi 1 - No 1: Dalam teori hukum tata negara, dasar negara berkedudukan sebagai 'Staatsfundamentalnorm'. Apa konsekuensi yuridis utama dari kedudukan tersebut?", opsi: ["Norma dasar tersebut bersifat tetap dan tidak dapat diubah oleh siapapun termasuk MPR hasil pemilu", "Ketentuan tersebut dapat diamandemen kapan saja melalui dekrit presiden", "Norma dasar berada di bawah kedudukan UUD 1945", "Aturan tersebut hanya berlaku sebagai moral etika perorangan"], jawaban: 0 },
                     { soal: "Evaluasi 1 - No 2: Lembaga yang berwenang memeriksa dan memutus pendapat DPR bahwa Presiden telah melakukan pelanggaran hukum adalah...", opsi: ["Mahkamah Agung", "Mahkamah Konstitusi", "Komisi Yudisial", "Dewan Perwakilan Daerah"], jawaban: 1 },
                     { soal: "Evaluasi 1 - No 3: Konsepsi Wawasan Nusantara memandang wilayah Indonesia sebagai satu kesatuan politik. Hal ini berarti bahwa...", opsi: ["Hukum nasional berlaku sama dan adil bagi seluruh wilayah nusantara tanpa diskriminasi", "Setiap daerah berhak membuat undang-undang pidana sendiri", "Pemerintahan pusat tidak berhak campur tangan urusan daerah", "Sistem kepartaian daerah bersifat independen mutlak"], jawaban: 0 },
                     { soal: "Evaluasi 1 - No 4: Semboyan Bhinneka Tunggal Ika mengajarkan toleransi multikultural. Tokoh sastrawan Majapahit yang mencetuskan semboyan ini adalah...", opsi: ["Mpu Prapanca", "Mpu Tantular", "Mpu Gandring", "Mpu Panuluh"], jawaban: 1 },
-                    { soal: "Evaluasi 1 - No 5: Hari Lahir Pancasila yang diperingati setiap 1 Juni merujuk pada pidato monumental yang disampaikan oleh...", opsi: ["Ir. Soekarno dalam sidang BPUPKI", "Mohammad Hatta dalam sidang PPKI", "Soepomo dalam panitia sembilan", "Radjiman Wedyodiningrat"], jawaban: 0 },
+                    { soal: "Evaluasi 1 - No 5: Hari lahir dasar negara yang diperingati setiap 1 Juni merujuk pada pidato monumental yang disampaikan oleh...", opsi: ["Ir. Soekarno dalam sidang BPUPKI", "Mohammad Hatta dalam sidang PPKI", "Soepomo dalam panitia sembilan", "Radjiman Wedyodiningrat"], jawaban: 0 },
                     { soal: "Evaluasi 1 - No 6: Ketentuan konstitusional mengenai kebebasan berserikat, berkumpul, dan mengeluarkan pendapat diatur dalam UUD 1945.", opsi: ["Pasal terkait hak konstitusional warga negara", "Pasal terkait anggaran negara", "Pasal terkait militer", "Pasal terkait sanksi pidana"], jawaban: 0 },
                     { soal: "Evaluasi 1 - No 7: Deklarasi Djuanda 13 Desember 1957 merupakan tonggak sejarah penting yang mengubah status perairan nusantara dari konsep kolonial menjadi...", opsi: ["Perairan teritorial nasional yang menghubungkan pulau-pulau di Indonesia", "Zona bebas pelayaran kapal asing tanpa batas", "Kawasan laut lepas internasional", "Wilayah perikanan bersama negara tetangga"], jawaban: 0 },
                     { soal: "Evaluasi 1 - No 8: Kitab Sutasoma ditulis menggunakan bahasa Jawa Kuno dengan aksara...", opsi: ["Pallawa / Kawi", "Sansekerta Murni", "Arab Melayu", "Latin Kuno"], jawaban: 0 },
                     { soal: "Evaluasi 1 - No 9: Sidang pleno PPKI yang mengesahkan UUD 1945 dan menetapkan Presiden serta Wakil Presiden dilaksanakan pada tanggal...", opsi: ["17 Agustus 1945", "18 Agustus 1945", "22 Juni 1945", "1 Juni 1945"], jawaban: 1 },
                     { soal: "Evaluasi 1 - No 10: Sikap fanatisme sempit yang mengagungkan kelompok sendiri dan merendahkan kelompok lain dikenal sebagai...", opsi: ["Chauvinisme / Etnosentrisme", "Nasionalisme moderat", "Kosmopolitanisme", "Patriotisme konstitusional"], jawaban: 0 },
-                    { soal: "Evaluasi 1 - No 11: Lambang pohon beringin pada perisai Garuda Pancasila melambangkan sila ke...", opsi: ["Sila Pertama", "Sila Kedua", "Sila Ketiga", "Sila Keempat"], jawaban: 2 },
+                    { soal: "Evaluasi 1 - No 11: Lambang pohon beringin pada perisai Garuda melambangkan sila ke...", opsi: ["Sila Pertama", "Sila Kedua", "Sila Ketiga", "Sila Keempat"], jawaban: 2 },
                     { soal: "Evaluasi 1 - No 12: UUD 1945 menegaskan bentuk negara Indonesia adalah...", opsi: ["Negara Serikat", "Negara Kesatuan yang berbentuk Republik", "Negara Monarki Konstitusional", "Negara dominion"], jawaban: 1 },
                     { soal: "Evaluasi 1 - No 13: Pernyataan kemerdekaan sebagai hak segala bangsa dan penjajahan harus dihapuskan tercantum dalam Pembukaan UUD 1945 alinea...", opsi: ["Alinea Pertama", "Alinea Kedua", "Alinea Ketiga", "Alinea Keempat"], jawaban: 0 },
-                    { soal: "Evaluasi 1 - No 14: Ancaman nir-militer (non-militer) yang paling berbahaya di era modern terhadap ideologi Pancasila adalah...", opsi: ["Invasi angkatan bersenjata darat", "Masuknya paham radikalisme, liberalisme ekstrem, dan disinformasi digital", "Blokade pelabuhan laut", "Penyelundupan senjata konvensional"], jawaban: 1 },
+                    { soal: "Evaluasi 1 - No 14: Ancaman nir-militer (non-militer) yang paling berbahaya di era modern terhadap ideologi bangsa adalah...", opsi: ["Invasi angkatan bersenjata darat", "Masuknya paham radikalisme, liberalisme ekstrem, dan disinformasi digital", "Blokade pelabuhan laut", "Penyelundupan senjata konvensional"], jawaban: 1 },
                     { soal: "Evaluasi 1 - No 15: Tujuan utama penyelenggaraan LCC 4 Pilar MPR RI bagi pelajar SMA adalah...", opsi: ["Mencari juara kelas", "Membentuk kader bangsa yang memiliki pemahaman mendalam terhadap konsensus dasar bernegara", "Melatih keterampilan baris-berbaris militer", "Menghafalkan seluruh pasal tanpa analisis"], jawaban: 1 },
                     { soal: "Evaluasi 1 - No 16: Panitia Sembilan yang dibentuk setelah sidang pertama BPUPKI berhasil merumuskan naskah dokumen historis yaitu...", opsi: ["Piagam Jakarta (Jakarta Charter)", "Undang-Undang Dasar Sementara", "Dekrit Presiden", "Resolusi Jihad"], jawaban: 0 },
-                    { soal: "Evaluasi 1 - No 17: Hubungan kausal-organis antara Pancasila dan Pembukaan UUD 1945 bermakna bahwa Pancasila merupakan...", opsi: ["Roh dan jiwa yang menjiwai seluruh isi Pembukaan serta Batang Tubuh UUD 1945", "Peraturan pelaksana undang-undang organik", "Dokumen terpisah dari konstitusi", "Ketetapan MPR yang dapat dicabut sewaktu-waktu"], jawaban: 0 },
+                    { soal: "Evaluasi 1 - No 17: Hubungan kausal-organis antara dasar negara dan Pembukaan UUD 1945 bermakna bahwa falsafah negara merupakan...", opsi: ["Roh dan jiwa yang menjiwai seluruh isi Pembukaan serta Batang Tubuh UUD 1945", "Peraturan pelaksana undang-undang organik", "Dokumen terpisah dari konstitusi", "Ketetapan MPR yang dapat dicabut sewaktu-waktu"], jawaban: 0 },
                     { soal: "Evaluasi 1 - No 18: Prinsip musyawarah mufakat dalam sila keempat dipandu oleh nilai...", opsi: ["Hikmat kebijaksanaan yang berketuhanan, berkemanusiaan, dan berpersatuan", "Suara mayoritas mutlak tanpa pertimbangan etis", "Keputusan mutlak pimpinan rapat", "Negosiasi kepentingan transaksional"], jawaban: 0 },
                     { soal: "Evaluasi 1 - No 19: Perubahan (amandemen) terhadap UUD 1945 dilakukan sebanyak empat kali pada kurun waktu tahun...", opsi: ["1999 hingga 2002", "1945 hingga 1950", "1959 hingga 1965", "2004 hingga 2009"], jawaban: 0 },
                     { soal: "Evaluasi 1 - No 20: Bentuk kedaulatan berada di tangan rakyat dan dilaksanakan menurut Undang-Undang Dasar merupakan ketentuan konstitusional yang diatur dalam...", opsi: ["UUD 1945", "Ketetapan MPR", "Undang-Undang Pemilu", "Peraturan Presiden"], jawaban: 0 }
@@ -591,19 +614,19 @@
                     { soal: "Evaluasi 2 - No 5: Proklamasi Kemerdekaan Republik Indonesia 17 Agustus 1945 ditandatangani oleh Soekarno dan Hatta atas nama...", opsi: ["Bangsa Indonesia", "Panitia Persiapan Kemerdekaan Indonesia", "Dewan Pertimbangan Agung", "Komite Nasional Indonesia Pusat"], jawaban: 0 },
                     { soal: "Evaluasi 2 - No 6: Perilaku yang mencerminkan integrasi nasional di lingkungan sekolah adalah...", opsi: ["Membentuk kelompok belajar lintas suku dan agama secara harmonis", "Membuat kelompok eksklusif daerah", "Menolak berdiskusi dengan siswa berbeda pendapat", "Mengejek tradisi daerah teman sekelas"], jawaban: 0 },
                     { soal: "Evaluasi 2 - No 7: Sidang pertama BPUPKI yang membahas rumusan dasar negara diselenggarakan pada tanggal...", opsi: ["29 Mei - 1 Juni 1945", "10 - 17 Juli 1945", "18 Agustus 1945", "22 Juni 1945"], jawaban: 0 },
-                    { soal: "Evaluasi 2 - No 8: Nilai universal yang menjunjung tinggi persamaan derajat, hak, dan kewajiban asasi manusia terkandung dalam sila...", opsi: ["Sila Kedua Pancasila", "Sila Ketiga Pancasila", "Sila Keempat Pancasila", "Sila Kelima Pancasila"], jawaban: 0 },
+                    { soal: "Evaluasi 2 - No 8: Nilai universal yang menjunjung tinggi persamaan derajat, hak, dan kewajiban asasi manusia terkandung dalam...", opsi: ["Sila Kedua Pancasila", "Sila Ketiga Pancasila", "Sila Keempat Pancasila", "Sila Kelima Pancasila"], jawaban: 0 },
                     { soal: "Evaluasi 2 - No 9: Dalam hierarki peraturan perundang-undangan di Indonesia berdasarkan UU No. 12 Tahun 2011, kedudukan Peraturan Pemerintah (PP) berada di bawah...", opsi: ["Undang-Undang / Perppu", "Ketetapan MPR", "Undang-Undang Dasar 1945", "Peraturan Daerah"], jawaban: 0 },
                     { soal: "Evaluasi 2 - No 10: Mengapa sikap etnosentrisme dan chauvinisme menjadi ancaman nyata terhadap keutuhan NKRI?", opsi: ["Karena dapat memicu disintegrasi sosial, konflik horizontal, dan hilangnya rasa persatuan", "Karena meningkatkan pertumbuhan ekonomi nasional", "Karena memperkuat ketahanan pertahanan militer", "Memperkaya khazanah bahasa daerah"], jawaban: 0 },
                     { soal: "Evaluasi 2 - No 11: Bentuk kedaulatan negara Republik Indonesia menurut konstitusi menganut sistem...", opsi: ["Republik dengan kedaulatan di tangan rakyat", "Monarki absolut", "Federasi bagian", "Oligarki terbatas"], jawaban: 0 },
                     { soal: "Evaluasi 2 - No 12: UUD 1945 menetapkan bahwa tiap-tiap warga negara berhak dan wajib ikut serta dalam...", opsi: ["Usaha pertahanan dan keamanan negara", "Pemilihan umum kepala daerah", "Pengelolaan sumber daya migas", "Pembentukan partai politik"], jawaban: 0 },
                     { soal: "Evaluasi 2 - No 13: Jiwa, semangat, dan nilai-nilai kejuangan bangsa Indonesia yang lahir pada 1945 dikenal dengan istilah...", opsi: ["JSN '45 (Jiwa Semangat 45)", "Ideologi terbuka", "Wawasan nusantara", "Demokrasi Pancasila"], jawaban: 0 },
-                    { soal: "Evaluasi 2 - No 14: Prinsip musyawarah untuk mufakat dalam pengambilan keputusan kenegaraan bersumber dari sila...", opsi: ["Sila Keempat Pancasila", "Sila Ketiga Pancasila", "Sila Kelima Pancasila", "Sila Kedua Pancasila"], jawaban: 0 },
+                    { soal: "Evaluasi 2 - No 14: Prinsip musyawarah untuk mufakat dalam pengambilan keputusan kenegaraan bersumber dari...", opsi: ["Sila Keempat Pancasila", "Sila Ketiga Pancasila", "Sila Kelima Pancasila", "Sila Kedua Pancasila"], jawaban: 0 },
                     { soal: "Evaluasi 2 - No 15: Kontribusi esensial pelajar SMANCA dalam menjaga 4 Pilar MPR RI adalah...", opsi: ["Mempelajari, menghayati, dan mengamalkan nilai-nilai Pancasila, UUD 1945, NKRI, dan Bhinneka Tunggal Ika dalam kehidupan sehari-hari", "Mengabaikan sejarah perjuangan bangsa", "Meniru budaya asing secara mutlak", "Hanya aktif saat menjelang perlombaan"], jawaban: 0 },
                     { soal: "Evaluasi 2 - No 16: Semangat persatuan dalam keberagaman diikat kuat oleh konsensus nasional yaitu...", opsi: ["Pancasila, UUD 1945, NKRI, dan Bhinneka Tunggal Ika", "Sistem ekonomi kapitalis liberal", "Aliansi militer regional", "Bahasa asing sebagai pengantar"], jawaban: 0 },
                     { soal: "Evaluasi 2 - No 17: Komponen utama dalam sistem pertahanan dan keamanan rakyat semesta (Sishankamrata) adalah...", opsi: ["Tentara Nasional Indonesia (TNI) dan Kepolisian Negara Republik Indonesia (Polri)", "Seluruh warga sipil bersenjata", "Korps sukarelawan daerah", "Milisi pertahanan swasta"], jawaban: 0 },
                     { soal: "Evaluasi 2 - No 18: Makna kemerdekaan bangsa Indonesia yang tertuang dalam Pembukaan UUD 1945 alinea ketiga dicapai melalui...", opsi: ["Atas berkat rahmat Allah Yang Maha Kuasa dan didorong oleh keinginan luhur bangsa Indonesia", "Pemberian hak kemerdekaan dari penjajah", "Hasil kompromi militer internasional", "Bantuan senjata negara tetangga"], jawaban: 0 },
                     { soal: "Evaluasi 2 - No 19: Sikap primordialisme yang berlebihan dan sempit dapat mengakibatkan...", opsi: ["Terganggunya integrasi nasional dan munculnya konflik antar kelompok", "Kemajuan pesat teknologi industri", "Penguatan hubungan diplomatik luar negeri", "Pariwisata budaya yang mendunia"], jawaban: 0 },
-                    { soal: "Evaluasi 2 - No 20: Tujuan akhir dari pembinaan wawasan kebangsaan melalui LCC 4 Pilar adalah terwujudnya generasi muda yang...", opsi: ["Memiliki kesadaran berkonstitusi tinggi, nasionalisme kokoh, dan setia kepada Pancasila serta NKRI", "Menguasai ilmu militer praktis", "Menjadi politisi instan", "Hafal seluruh pasal konstitusi tanpa pemahaman filosofis"], jawaban: 0 }
+                    { soal: "Evaluasi 2 - No 20: Tujuan akhir dari pembinaan wawasan kebangsaan melalui LCC 4 Pilar adalah terwujudnya generasi muda yang...", opsi: ["Memiliki kesadaran berkonstitusi tinggi, nasionalisme kokoh, dan setia kepada Pancasila serta NKRI", "Enguasai ilmu militer praktis", "Menjadi politisi instan", "Hafal seluruh pasal konstitusi tanpa pemahaman filosofis"], jawaban: 0 }
                 ]
             }
         };
@@ -626,18 +649,36 @@
                     document.body.classList.remove('keyboard-open');
                 }
             });
-            checkEvaluationLockStatus();
+            checkQuizSedekahLockStatus();
+            setInterval(checkQuizSedekahLockStatus, 1000);
         });
 
-        function checkEvaluationLockStatus() {
+        function checkQuizSedekahLockStatus() {
             const now = new Date();
             
-            // Kuis Sedekah (Dibuat tetap terkunci sesuai permintaan)
+            // Hitung target 20:00 WITA (UTC+8) hari ini
+            const targetKuisSedekah = new Date();
+            targetKuisSedekah.setHours(20, 0, 0, 0);
+
             const btnKuisSedekah = document.getElementById('btn-kuissedekah-menu');
             const iconKuisSedekah = document.getElementById('kuissedekah-lock-icon');
-            btnKuisSedekah.className = "btn-locked w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between";
-            iconKuisSedekah.className = "fa-solid fa-lock text-sm text-amber-400";
-            btnKuisSedekah.querySelector("span span").innerText = "Kuis Sedekah (Segera Dibuka)";
+            const textLabelKuisSedekah = document.getElementById('kuissedekah-text-label');
+
+            if (now >= targetKuisSedekah) {
+                btnKuisSedekah.className = "btn-gold w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between";
+                iconKuisSedekah.className = "fa-solid fa-unlock text-sm text-amber-200";
+                textLabelKuisSedekah.innerText = "Kuis Sedekah (Dibuka)";
+            } else {
+                btnKuisSedekah.className = "btn-locked w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between";
+                iconKuisSedekah.className = "fa-solid fa-lock text-sm text-amber-400";
+                
+                const diffMs = targetKuisSedekah - now;
+                const diffHrs = Math.floor((diffMs % 86400000) / 3600000);
+                const diffMins = Math.floor((diffMs % 3600000) / 60000);
+                const diffSecs = Math.floor((diffMs % 60000) / 1000);
+                
+                textLabelKuisSedekah.innerText = `Kuis Sedekah (Buka ${String(diffHrs).padStart(2,'0')}:${String(diffMins).padStart(2,'0')}:${String(diffSecs).padStart(2,'0')})`;
+            }
 
             const btnEval1 = document.getElementById('btn-evaluasi1-menu');
             const iconEval1 = document.getElementById('evaluasi1-lock-icon');
@@ -688,8 +729,11 @@
 
         function openPilarDetail(pilar) {
             const now = new Date();
-            if (pilar === 'Kuis Sedekah') {
-                showNotifModal('Kuis Terkunci', 'Menu Kuis Sedekah saat ini masih dikunci dan belum dibuka.', 'warning');
+            const targetKuisSedekah = new Date();
+            targetKuisSedekah.setHours(20, 0, 0, 0);
+
+            if (pilar === 'Kuis Sedekah' && now < targetKuisSedekah) {
+                showNotifModal('Kuis Terkunci', 'Kuis Sedekah baru akan dibuka dan dapat dikerjakan pada pukul 20:00 WITA.', 'warning');
                 return;
             }
             if (pilar === 'Evaluasi 1' && now < targetEval1Date) {
@@ -754,7 +798,7 @@
 
             initQuizAntiCheat();
 
-            timeLeftSeconds = 600; 
+            timeLeftSeconds = 1200; 
             updateTimerDisplay();
             if (quizTimerInterval) clearInterval(quizTimerInterval);
             quizTimerInterval = setInterval(() => {
