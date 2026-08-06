@@ -144,29 +144,29 @@
                     <i class="fa-solid fa-chevron-right text-sm"></i>
                 </button>
 
-                <!-- TOMBOL KUIS SEDEKAH -->
+                <!-- TOMBOL KUIS SEDEKAH (DIKUNCI PERMANEN) -->
                 <button onclick="openPilarDetail('Kuis Sedekah')" id="btn-kuissedekah-menu" class="btn-locked w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between">
                     <span class="flex items-center space-x-2">
                         <i id="kuissedekah-lock-icon" class="fa-solid fa-lock text-sm text-amber-400"></i>
-                        <span id="kuissedekah-text-label">Kuis Sedekah (Buka 20:00 WITA)</span>
+                        <span id="kuissedekah-text-label">Kuis Sedekah (Terkunci)</span>
                     </span>
                     <i class="fa-solid fa-chevron-right text-sm"></i>
                 </button>
 
-                <!-- TOMBOL EVALUASI 1 -->
+                <!-- TOMBOL EVALUASI 1 (DIKUNCI PERMANEN) -->
                 <button onclick="openPilarDetail('Evaluasi 1')" id="btn-evaluasi1-menu" class="btn-locked w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between">
                     <span class="flex items-center space-x-2">
                         <i id="evaluasi1-lock-icon" class="fa-solid fa-lock text-sm text-amber-400"></i>
-                        <span>Evaluasi 1 (19 Agt 2026)</span>
+                        <span>Evaluasi 1 (Terkunci)</span>
                     </span>
                     <i class="fa-solid fa-chevron-right text-sm"></i>
                 </button>
 
-                <!-- TOMBOL EVALUASI 2 -->
+                <!-- TOMBOL EVALUASI 2 (DIKUNCI PERMANEN) -->
                 <button onclick="openPilarDetail('Evaluasi 2')" id="btn-evaluasi2-menu" class="btn-locked w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between">
                     <span class="flex items-center space-x-2">
                         <i id="evaluasi2-lock-icon" class="fa-solid fa-lock text-sm text-amber-400"></i>
-                        <span>Evaluasi 2 (20 Agt 2026)</span>
+                        <span>Evaluasi 2 (Terkunci)</span>
                     </span>
                     <i class="fa-solid fa-chevron-right text-sm"></i>
                 </button>
@@ -198,7 +198,7 @@
                             <input type="text" id="quiz-student-name" placeholder="Contoh: Geril Suardi" class="w-full px-3 py-2.5 rounded-xl text-xs border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400 font-medium">
                         </div>
                         <button onclick="startQuizSession()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-xl text-xs shadow transition flex items-center justify-center space-x-1 mt-2 cursor-pointer">
-                            <span>Mulai Mengerjakan Soal (Waktu: 20 Menit)</span>
+                            <span>Mulai Mengerjakan Soal</span>
                             <i class="fa-solid fa-arrow-right"></i>
                         </button>
                     </div>
@@ -208,11 +208,7 @@
                     <div class="flex justify-between items-center border-b pb-2">
                         <span id="quiz-progress-text" class="text-xs font-bold text-indigo-900">Pertanyaan 1 dari 24</span>
                         <div class="flex items-center space-x-2">
-                            <span id="quiz-timer-badge" class="bg-red-100 text-red-700 text-[10px] font-extrabold px-2 py-0.5 rounded-full flex items-center space-x-1 animate-pulse">
-                                <i class="fa-solid fa-clock"></i>
-                                <span id="time-left-display">20:00</span>
-                            </span>
-                            <span id="quiz-user-badge" class="bg-indigo-50 text-indigo-800 text-[10px] font-bold px-2 py-0.5 rounded-full truncate max-w-[110px]"></span>
+                            <span id="quiz-user-badge" class="bg-indigo-50 text-indigo-800 text-[10px] font-bold px-2 py-0.5 rounded-full truncate max-w-[130px]"></span>
                         </div>
                     </div>
 
@@ -418,13 +414,8 @@
         let scoreCount = 0;
         let userAnswers = [];
         let verifiedStudentName = "";
-        let quizTimerInterval = null;
-        let timeLeftSeconds = 600; 
         let hasLeftQuiz = false;   
         let activeQuizList = []; 
-
-        const targetEval1Date = new Date("2026-08-19T00:00:00");
-        const targetEval2Date = new Date("2026-08-20T00:00:00");
 
         const pilarData = {
             "Pancasila": {
@@ -474,7 +465,7 @@
                     { soal: "Berdasarkan Pasal 7 UUD 1945, Presiden dan Wakil Presiden dapat dipilih kembali dalam jabatan yang sama, hanya untuk...", opsi: ["Satu kali masa jabatan", "Dua kali masa jabatan", "Tiga kali masa jabatan", "Tanpa batasan masa jabatan"], jawaban: 1 },
                     { soal: "Berdasarkan Pasal 7A UUD 1945, Presiden dan/atau Wakil Presiden dapat diberhentikan dalam masa jabatannya oleh MPR atas usul DPR apabila terbukti telah melakukan pelanggaran hukum berupa...", opsi: ["Tindak pidana korupsi, penyuapan, makar, atau perbuatan tercela", "Kebijakan ekonomi yang mengalami inflasi", "Kegagalan memenangkan pemilu legislatif", "Penolakan menandatangani undang-undang daerah"], jawaban: 0 },
                     { soal: "Berdasarkan Pasal 7B ayat (1) UUD 1945, usul pemberhentian Presiden dan/atau Wakil Presiden dapat diajukan oleh DPR kepada MPR terlebih dahulu dengan mengajukan permintaan kepada...", opsi: ["Mahkamah Konstitusi", "Mahkamah Agung", "Komisi Yudisial", "Dewan Perwakilan Daerah"], jawaban: 0 },
-                    { soal: "Berdasarkan Pasal 7C UUD 1945, Presiden tidak dapat membekukan dan/atau membubarkan...", opsi: ["Dewan Perwakilan Rakyat", "Mahkamah Konstitusi", "Tentara Nasional Indonesia", "Partai Politik"], jawaban: 0 }
+                    { soal: "Berdasarkan Pasal 7C UUD 1945, Presiden tidak dapat membekukan dan/output membubarkan...", opsi: ["Dewan Perwakilan Rakyat", "Mahkamah Konstitusi", "Tentara Nasional Indonesia", "Partai Politik"], jawaban: 0 }
                 ]
             },
             "NKRI": {
@@ -529,102 +520,15 @@
             },
             "Kuis Sedekah": {
                 materi: "Kuis Sedekah Spesial LCC 4 Pilar SMANCA.\n\nMenyajikan kumpulan 24 soal komprehensif mulai dari Pancasila, UUD 1945, NKRI, Bhinneka Tunggal Ika, hingga wawasan pendidikan nasional.",
-                kuis: [
-                    { soal: "Secara etimologis, kata Pancasila berasal dari bahasa Sanskerta. Kata 'pañca' berarti ....", opsi: ["Lima", "Dasar", "Pedoman", "Aturan", "Kesatuan"], jawaban: 0 },
-                    { soal: "Rumusan dasar negara yang diusulkan Mohammad Yamin secara tertulis adalah ....", opsi: ["Peri Kebangsaan, Peri Kemanusiaan, Peri Ketuhanan, Peri Kerakyatan, Kesejahteraan Rakyat", "Kebangsaan Indonesia, Internasionalisme, Mufakat, Kesejahteraan Sosial, Ketuhanan", "Persatuan Indonesia, Kerakyatan, Keadilan, Ketuhanan, Kemanusiaan", "Ketuhanan Yang Maha Esa, Kemanusiaan, Persatuan, Kerakyatan, Keadilan Sosial", "Nasionalisme, Demokrasi, Keadilan, Persatuan, Ketuhanan"], jawaban: 0 },
-                    { soal: "Tokoh yang menyampaikan konsep negara integralistik dalam Sidang BPUPKI adalah ....", opsi: ["Mohammad Yamin", "Mohammad Hatta", "Soepomo", "Ir. Soekarno", "A.A. Maramis"], jawaban: 2 },
-                    { 
-                        soal: "Dalam sidang BPUPKI, gagasan fundamental mengenai lima prinsip dasar negara merdeka yang disampaikan oleh Ir. Soekarno pada tanggal 1 Juni 1945 dinamakan oleh beliau sebagai...", 
-                        opsi: ["Pancasila", "Piagam Jakarta", "Bukan Ini", "Sapta Marga", "Catur Dharma"], 
-                        jawaban: 0 
-                    },
-                    { soal: "Dasar negara Indonesia disahkan secara resmi oleh PPKI pada tanggal ....", opsi: ["1 Juni 1945", "22 Juni 1945", "17 Agustus 1945", "18 Agustus 1945", "29 Agustus 1945"], jawaban: 3 },
-                    { soal: "Konstitusi dalam arti luas mencakup ....", opsi: ["Hanya Undang-Undang Dasar", "Seluruh ketentuan dasar yang mengatur penyelenggaraan negara, baik tertulis maupun tidak tertulis", "Peraturan Presiden", "Undang-Undang dan Peraturan Pemerintah", "Putusan Mahkamah Konstitusi"], jawaban: 1 },
-                    { soal: "Bunyi Pasal 1 ayat (2) UUD NRI Tahun 1945 adalah ....", opsi: ["Indonesia adalah negara hukum.", "Negara Indonesia ialah Negara Kesatuan yang berbentuk Republik.", "Kedaulatan berada di tangan rakyat dan dilaksanakan menurut Undang-Undang Dasar.", "Presiden memegang kekuasaan pemerintahan menurut Undang-Undang Dasar.", "MPR terdiri atas anggota DPR dan anggota DPD."], jawaban: 2 },
-                    { soal: "Pasal 7C UUD NRI Tahun 1945 bertujuan untuk ....", opsi: ["Memperkuat kekuasaan Presiden", "Menjamin prinsip checks and balances antara Presiden dan DPR", "Memberikan kewenangan DPR membubarkan Presiden", "Memberikan kewenangan Presiden membubarkan MPR", "Mengatur masa jabatan Presiden"], jawaban: 1 },
-                    { soal: "Berdasarkan Pasal 8 UUD NRI Tahun 1945, apabila Presiden mangkat, berhenti, diberhentikan, atau tidak dapat melakukan kewajibannya, maka jabatan Presiden akan digantikan oleh ....", opsi: ["Ketua MPR", "Ketua DPR", "Wakil Presiden", "Ketua Mahkamah Agung", "Menteri Dalam Negeri"], jawaban: 2 },
-                    { soal: "Norma hukum tertulis tertinggi di Indonesia adalah ....", opsi: ["Pancasila", "TAP MPR", "UUD NRI Tahun 1945", "Undang-Undang", "Peraturan Pemerintah"], jawaban: 2 },
-                    { soal: "Prinsip negara kesatuan mengandung makna bahwa ....", opsi: ["Setiap daerah memiliki kedaulatan sendiri", "Kedaulatan negara tidak terbagi-bagi", "Pemerintah daerah lebih tinggi daripada pemerintah pusat", "Setiap provinsi dapat membuat konstitusi sendiri", "Seluruh kebijakan ditentukan pemerintah daerah"], jawaban: 1 },
-                    { soal: "Salah satu alasan Indonesia memilih bentuk negara kesatuan adalah ....", opsi: ["Menghindari keberagaman budaya", "Memperkuat persatuan dan kesatuan bangsa", "Mempermudah pemisahan wilayah", "Menghapus pemerintah daerah", "Mengurangi jumlah provinsi"], jawaban: 1 },
-                    { soal: "Wawasan Nusantara merupakan ....", opsi: ["Sistem pertahanan negara", "Cara pandang bangsa Indonesia terhadap diri dan lingkungannya sebagai satu kesatuan", "Bentuk pemerintahan Indonesia", "Sistem ekonomi nasional", "Dasar negara Indonesia"], jawaban: 1 },
-                    { soal: "Berikut yang termasuk ancaman nonmiliter terhadap NKRI adalah ....", opsi: ["Agresi militer", "Invasi negara lain", "Penyebaran hoaks yang memecah persatuan", "Pelanggaran wilayah oleh kapal asing", "Blokade militer"], jawaban: 2 },
-                    { soal: "Salah satu bentuk bela negara di lingkungan sekolah adalah ....", opsi: ["Menghindari upacara bendera", "Mematuhi tata tertib sekolah dan menjaga persatuan", "Menolak pendapat teman", "Mengutamakan kepentingan kelompok", "Menyebarkan informasi yang belum tentu benar"], jawaban: 1 },
-                    { soal: "Kalimat lengkap semboyan Bhinneka Tunggal Ika adalah ....", opsi: ["Bhinneka Tunggal Ika Tan Hana Dharma Mangrwa", "Tut Wuri Handayani", "Ing Ngarsa Sung Tuladha", "Ing Madya Mangun Karsa", "Satyam Eva Jayate"], jawaban: 0 },
-                    { soal: "Makna kalimat 'Tan Hana Dharma Mangrwa' adalah ....", opsi: ["Tidak ada tujuan yang berbeda", "Tidak ada pengabdian yang mendua", "Tidak ada kebenaran yang mendua", "Tidak ada bangsa yang berbeda", "Tidak ada hukum yang berbeda"], jawaban: 2 },
-                    { 
-                        soal: "Dalam pidato 1 Juni 1945, Ir. Soekarno menyatakan bahwa jika lima prinsip dasar negara diperas menjadi tiga prinsip (Trisila) yaitu sosio-nasionalisme, sosio-demokrasi, dan ketuhanan, serta jika diperas kembali menjadi satu prinsip tunggal (Ekasila), maka prinsip tersebut adalah...", 
-                        opsi: ["Gotong royong", "Persatuan", "Keadilan", "Kemanusiaan", "Musyawarah"], 
-                        jawaban: 0 
-                    },
-                    { soal: "Pada masa Kerajaan Majapahit, semboyan Bhinneka Tunggal Ika digunakan untuk ....", opsi: ["Menyatukan berbagai agama dan kepercayaan", "Menentukan batas wilayah kerajaan", "Mengatur sistem perdagangan", "Menetapkan hukum kerajaan", "Mengatur pemerintahan desa"], jawaban: 0 },
-                    { soal: "Berikut yang paling mencerminkan penerapan Bhinneka Tunggal Ika di sekolah adalah ....", opsi: ["Berteman hanya dengan siswa yang satu suku", "Menghargai pendapat teman meskipun berbeda latar belakang", "Mengutamakan kepentingan kelompok sendiri", "Menolak budaya daerah lain", "Membatasi pergaulan berdasarkan agama"], jawaban: 1 },
-                    { soal: "Hubungan antara Bhinneka Tunggal Ika dan NKRI adalah ....", opsi: ["Keduanya merupakan lembaga negara", "Bhinneka Tunggal Ika menjadi semangat persatuan dalam menjaga keutuhan NKRI", "NKRI merupakan bagian dari Bhinneka Tunggal Ika", "Bhinneka Tunggal Ika mengatur sistem pemerintahan Indonesia", "NKRI dibentuk berdasarkan Kitab Sutasoma"], jawaban: 1 },
-                    { 
-                        soal: "Di dalam struktur pemerintahan wilayah di Indonesia, jabatan kepala pemerintahan pada tingkat kecamatan yang diangkat oleh bupati/walikota (bukan dipilih langsung melalui pemilu rakyat) adalah...", 
-                        opsi: ["Camat", "Gubernur", "Kepala Desa", "DPR", "Bupati"], 
-                        jawaban: 0 
-                    },
-                    { 
-                        soal: "Pasal 34 ayat (1) UUD NRI Tahun 1945 secara tegas menyatakan bahwa fakir miskin dan anak-anak yang terlantar dipelihara oleh...", 
-                        opsi: ["Negara", "Pemerintah Daerah", "Kementerian Sosial", "Organisasi Masyarakat", "Badan Amal Nasional"], 
-                        jawaban: 0 
-                    },
-                    { 
-                        soal: "Siapakah nama-nama anggota Tim LCC 4 Pilar SMANCA saat ini?", 
-                        opsi: ["Arif, Kia, Novita, Sarah, Amri, Marsya, Ica, Niah, Rara, dan Geril", "Ahmad, Budi, Candra, Dedi, Eko, Fajar, Gilang, Hari, Indah, dan Joko", "Siti, Aminah, Fatimah, Zahra, Aisyah, Khadijah, Maryam, Asiyah, Salma, dan Nabila", "Andi, Bayu, Citra, Doni, Eka, Fitri, Galih, Hana, Ilham, dan Jihan"], 
-                        jawaban: 0 
-                    }
-                ]
+                kuis: []
             },
             "Evaluasi 1": {
-                materi: "Evaluasi 1 Tim LCC 4 Pilar SMANCA.\n\nSoal-soal evaluasi ini mencakup pendalaman komprehensif materi Pancasila, konstitusi, dan sistem tata negara.",
-                kuis: [
-                    { soal: "Evaluasi 1 - No 1: Dalam teori hukum tata negara, dasar negara berkedudukan sebagai 'Staatsfundamentalnorm'. Apa konsekuensi yuridis utama dari kedudukan tersebut?", opsi: ["Norma dasar tersebut bersifat tetap dan tidak dapat diubah oleh siapapun termasuk MPR hasil pemilu", "Ketentuan tersebut dapat diamandemen kapan saja melalui dekrit presiden", "Norma dasar berada di bawah kedudukan UUD 1945", "Aturan tersebut hanya berlaku sebagai moral etika perorangan"], jawaban: 0 },
-                    { soal: "Evaluasi 1 - No 2: Lembaga yang berwenang memeriksa dan memutus pendapat DPR bahwa Presiden telah melakukan pelanggaran hukum adalah...", opsi: ["Mahkamah Agung", "Mahkamah Konstitusi", "Komisi Yudisial", "Dewan Perwakilan Daerah"], jawaban: 1 },
-                    { soal: "Evaluasi 1 - No 3: Konsepsi Wawasan Nusantara memandang wilayah Indonesia sebagai satu kesatuan politik. Hal ini berarti bahwa...", opsi: ["Hukum nasional berlaku sama dan adil bagi seluruh wilayah nusantara tanpa diskriminasi", "Setiap daerah berhak membuat undang-undang pidana sendiri", "Pemerintahan pusat tidak berhak campur tangan urusan daerah", "Sistem kepartaian daerah bersifat independen mutlak"], jawaban: 0 },
-                    { soal: "Evaluasi 1 - No 4: Semboyan Bhinneka Tunggal Ika mengajarkan toleransi multikultural. Tokoh sastrawan Majapahit yang mencetuskan semboyan ini adalah...", opsi: ["Mpu Prapanca", "Mpu Tantular", "Mpu Gandring", "Mpu Panuluh"], jawaban: 1 },
-                    { soal: "Evaluasi 1 - No 5: Hari lahir dasar negara yang diperingati setiap 1 Juni merujuk pada pidato monumental yang disampaikan oleh...", opsi: ["Ir. Soekarno dalam sidang BPUPKI", "Mohammad Hatta dalam sidang PPKI", "Soepomo dalam panitia sembilan", "Radjiman Wedyodiningrat"], jawaban: 0 },
-                    { soal: "Evaluasi 1 - No 6: Ketentuan konstitusional mengenai kebebasan berserikat, berkumpul, dan mengeluarkan pendapat diatur dalam UUD 1945.", opsi: ["Pasal terkait hak konstitusional warga negara", "Pasal terkait anggaran negara", "Pasal terkait militer", "Pasal terkait sanksi pidana"], jawaban: 0 },
-                    { soal: "Evaluasi 1 - No 7: Deklarasi Djuanda 13 Desember 1957 merupakan tonggak sejarah penting yang mengubah status perairan nusantara dari konsep kolonial menjadi...", opsi: ["Perairan teritorial nasional yang menghubungkan pulau-pulau di Indonesia", "Zona bebas pelayaran kapal asing tanpa batas", "Kawasan laut lepas internasional", "Wilayah perikanan bersama negara tetangga"], jawaban: 0 },
-                    { soal: "Evaluasi 1 - No 8: Kitab Sutasoma ditulis menggunakan bahasa Jawa Kuno dengan aksara...", opsi: ["Pallawa / Kawi", "Sansekerta Murni", "Arab Melayu", "Latin Kuno"], jawaban: 0 },
-                    { soal: "Evaluasi 1 - No 9: Sidang pleno PPKI yang mengesahkan UUD 1945 dan menetapkan Presiden serta Wakil Presiden dilaksanakan pada tanggal...", opsi: ["17 Agustus 1945", "18 Agustus 1945", "22 Juni 1945", "1 Juni 1945"], jawaban: 1 },
-                    { soal: "Evaluasi 1 - No 10: Sikap fanatisme sempit yang mengagungkan kelompok sendiri dan merendahkan kelompok lain dikenal sebagai...", opsi: ["Chauvinisme / Etnosentrisme", "Nasionalisme moderat", "Kosmopolitanisme", "Patriotisme konstitusional"], jawaban: 0 },
-                    { soal: "Evaluasi 1 - No 11: Lambang pohon beringin pada perisai Garuda melambangkan sila ke...", opsi: ["Sila Pertama", "Sila Kedua", "Sila Ketiga", "Sila Keempat"], jawaban: 2 },
-                    { soal: "Evaluasi 1 - No 12: UUD 1945 menegaskan bentuk negara Indonesia adalah...", opsi: ["Negara Serikat", "Negara Kesatuan yang berbentuk Republik", "Negara Monarki Konstitusional", "Negara dominion"], jawaban: 1 },
-                    { soal: "Evaluasi 1 - No 13: Pernyataan kemerdekaan sebagai hak segala bangsa dan penjajahan harus dihapuskan tercantum dalam Pembukaan UUD 1945 alinea...", opsi: ["Alinea Pertama", "Alinea Kedua", "Alinea Ketiga", "Alinea Keempat"], jawaban: 0 },
-                    { soal: "Evaluasi 1 - No 14: Ancaman nir-militer (non-militer) yang paling berbahaya di era modern terhadap ideologi bangsa adalah...", opsi: ["Invasi angkatan bersenjata darat", "Masuknya paham radikalisme, liberalisme ekstrem, dan disinformasi digital", "Blokade pelabuhan laut", "Penyelundupan senjata konvensional"], jawaban: 1 },
-                    { soal: "Evaluasi 1 - No 15: Tujuan utama penyelenggaraan LCC 4 Pilar MPR RI bagi pelajar SMA adalah...", opsi: ["Mencari juara kelas", "Membentuk kader bangsa yang memiliki pemahaman mendalam terhadap konsensus dasar bernegara", "Melatih keterampilan baris-berbaris militer", "Menghafalkan seluruh pasal tanpa analisis"], jawaban: 1 },
-                    { soal: "Evaluasi 1 - No 16: Panitia Sembilan yang dibentuk setelah sidang pertama BPUPKI berhasil merumuskan naskah dokumen historis yaitu...", opsi: ["Piagam Jakarta (Jakarta Charter)", "Undang-Undang Dasar Sementara", "Dekrit Presiden", "Resolusi Jihad"], jawaban: 0 },
-                    { soal: "Evaluasi 1 - No 17: Hubungan kausal-organis antara dasar negara dan Pembukaan UUD 1945 bermakna bahwa falsafah negara merupakan...", opsi: ["Roh dan jiwa yang menjiwai seluruh isi Pembukaan serta Batang Tubuh UUD 1945", "Peraturan pelaksana undang-undang organik", "Dokumen terpisah dari konstitusi", "Ketetapan MPR yang dapat dicabut sewaktu-waktu"], jawaban: 0 },
-                    { soal: "Evaluasi 1 - No 18: Prinsip musyawarah mufakat dalam sila keempat dipandu oleh nilai...", opsi: ["Hikmat kebijaksanaan yang berketuhanan, berkemanusiaan, dan berpersatuan", "Suara mayoritas mutlak tanpa pertimbangan etis", "Keputusan mutlak pimpinan rapat", "Negosiasi kepentingan transaksional"], jawaban: 0 },
-                    { soal: "Evaluasi 1 - No 19: Perubahan (amandemen) terhadap UUD 1945 dilakukan sebanyak empat kali pada kurun waktu tahun...", opsi: ["1999 hingga 2002", "1945 hingga 1950", "1959 hingga 1965", "2004 hingga 2009"], jawaban: 0 },
-                    { soal: "Evaluasi 1 - No 20: Bentuk kedaulatan berada di tangan rakyat dan dilaksanakan menurut Undang-Undang Dasar merupakan ketentuan konstitusional yang diatur dalam...", opsi: ["UUD 1945", "Ketetapan MPR", "Undang-Undang Pemilu", "Peraturan Presiden"], jawaban: 0 }
-                ]
+                materi: "Evaluasi 1 Tim LCC 4 Pilar SMANCA.",
+                kuis: []
             },
             "Evaluasi 2": {
-                materi: "Evaluasi 2 Tim LCC 4 Pilar SMANCA.\n\nSoal-soal evaluasi lanjutan mengenai NKRI, Bhinneka Tunggal Ika, dan uji komprehensif wawasan kebangsaan.",
-                kuis: [
-                    { soal: "Evaluasi 2 - No 1: Semboyan Bhinneka Tunggal Ika secara resmi menjadi bagian dari atribut kenegaraan yang diatur dalam...", opsi: ["UUD 1945 dan UU No. 24 Tahun 2009", "Ketetapan MPR saja", "Peraturan Menteri Pendidikan", "Konvensi Hukum Laut Internasional"], jawaban: 0 },
-                    { soal: "Evaluasi 2 - No 2: Batas kewenangan antara pemerintah pusat dan daerah otonom dalam kerangka NKRI diatur dengan prinsip otonomi...", opsi: ["Seluas-luasnya sesuai undang-undang, kecuali urusan pemerintahan absolut", "Federal mandiri tanpa koordinasi pusat", "Terpusat penuh pada pemerintah pusat", "Terbatas pada bidang kebudayaan semata"], jawaban: 0 },
-                    { soal: "Evaluasi 2 - No 3: Urgensi Wawasan Nusantara bagi integritas teritorial NKRI adalah sebagai pedoman geopolitik yang menegaskan bahwa...", opsi: ["Kepulauan nusantara adalah satu kesatuan wilayah pertahanan, ekonomi, politik, dan sosial budaya", "Indonesia bebas dimasuki kekuatan militer asing", "Batas laut teritorial diukur selebar 200 mil", "Otonomi daerah berhak memisahkan diri"], jawaban: 0 },
-                    { soal: "Evaluasi 2 - No 4: Wujud toleransi aktif antarumat beragama dalam masyarakat majemuk ditunjukkan melalui tindakan...", opsi: ["Saling menghormati pelaksanaan ibadah masing-masing serta bekerja sama dalam hal kemasyarakatan yang tidak mencangkup aqidah", "Mencampuradukkan tata cara peribadatan semua agama", "Melarang pendirian rumah ibadah kelompok lain", "Menggående kegiatan keagamaan di ruang publik"], jawaban: 0 },
-                    { soal: "Evaluasi 2 - No 5: Proklamasi Kemerdekaan Republik Indonesia 17 Agustus 1945 ditandatangani oleh Soekarno dan Hatta atas nama...", opsi: ["Bangsa Indonesia", "Panitia Persiapan Kemerdekaan Indonesia", "Dewan Pertimbangan Agung", "Komite Nasional Indonesia Pusat"], jawaban: 0 },
-                    { soal: "Evaluasi 2 - No 6: Perilaku yang mencerminkan integrasi nasional di lingkungan sekolah adalah...", opsi: ["Membentuk kelompok belajar lintas suku dan agama secara harmonis", "Membuat kelompok eksklusif daerah", "Menolak berdiskusi dengan siswa berbeda pendapat", "Mengejek tradisi daerah teman sekelas"], jawaban: 0 },
-                    { soal: "Evaluasi 2 - No 7: Sidang pertama BPUPKI yang membahas rumusan dasar negara diselenggarakan pada tanggal...", opsi: ["29 Mei - 1 Juni 1945", "10 - 17 Juli 1945", "18 Agustus 1945", "22 Juni 1945"], jawaban: 0 },
-                    { soal: "Evaluasi 2 - No 8: Nilai universal yang menjunjung tinggi persamaan derajat, hak, dan kewajiban asasi manusia terkandung dalam...", opsi: ["Sila Kedua Pancasila", "Sila Ketiga Pancasila", "Sila Keempat Pancasila", "Sila Kelima Pancasila"], jawaban: 0 },
-                    { soal: "Evaluasi 2 - No 9: Dalam hierarki peraturan perundang-undangan di Indonesia berdasarkan UU No. 12 Tahun 2011, kedudukan Peraturan Pemerintah (PP) berada di bawah...", opsi: ["Undang-Undang / Perppu", "Ketetapan MPR", "Undang-Undang Dasar 1945", "Peraturan Daerah"], jawaban: 0 },
-                    { soal: "Evaluasi 2 - No 10: Mengapa sikap etnosentrisme dan chauvinisme menjadi ancaman nyata terhadap keutuhan NKRI?", opsi: ["Karena dapat memicu disintegrasi sosial, konflik horizontal, dan hilangnya rasa persatuan", "Karena meningkatkan pertumbuhan ekonomi nasional", "Karena memperkuat ketahanan pertahanan militer", "Memperkaya khazanah bahasa daerah"], jawaban: 0 },
-                    { soal: "Evaluasi 2 - No 11: Bentuk kedaulatan negara Republik Indonesia menurut konstitusi menganut sistem...", opsi: ["Republik dengan kedaulatan di tangan rakyat", "Monarki absolut", "Federasi bagian", "Oligarki terbatas"], jawaban: 0 },
-                    { soal: "Evaluasi 2 - No 12: UUD 1945 menetapkan bahwa tiap-tiap warga negara berhak dan wajib ikut serta dalam...", opsi: ["Usaha pertahanan dan keamanan negara", "Pemilihan umum kepala daerah", "Pengelolaan sumber daya migas", "Pembentukan partai politik"], jawaban: 0 },
-                    { soal: "Evaluasi 2 - No 13: Jiwa, semangat, dan nilai-nilai kejuangan bangsa Indonesia yang lahir pada 1945 dikenal dengan istilah...", opsi: ["JSN '45 (Jiwa Semangat 45)", "Ideologi terbuka", "Wawasan nusantara", "Demokrasi Pancasila"], jawaban: 0 },
-                    { soal: "Evaluasi 2 - No 14: Prinsip musyawarah untuk mufakat dalam pengambilan keputusan kenegaraan bersumber dari...", opsi: ["Sila Keempat Pancasila", "Sila Ketiga Pancasila", "Sila Kelima Pancasila", "Sila Kedua Pancasila"], jawaban: 0 },
-                    { soal: "Evaluasi 2 - No 15: Kontribusi esensial pelajar SMANCA dalam menjaga 4 Pilar MPR RI adalah...", opsi: ["Mempelajari, menghayati, dan mengamalkan nilai-nilai Pancasila, UUD 1945, NKRI, dan Bhinneka Tunggal Ika dalam kehidupan sehari-hari", "Mengabaikan sejarah perjuangan bangsa", "Meniru budaya asing secara mutlak", "Hanya aktif saat menjelang perlombaan"], jawaban: 0 },
-                    { soal: "Evaluasi 2 - No 16: Semangat persatuan dalam keberagaman diikat kuat oleh konsensus nasional yaitu...", opsi: ["Pancasila, UUD 1945, NKRI, dan Bhinneka Tunggal Ika", "Sistem ekonomi kapitalis liberal", "Aliansi militer regional", "Bahasa asing sebagai pengantar"], jawaban: 0 },
-                    { soal: "Evaluasi 2 - No 17: Komponen utama dalam sistem pertahanan dan keamanan rakyat semesta (Sishankamrata) adalah...", opsi: ["Tentara Nasional Indonesia (TNI) dan Kepolisian Negara Republik Indonesia (Polri)", "Seluruh warga sipil bersenjata", "Korps sukarelawan daerah", "Milisi pertahanan swasta"], jawaban: 0 },
-                    { soal: "Evaluasi 2 - No 18: Makna kemerdekaan bangsa Indonesia yang tertuang dalam Pembukaan UUD 1945 alinea ketiga dicapai melalui...", opsi: ["Atas berkat rahmat Allah Yang Maha Kuasa dan didorong oleh keinginan luhur bangsa Indonesia", "Pemberian hak kemerdekaan dari penjajah", "Hasil kompromi militer internasional", "Bantuan senjata negara tetangga"], jawaban: 0 },
-                    { soal: "Evaluasi 2 - No 19: Tombol primordialisme yang berlebihan dan sempit dapat mengakibatkan...", opsi: ["Terganggunya integrasi nasional dan munculnya konflik antar kelompok", "Kemajuan pesat teknologi industri", "Penguatan hubungan diplomatik luar negeri", "Pariwisata budaya yang mendunia"], jawaban: 0 },
-                    { soal: "Evaluasi 2 - No 20: Tujuan akhir dari pembinaan wawasan kebangsaan melalui LCC 4 Pilar adalah terwujudnya generasi muda yang...", opsi: ["Memiliki kesadaran berkonstitusi tinggi, nasionalisme kokoh, dan setia kepada Pancasila serta NKRI", "Enguasai ilmu militer praktis", "Menjadi politisi instan", "Hafal seluruh pasal konstitusi tanpa pemahaman filosofis"], jawaban: 0 }
-                ]
+                materi: "Evaluasi 2 Tim LCC 4 Pilar SMANCA.",
+                kuis: []
             }
         };
 
@@ -637,88 +541,7 @@
             return arr;
         }
 
-        document.addEventListener("DOMContentLoaded", () => {
-            const initialHeight = window.innerHeight;
-            window.addEventListener('resize', () => {
-                if (window.innerHeight < initialHeight * 0.75) {
-                    document.body.classList.add('keyboard-open');
-                } else {
-                    document.body.classList.remove('keyboard-open');
-                }
-            });
-            checkQuizSedekahLockStatus();
-            setInterval(checkQuizSedekahLockStatus, 1000);
-        });
-
-        function checkQuizSedekahLockStatus() {
-            const now = new Date();
-            const targetKuisSedekah = new Date();
-            targetKuisSedekah.setHours(20, 0, 0, 0);
-
-            const btnKuisSedekah = document.getElementById('btn-kuissedekah-menu');
-            const iconKuisSedekah = document.getElementById('kuissedekah-lock-icon');
-            const textLabelKuisSedekah = document.getElementById('kuissedekah-text-label');
-
-            const isSedekahDone = localStorage.getItem("done_quiz_Kuis Sedekah");
-
-            if (isSedekahDone) {
-                btnKuisSedekah.className = "btn-locked w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between";
-                iconKuisSedekah.className = "fa-solid fa-lock text-sm text-amber-400";
-                textLabelKuisSedekah.innerText = "Kuis Sedekah (Sudah Dikerjakan)";
-            } else if (now >= targetKuisSedekah) {
-                btnKuisSedekah.className = "btn-gold w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between";
-                iconKuisSedekah.className = "fa-solid fa-unlock text-sm text-amber-200";
-                textLabelKuisSedekah.innerText = "Kuis Sedekah (Dibuka)";
-            } else {
-                btnKuisSedekah.className = "btn-locked w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between";
-                iconKuisSedekah.className = "fa-solid fa-lock text-sm text-amber-400";
-                
-                const diffMs = targetKuisSedekah - now;
-                const diffHrs = Math.floor((diffMs % 86400000) / 3600000);
-                const diffMins = Math.floor((diffMs % 3600000) / 60000);
-                const diffSecs = Math.floor((diffMs % 60000) / 1000);
-                
-                textLabelKuisSedekah.innerText = `Kuis Sedekah (Buka ${String(diffHrs).padStart(2,'0')}:${String(diffMins).padStart(2,'0')}:${String(diffSecs).padStart(2,'0')})`;
-            }
-
-            const btnEval1 = document.getElementById('btn-evaluasi1-menu');
-            const iconEval1 = document.getElementById('evaluasi1-lock-icon');
-            if (localStorage.getItem("done_quiz_Evaluasi 1")) {
-                btnEval1.className = "btn-locked w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between";
-                iconEval1.className = "fa-solid fa-lock text-sm text-amber-400";
-                btnEval1.querySelector("span span").innerText = "Evaluasi 1 (Sudah Dikerjakan)";
-            } else if (now >= targetEval1Date) {
-                btnEval1.className = "btn-gold w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between";
-                iconEval1.className = "fa-solid fa-unlock text-sm text-amber-200";
-                btnEval1.querySelector("span span").innerText = "Evaluasi 1 (Dibuka)";
-            } else {
-                btnEval1.className = "btn-locked w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between";
-                iconEval1.className = "fa-solid fa-lock text-sm text-amber-400";
-                btnEval1.querySelector("span span").innerText = "Evaluasi 1 (19 Agt 2026)";
-            }
-
-            const btnEval2 = document.getElementById('btn-evaluasi2-menu');
-            const iconEval2 = document.getElementById('evaluasi2-lock-icon');
-            if (localStorage.getItem("done_quiz_Evaluasi 2")) {
-                btnEval2.className = "btn-locked w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between";
-                iconEval2.className = "fa-solid fa-lock text-sm text-amber-400";
-                btnEval2.querySelector("span span").innerText = "Evaluasi 2 (Sudah Dikerjakan)";
-            } else if (now >= targetEval2Date) {
-                btnEval2.className = "btn-gold w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between";
-                iconEval2.className = "fa-solid fa-unlock text-sm text-amber-200";
-                btnEval2.querySelector("span span").innerText = "Evaluasi 2 (Dibuka)";
-            } else {
-                btnEval2.className = "btn-locked w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between";
-                iconEval2.className = "fa-solid fa-lock text-sm text-amber-400";
-                btnEval2.querySelector("span span").innerText = "Evaluasi 2 (20 Agt 2026)";
-            }
-        }
-
         function navigateTo(pageId) {
-            if (pageId !== 'quiz') {
-                if (quizTimerInterval) clearInterval(quizTimerInterval);
-            }
-
             document.querySelectorAll('.page-view').forEach(page => page.classList.add('hidden'));
             const targetPage = document.getElementById('page-' + pageId);
             if (targetPage) targetPage.classList.remove('hidden');
@@ -737,25 +560,13 @@
         }
 
         function openPilarDetail(pilar) {
-            const now = new Date();
-            const targetKuisSedekah = new Date();
-            targetKuisSedekah.setHours(20, 0, 0, 0);
+            if (pilar === 'Kuis Sedekah' || pilar === 'Evaluasi 1' || pilar === 'Evaluasi 2') {
+                showNotifModal('Menu Terkunci', `Maaf, ${pilar} saat ini dikunci dan tidak dapat dikerjakan.`, 'warning');
+                return;
+            }
 
             if (localStorage.getItem(`done_quiz_${pilar}`)) {
                 showNotifModal('Sudah Dikerjakan', `Perangkat ini sudah pernah mengirimkan jawaban untuk ${pilar}. Kuis ini hanya dapat dikerjakan 1 kali per perangkat.`, 'warning');
-                return;
-            }
-
-            if (pilar === 'Kuis Sedekah' && now < targetKuisSedekah) {
-                showNotifModal('Kuis Terkunci', 'Kuis Sedekah baru akan dibuka dan dapat dikerjakan pada pukul 20:00 WITA.', 'warning');
-                return;
-            }
-            if (pilar === 'Evaluasi 1' && now < targetEval1Date) {
-                showNotifModal('Kuis Terkunci', 'Menu Evaluasi 1 baru dapat dikerjakan mulai tanggal 19 Agustus 2026.', 'warning');
-                return;
-            }
-            if (pilar === 'Evaluasi 2' && now < targetEval2Date) {
-                showNotifModal('Kuis Terkunci', 'Menu Evaluasi 2 baru dapat dikerjakan mulai tanggal 20 Agustus 2026.', 'warning');
                 return;
             }
 
@@ -811,20 +622,6 @@
             document.getElementById('quiz-container-box').classList.remove('hidden');
 
             initQuizAntiCheat();
-
-            timeLeftSeconds = 1200; 
-            updateTimerDisplay();
-            if (quizTimerInterval) clearInterval(quizTimerInterval);
-            quizTimerInterval = setInterval(() => {
-                timeLeftSeconds--;
-                updateTimerDisplay();
-                if (timeLeftSeconds <= 0) {
-                    clearInterval(quizTimerInterval);
-                    alert("Waktu pengerjaan telah habis!");
-                    finishQuizAndSubmit();
-                }
-            }, 1000);
-
             loadQuizQuestionItem();
         }
 
@@ -869,13 +666,6 @@
                     console.log("Gagal mengirim laporan pelanggaran:", err);
                 });
             }
-        }
-
-        function updateTimerDisplay() {
-            const minutes = Math.floor(timeLeftSeconds / 60);
-            const seconds = timeLeftSeconds % 60;
-            const formatted = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-            document.getElementById('time-left-display').innerText = formatted;
         }
 
         function loadQuizQuestionItem() {
@@ -945,8 +735,6 @@
         }
 
         function finishQuizAndSubmit() {
-            if (quizTimerInterval) clearInterval(quizTimerInterval);
-
             localStorage.setItem(`done_quiz_${activeQuizPilar}`, "true");
 
             scoreCount = 0;
