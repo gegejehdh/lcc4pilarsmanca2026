@@ -144,7 +144,7 @@
                     <i class="fa-solid fa-chevron-right text-sm"></i>
                 </button>
 
-                <!-- TOMBOL KUIS SEDEKAH (DENGAN HITUNG MUNDUR 20:00 WITA) -->
+                <!-- TOMBOL KUIS SEDEKAH -->
                 <button onclick="openPilarDetail('Kuis Sedekah')" id="btn-kuissedekah-menu" class="btn-locked w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between">
                     <span class="flex items-center space-x-2">
                         <i id="kuissedekah-lock-icon" class="fa-solid fa-lock text-sm text-amber-400"></i>
@@ -190,7 +190,7 @@
                     </div>
                     <div class="text-center">
                         <h3 class="text-sm font-extrabold text-slate-800">Identitas Peserta Kuis</h3>
-                        <p class="text-[11px] text-slate-500 mt-0.5">Silakan masukkan nama Anda sebelum mulai mengerjakan. Setiap peserta hanya diberikan <strong>1 kali kesempatan</strong>.</p>
+                        <p class="text-[11px] text-slate-500 mt-0.5">Silakan masukkan nama Anda. Perangkat ini hanya diberikan <strong>1 kali kesempatan</strong> untuk mengerjakan kuis ini.</p>
                     </div>
                     <div class="space-y-2 pt-1">
                         <div>
@@ -208,7 +208,6 @@
                     <div class="flex justify-between items-center border-b pb-2">
                         <span id="quiz-progress-text" class="text-xs font-bold text-indigo-900">Pertanyaan 1 dari 24</span>
                         <div class="flex items-center space-x-2">
-                            <!-- WAKTU BERGERAK REAL-TIME -->
                             <span id="quiz-timer-badge" class="bg-red-100 text-red-700 text-[10px] font-extrabold px-2 py-0.5 rounded-full flex items-center space-x-1 animate-pulse">
                                 <i class="fa-solid fa-clock"></i>
                                 <span id="time-left-display">20:00</span>
@@ -248,10 +247,9 @@
                             <span>Mengirim skor secara otomatis...</span>
                         </button>
                         
-                        <!-- TOMBOL UNTUK MELIHAT RINCIAN JAWABAN -->
                         <button onclick="toggleReviewSection()" class="w-full bg-indigo-900 hover:bg-indigo-950 text-white font-bold py-2.5 rounded-xl text-xs shadow transition flex items-center justify-center space-x-2 cursor-pointer">
                             <i class="fa-solid fa-list-check"></i>
-                            <span id="review-toggle-text">Lihat Rincian & Kunci Jawaban</span>
+                            <span id="review-toggle-text">Lihat Rincian Jawaban</span>
                         </button>
 
                         <button onclick="navigateTo('pilar')" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 rounded-xl text-xs shadow transition cursor-pointer">
@@ -259,9 +257,8 @@
                         </button>
                     </div>
 
-                    <!-- KOTAK TINJAUAN / REVIEW JAWABAN -->
                     <div id="quiz-review-container" class="hidden space-y-3 pt-4 text-left border-t mt-3">
-                        <h4 class="font-extrabold text-slate-800 text-xs text-center uppercase tracking-wide bg-slate-100 py-2 rounded-xl">Review & Evaluasi Jawaban Anda</h4>
+                        <h4 class="font-extrabold text-slate-800 text-xs text-center uppercase tracking-wide bg-slate-100 py-2 rounded-xl">Review Status Jawaban Anda</h4>
                         <div id="quiz-review-list" class="space-y-3 max-h-96 overflow-y-auto pr-1"></div>
                     </div>
                 </div>
@@ -625,7 +622,7 @@
                     { soal: "Evaluasi 2 - No 16: Semangat persatuan dalam keberagaman diikat kuat oleh konsensus nasional yaitu...", opsi: ["Pancasila, UUD 1945, NKRI, dan Bhinneka Tunggal Ika", "Sistem ekonomi kapitalis liberal", "Aliansi militer regional", "Bahasa asing sebagai pengantar"], jawaban: 0 },
                     { soal: "Evaluasi 2 - No 17: Komponen utama dalam sistem pertahanan dan keamanan rakyat semesta (Sishankamrata) adalah...", opsi: ["Tentara Nasional Indonesia (TNI) dan Kepolisian Negara Republik Indonesia (Polri)", "Seluruh warga sipil bersenjata", "Korps sukarelawan daerah", "Milisi pertahanan swasta"], jawaban: 0 },
                     { soal: "Evaluasi 2 - No 18: Makna kemerdekaan bangsa Indonesia yang tertuang dalam Pembukaan UUD 1945 alinea ketiga dicapai melalui...", opsi: ["Atas berkat rahmat Allah Yang Maha Kuasa dan didorong oleh keinginan luhur bangsa Indonesia", "Pemberian hak kemerdekaan dari penjajah", "Hasil kompromi militer internasional", "Bantuan senjata negara tetangga"], jawaban: 0 },
-                    { soal: "Evaluasi 2 - No 19: Sikap primordialisme yang berlebihan dan sempit dapat mengakibatkan...", opsi: ["Terganggunya integrasi nasional dan munculnya konflik antar kelompok", "Kemajuan pesat teknologi industri", "Penguatan hubungan diplomatik luar negeri", "Pariwisata budaya yang mendunia"], jawaban: 0 },
+                    { soal: "Evaluasi 2 - No 19: Tombol primordialisme yang berlebihan dan sempit dapat mengakibatkan...", opsi: ["Terganggunya integrasi nasional dan munculnya konflik antar kelompok", "Kemajuan pesat teknologi industri", "Penguatan hubungan diplomatik luar negeri", "Pariwisata budaya yang mendunia"], jawaban: 0 },
                     { soal: "Evaluasi 2 - No 20: Tujuan akhir dari pembinaan wawasan kebangsaan melalui LCC 4 Pilar adalah terwujudnya generasi muda yang...", opsi: ["Memiliki kesadaran berkonstitusi tinggi, nasionalisme kokoh, dan setia kepada Pancasila serta NKRI", "Enguasai ilmu militer praktis", "Menjadi politisi instan", "Hafal seluruh pasal konstitusi tanpa pemahaman filosofis"], jawaban: 0 }
                 ]
             }
@@ -655,8 +652,6 @@
 
         function checkQuizSedekahLockStatus() {
             const now = new Date();
-            
-            // Hitung target 20:00 WITA (UTC+8) hari ini
             const targetKuisSedekah = new Date();
             targetKuisSedekah.setHours(20, 0, 0, 0);
 
@@ -664,7 +659,13 @@
             const iconKuisSedekah = document.getElementById('kuissedekah-lock-icon');
             const textLabelKuisSedekah = document.getElementById('kuissedekah-text-label');
 
-            if (now >= targetKuisSedekah) {
+            const isSedekahDone = localStorage.getItem("done_quiz_Kuis Sedekah");
+
+            if (isSedekahDone) {
+                btnKuisSedekah.className = "btn-locked w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between";
+                iconKuisSedekah.className = "fa-solid fa-lock text-sm text-amber-400";
+                textLabelKuisSedekah.innerText = "Kuis Sedekah (Sudah Dikerjakan)";
+            } else if (now >= targetKuisSedekah) {
                 btnKuisSedekah.className = "btn-gold w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between";
                 iconKuisSedekah.className = "fa-solid fa-unlock text-sm text-amber-200";
                 textLabelKuisSedekah.innerText = "Kuis Sedekah (Dibuka)";
@@ -682,7 +683,11 @@
 
             const btnEval1 = document.getElementById('btn-evaluasi1-menu');
             const iconEval1 = document.getElementById('evaluasi1-lock-icon');
-            if (now >= targetEval1Date) {
+            if (localStorage.getItem("done_quiz_Evaluasi 1")) {
+                btnEval1.className = "btn-locked w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between";
+                iconEval1.className = "fa-solid fa-lock text-sm text-amber-400";
+                btnEval1.querySelector("span span").innerText = "Evaluasi 1 (Sudah Dikerjakan)";
+            } else if (now >= targetEval1Date) {
                 btnEval1.className = "btn-gold w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between";
                 iconEval1.className = "fa-solid fa-unlock text-sm text-amber-200";
                 btnEval1.querySelector("span span").innerText = "Evaluasi 1 (Dibuka)";
@@ -694,7 +699,11 @@
 
             const btnEval2 = document.getElementById('btn-evaluasi2-menu');
             const iconEval2 = document.getElementById('evaluasi2-lock-icon');
-            if (now >= targetEval2Date) {
+            if (localStorage.getItem("done_quiz_Evaluasi 2")) {
+                btnEval2.className = "btn-locked w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between";
+                iconEval2.className = "fa-solid fa-lock text-sm text-amber-400";
+                btnEval2.querySelector("span span").innerText = "Evaluasi 2 (Sudah Dikerjakan)";
+            } else if (now >= targetEval2Date) {
                 btnEval2.className = "btn-gold w-full text-center py-4 px-4 rounded-2xl text-xl tracking-wide flex items-center justify-between";
                 iconEval2.className = "fa-solid fa-unlock text-sm text-amber-200";
                 btnEval2.querySelector("span span").innerText = "Evaluasi 2 (Dibuka)";
@@ -731,6 +740,11 @@
             const now = new Date();
             const targetKuisSedekah = new Date();
             targetKuisSedekah.setHours(20, 0, 0, 0);
+
+            if (localStorage.getItem(`done_quiz_${pilar}`)) {
+                showNotifModal('Sudah Dikerjakan', `Perangkat ini sudah pernah mengirimkan jawaban untuk ${pilar}. Kuis ini hanya dapat dikerjakan 1 kali per perangkat.`, 'warning');
+                return;
+            }
 
             if (pilar === 'Kuis Sedekah' && now < targetKuisSedekah) {
                 showNotifModal('Kuis Terkunci', 'Kuis Sedekah baru akan dibuka dan dapat dikerjakan pada pukul 20:00 WITA.', 'warning');
@@ -783,9 +797,9 @@
                 return;
             }
 
-            const storageKey = `done_quiz_${activeQuizPilar}_${nameInput.toLowerCase()}`;
-            if (localStorage.getItem(storageKey)) {
-                alert(`Maaf, ${nameInput}, Anda sudah pernah mengerjakan ${activeQuizPilar}. Setiap peserta hanya diberikan 1 kali kesempatan!`);
+            if (localStorage.getItem(`done_quiz_${activeQuizPilar}`)) {
+                alert(`Perangkat ini sudah digunakan untuk mengerjakan ${activeQuizPilar}. Sesuai ketentuan, kuis hanya dapat dikerjakan 1 kali!`);
+                navigateTo('pilar');
                 return;
             }
 
@@ -933,8 +947,7 @@
         function finishQuizAndSubmit() {
             if (quizTimerInterval) clearInterval(quizTimerInterval);
 
-            const storageKey = `done_quiz_${activeQuizPilar}_${verifiedStudentName.toLowerCase()}`;
-            localStorage.setItem(storageKey, "true");
+            localStorage.setItem(`done_quiz_${activeQuizPilar}`, "true");
 
             scoreCount = 0;
             for (let i = 0; i < activeQuizList.length; i++) {
@@ -1016,15 +1029,15 @@
                     let badgeClass = "bg-slate-100 text-slate-700 border-slate-200";
                     let marker = "";
 
-                    if (optIdx === correctAnsIdx) {
-                        badgeClass = "bg-emerald-100 text-emerald-900 border-emerald-400 font-bold";
-                        marker = " (Kunci Jawaban)";
-                    }
-                    if (optIdx === userAnsIdx && !isCorrect) {
-                        badgeClass = "bg-red-100 text-red-900 border-red-400 font-bold";
-                        marker = " (Jawaban Anda)";
-                    } else if (optIdx === userAnsIdx && isCorrect) {
-                        marker = " (Jawaban Anda)";
+                    // Hanya menampilkan status pilihan pengguna, tanpa memunculkan kunci jawaban (tanpa mencetak opsi benar secara eksplisit bagi yang salah)
+                    if (optIdx === userAnsIdx) {
+                        if (isCorrect) {
+                            badgeClass = "bg-emerald-100 text-emerald-900 border-emerald-400 font-bold";
+                            marker = " (Jawaban Anda - Benar)";
+                        } else {
+                            badgeClass = "bg-red-100 text-red-900 border-red-400 font-bold";
+                            marker = " (Jawaban Anda - Salah)";
+                        }
                     }
 
                     optionsHtml += `
@@ -1049,7 +1062,7 @@
                 toggleText.innerText = "Sembunyikan Rincian Jawaban";
             } else {
                 reviewBox.classList.add('hidden');
-                toggleText.innerText = "Lihat Rincian & Kunci Jawaban";
+                toggleText.innerText = "Lihat Rincian Jawaban";
             }
         }
 
